@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>บริจาค</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: white;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .header {
+            background: white;
+            padding: 0;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+            min-height: 80px;
+        }
+
+        .header-content {
+            display: flex;
+            height: 80px;
+        }
+
+        .stats-section {
+            background: white;
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stats-text {
+            font-size: 14px;
+            color: black;
+            margin-bottom: 5px;
+        }
+
+        .stats-value {
+            font-size: 16px;
+            font-weight: normal;
+            color: red;
+        }
+
+        .my-donations-section {
+            background: #fb493d;
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .my-donations-text {
+            font-size: 14px;
+            font-weight: normal;
+            color: white;
+        }
+
+        .divider-line {
+            background: #ccc;
+            height: 1px;
+            width: 100%;
+        }
+
+        .main-content {
+            background: white;
+            margin: 5px;
+            border-radius: 15px;
+            padding: 10px;
+            min-height: 400px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            min-height: 300px;
+        }
+
+        .objectives-section h2 {
+            color: #20b8ac;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives-list li {
+            color: #20b8ac;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .objectives-list li::before {
+            content: counter(objective-counter) ".";
+            counter-increment: objective-counter;
+            position: absolute;
+            left: 5px;
+            color: #20b8ac;
+            font-weight: normal;
+        }
+
+        .objectives-list {
+            counter-reset: objective-counter;
+        }
+
+        .my-donations-section {
+            background: #fb493d;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .my-donations-section h3 {
+            color: #20b8ac;
+            margin-bottom: 10px;
+        }
+
+        .footer-buttons {
+            position: fixed;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 999;
+        }
+
+        .invite-btn {
+            width: 40%;
+            height: 40px;
+            background: white;
+            border: 1px solid #ff4f4f;
+            color: #ff4f4f;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+
+        .donate-now-btn {
+            width: 40%;
+            height: 40px;
+            background: #ff4f4f;
+            border: none;
+            color: white;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+
+        .support-icon {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #2c5530;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        .support-icon i {
+            font-size: 16px;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 10000;
+            display: none;
+            text-align: center;
+        }
+
+        .notification.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Donate Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10001;
+            display: none;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .donate-modal {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 95%;
+            max-width: 600px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .close-btn {
+            background: #ccc;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            position: absolute;
+            right: 0;
+        }
+
+        .balance-info {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+
+        .balance-amount {
+            color: #999;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .amount-input {
+            width: 173px;
+            height: 45px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .currency-symbol {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .donate-modal-btn {
+            width: 173px;
+            height: 45px;
+            background: linear-gradient(90deg, #ff9a56, #e74c3c);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Ensure footer icons display correctly */
+        .bottom-nav .nav-icon {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 24px !important;
+            height: 24px !important;
+        }
+
+        .bottom-nav .nav-icon i {
+            display: inline-block !important;
+            font-size: 18px !important;
+            color: #666 !important;
+            font-family: "Font Awesome 6 Free" !important;
+            font-weight: 900 !important;
+        }
+
+        .bottom-nav .nav-item.active .nav-icon i {
+            color: #e74c3c !important;
+        }
+
+        /* Force display for anti-fraud icon specifically */
+        .bottom-nav .nav-item[href="Page/music-chart.html"] .nav-icon i {
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            color: #666 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="header-content">
+            <div class="stats-section">
+                <div class="stats-text">บริจาคแล้ว: <span class="stats-value" id="totalDonated">0</span> ฿</div>
+                <div class="stats-text">จำนวนการบริจาค: <span class="stats-value" id="donationCount">0</span> ครั้ง</div>
+            </div>
+            <div class="my-donations-section">
+                <div class="my-donations-text">การบริจาคของฉัน</div>
+            </div>
+        </div>
+        <div class="divider-line"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-grid">
+            <div class="objectives-section">
+                <h2>วัตถุประสงค์</h2>
+                <ul class="objectives-list">
+                    <li>เพื่อส่งเสริมและกระตุ้นให้สังคมช่วยเหลือและแบ่งปันให้กับผู้ยากไร้</li>
+                    <li>เพื่อเป็นการสร้างจิตรสำนึกในการมีส่วนร่วมในสังคม ปลูกฝังจิตสำนึกกับเยาวชนรู้จักเป็นผู้ให้และผู้รับในเวลาเดียวกัน</li>
+                    <li>กิจกรรมการรับบริจาคครั้งนี้เพื่อสร้างโอกาสให้กับคนที่ต้องการความช่วยเหลือในสังคมให้มีความเท่าเทียมและให้คนในสังคมได้รับความรักความอบอุ่น</li>
+                    <li>ให้ผู้ยากไร้ได้รับความช่วยเหลือด้านวัตถุและรู้สึกถึงความเอาใจใส่จากสังคม</li>
+                    <li>กิจกรรมนี้เพื่อให้ทุกคนได้เข้าใจเกี่ยวกับข้อมูลเชิงลึกของกลุ่มคนต่างๆเช่น : ผู้สูงอายุ , ผู้ยากไร้ , เด็กกำพร้า , คนพิการและแรงงานต่างชาติได้ดีขึ้น</li>
+                    <li>เพื่อส่งเสริมให้ผู้ที่ด้อยโอกาสได้รับโอกาสและมีชีวิตที่ดี</li>
+                    <li>กิจกรรมนี้จัดเพื่อให้ทุกคนมีส่วนร่วมในการมอบความรักและความห่วงใยให้กับกลุ่มคนผู้ด้อยโอกาสต่างๆได้ปรับตัวและพัฒนาตัวเองในสังคม</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Icon -->
+    <div class="support-icon">
+        <i class="fas fa-headset"></i>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div>ยังไม่เปิดใช้งาน</div>
+    </div>
+
+
+    <!-- Donate Modal -->
+    <div class="modal-overlay" id="donateModal">
+        <div class="donate-modal">
+            <div class="modal-header">
+                <div class="modal-title">บริจาค</div>
+                <button class="close-btn" id="closeModal">×</button>
+            </div>
+            <div class="balance-info">
+                ยอดคงเหลือ: <span class="balance-amount" id="balanceAmount">กำลังโหลด...</span>
+            </div>
+            <div class="input-group">
+                <input type="number" class="amount-input" placeholder="กรุณากรอกจำนวนเงิน" id="amountInput">
+                <span class="currency-symbol">฿</span>
+            </div>
+            <button class="donate-modal-btn" onclick="processDonation()">บริจาคตอนนี้</button>
+        </div>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="footer-buttons">
+        <button class="invite-btn">เชิญเพื่อนเข้าร่วม</button>
+        <button class="donate-now-btn">บริจาคตอนนี้</button>
+    </div>
+
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in donate.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Translation System
+        const translations = {
+            th: {
+                donated: 'บริจาคแล้ว',
+                donationCount: 'จำนวนการบริจาค',
+                times: 'ครั้ง',
+                myDonations: 'การบริจาคของฉัน',
+                objectives: 'วัตถุประสงค์',
+                obj1: 'เพื่อส่งเสริมและกระตุ้นให้สังคมช่วยเหลือและแบ่งปันให้กับผู้ยากไร้',
+                obj2: 'เพื่อเป็นการสร้างจิตรสำนึกในการมีส่วนร่วมในสังคม ปลูกฝังจิตสำนึกกับเยาวชนรู้จักเป็นผู้ให้และผู้รับในเวลาเดียวกัน',
+                obj3: 'กิจกรรมการรับบริจาคครั้งนี้เพื่อสร้างโอกาสให้กับคนที่ต้องการความช่วยเหลือในสังคมให้มีความเท่าเทียมและให้คนในสังคมได้รับความรักความอบอุ่น',
+                obj4: 'ให้ผู้ยากไร้ได้รับความช่วยเหลือด้านวัตถุและรู้สึกถึงความเอาใจใส่จากสังคม',
+                obj5: 'กิจกรรมนี้เพื่อให้ทุกคนได้เข้าใจเกี่ยวกับข้อมูลเชิงลึกของกลุ่มคนต่างๆเช่น : ผู้สูงอายุ , ผู้ยากไร้ , เด็กกำพร้า , คนพิการและแรงงานต่างชาติได้ดีขึ้น',
+                obj6: 'เพื่อส่งเสริมให้ผู้ที่ด้อยโอกาสได้รับโอกาสและมีชีวิตที่ดี',
+                obj7: 'กิจกรรมนี้จัดเพื่อให้ทุกคนมีส่วนร่วมในการมอบความรักและความห่วงใยให้กับกลุ่มคนผู้ด้อยโอกาสต่างๆได้ปรับตัวและพัฒนาตัวเองในสังคม',
+                notAvailable: 'ยังไม่เปิดใช้งาน',
+                donateModalTitle: 'บริจาค',
+                balance: 'ยอดคงเหลือ',
+                loading: 'กำลังโหลด...',
+                enterAmount: 'กรุณากรอกจำนวนเงิน',
+                donateNow: 'บริจาคตอนนี้',
+                inviteFriends: 'เชิญเพื่อนเข้าร่วม',
+                minDonation: 'กรุณาบริจาคอย่างน้อย 1 บาท',
+                insufficientBalance: 'ยอดเงินไม่เพียงพอ',
+                donationSuccess: 'บริจาคสำเร็จ!',
+                donationError: 'เกิดข้อผิดพลาดในการบริจาค',
+                pleaseLogin: 'กรุณาเข้าสู่ระบบ'
+            },
+            en: {
+                donated: 'Donated',
+                donationCount: 'Donation Count',
+                times: 'times',
+                myDonations: 'My Donations',
+                objectives: 'Objectives',
+                obj1: 'To promote and encourage society to help and share with the needy',
+                obj2: 'To create awareness of social participation and instill consciousness in youth to be givers and receivers at the same time',
+                obj3: 'This donation campaign aims to create opportunities for people who need help in society to have equality and receive love and warmth',
+                obj4: 'To help the needy receive material assistance and feel the care from society',
+                obj5: 'This activity aims to help everyone better understand various groups such as: elderly, poor, orphans, disabled people, and foreign workers',
+                obj6: 'To promote opportunities for the disadvantaged to have a better life',
+                obj7: 'This activity is organized to allow everyone to participate in giving love and care to various disadvantaged groups to adapt and develop themselves in society',
+                notAvailable: 'Not available yet',
+                donateModalTitle: 'Donate',
+                balance: 'Balance',
+                loading: 'Loading...',
+                enterAmount: 'Please enter amount',
+                donateNow: 'Donate Now',
+                inviteFriends: 'Invite Friends',
+                minDonation: 'Please donate at least 1 baht',
+                insufficientBalance: 'Insufficient balance',
+                donationSuccess: 'Donation successful!',
+                donationError: 'Donation error',
+                pleaseLogin: 'Please login'
+            },
+            cn: {
+                donated: '已捐赠',
+                donationCount: '捐赠次数',
+                times: '次',
+                myDonations: '我的捐赠',
+                objectives: '目标',
+                obj1: '促进和鼓励社会帮助和分享给有需要的人',
+                obj2: '创造社会参与意识，培养青年成为同时给予者和接受者的意识',
+                obj3: '这次捐赠活动旨在为需要帮助的人创造机会，让他们在社会中获得平等并获得爱与温暖',
+                obj4: '帮助有需要的人获得物质援助并感受到社会的关怀',
+                obj5: '这项活动旨在帮助每个人更好地了解各个群体，如：老年人、穷人、孤儿、残疾人和外国工人',
+                obj6: '促进弱势群体获得机会并拥有更好的生活',
+                obj7: '这项活动旨在让每个人都参与向各个弱势群体提供爱和关怀，帮助他们适应和发展自己',
+                notAvailable: '尚未开放',
+                donateModalTitle: '捐赠',
+                balance: '余额',
+                loading: '加载中...',
+                enterAmount: '请输入金额',
+                donateNow: '立即捐赠',
+                inviteFriends: '邀请朋友',
+                minDonation: '请至少捐赠 1 泰铢',
+                insufficientBalance: '余额不足',
+                donationSuccess: '捐赠成功！',
+                donationError: '捐赠错误',
+                pleaseLogin: '请登录'
+            },
+            vi: {
+                donated: 'Đã quyên góp',
+                donationCount: 'Số lần quyên góp',
+                times: 'lần',
+                myDonations: 'Quyên góp của tôi',
+                objectives: 'Mục tiêu',
+                obj1: 'Để thúc đẩy và khuyến khích xã hội giúp đỡ và chia sẻ với người nghèo',
+                obj2: 'Để tạo ra ý thức tham gia xã hội và trồng ý thức cho giới trẻ biết là người cho và người nhận cùng một lúc',
+                obj3: 'Chiến dịch quyên góp này nhằm tạo cơ hội cho những người cần giúp đỡ trong xã hội có sự bình đẳng và nhận được tình yêu và sự ấm áp',
+                obj4: 'Để giúp những người nghèo nhận được sự hỗ trợ vật chất và cảm nhận được sự quan tâm từ xã hội',
+                obj5: 'Hoạt động này nhằm giúp mọi người hiểu rõ hơn về các nhóm như: người cao tuổi, người nghèo, trẻ mồ côi, người khuyết tật và lao động nước ngoài',
+                obj6: 'Để thúc đẩy cơ hội cho những người kém may mắn có cuộc sống tốt hơn',
+                obj7: 'Hoạt động này được tổ chức để cho phép mọi người tham gia trao tình yêu và sự quan tâm cho các nhóm kém may mắn để họ thích ứng và phát triển bản thân',
+                notAvailable: 'Chưa khả dụng',
+                donateModalTitle: 'Quyên góp',
+                balance: 'Số dư',
+                loading: 'Đang tải...',
+                enterAmount: 'Vui lòng nhập số tiền',
+                donateNow: 'Quyên góp ngay',
+                inviteFriends: 'Mời bạn bè',
+                minDonation: 'Vui lòng quyên góp ít nhất 1 baht',
+                insufficientBalance: 'Số dư không đủ',
+                donationSuccess: 'Quyên góp thành công!',
+                donationError: 'Lỗi quyên góp',
+                pleaseLogin: 'Vui lòng đăng nhập'
+            }
+        };
+
+        // Translation helper function
+        function t(key) {
+            const currentLang = localStorage.getItem('preferredLang') || 'th';
+            return translations[currentLang][key] || translations.th[key] || key;
+        }
+
+        // Update page language
+        function updatePageLanguage() {
+            // Update header stats
+            const statsTexts = document.querySelectorAll('.stats-text');
+            if (statsTexts[0]) {
+                const totalValue = document.getElementById('totalDonated').textContent;
+                statsTexts[0].innerHTML = `${t('donated')}: <span class="stats-value" id="totalDonated">${totalValue}</span> ฿`;
+            }
+            if (statsTexts[1]) {
+                const countValue = document.getElementById('donationCount').textContent;
+                statsTexts[1].innerHTML = `${t('donationCount')}: <span class="stats-value" id="donationCount">${countValue}</span> ${t('times')}`;
+            }
+            
+            // Update my donations section
+            document.querySelector('.my-donations-text').textContent = t('myDonations');
+            
+            // Update objectives
+            document.querySelector('.objectives-section h2').textContent = t('objectives');
+            const objectivesList = document.querySelectorAll('.objectives-list li');
+            if (objectivesList[0]) objectivesList[0].textContent = t('obj1');
+            if (objectivesList[1]) objectivesList[1].textContent = t('obj2');
+            if (objectivesList[2]) objectivesList[2].textContent = t('obj3');
+            if (objectivesList[3]) objectivesList[3].textContent = t('obj4');
+            if (objectivesList[4]) objectivesList[4].textContent = t('obj5');
+            if (objectivesList[5]) objectivesList[5].textContent = t('obj6');
+            if (objectivesList[6]) objectivesList[6].textContent = t('obj7');
+            
+            // Update notification
+            document.querySelector('#notification div').textContent = t('notAvailable');
+            
+            // Update modal
+            document.querySelector('.modal-title').textContent = t('donateModalTitle');
+            const balanceInfo = document.querySelector('.balance-info');
+            const balanceValue = document.getElementById('balanceAmount').textContent;
+            balanceInfo.innerHTML = `${t('balance')}: <span class="balance-amount" id="balanceAmount">${balanceValue}</span>`;
+            document.getElementById('amountInput').placeholder = t('enterAmount');
+            document.querySelector('.donate-modal-btn').textContent = t('donateNow');
+            
+            // Update footer buttons
+            document.querySelector('.invite-btn').textContent = t('inviteFriends');
+            document.querySelector('.donate-now-btn').textContent = t('donateNow');
+        }
+
+        // Load Footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update page language first
+            updatePageLanguage();
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+            
+            // Load footer
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                    
+                    // Wait for footer to render, then update language and set active state
+                    setTimeout(() => {
+                        // Force update footer language
+                        const currentLang = localStorage.getItem('preferredLang') || 'th';
+                        const footerTranslations = {
+                            en: { home: 'Home', welfare: 'Public Welfare List', chart: 'Anti-Fraud', profile: 'My Profile' },
+                            cn: { home: '首页', welfare: '公共福利列表', chart: '反欺诈', profile: '我的' },
+                            th: { home: 'หน้าแรก', welfare: 'รายการสวัสดิการสาธารณะ', chart: 'ต่อต้านการฉ้อโกง', profile: 'ของฉัน' },
+                            vi: { home: 'Trang chủ', welfare: 'Danh sách phúc lợi công cộng', chart: 'Chống gian lận', profile: 'Của tôi' }
+                        };
+                        
+                        const footerLabels = document.querySelectorAll('.bottom-nav .nav-label[data-lang-key]');
+                        footerLabels.forEach(label => {
+                            const key = label.getAttribute('data-lang-key');
+                            const keys = key.split('.');
+                            if (keys.length === 2 && keys[0] === 'footer') {
+                                const translation = footerTranslations[currentLang];
+                                if (translation && translation[keys[1]]) {
+                                    label.textContent = translation[keys[1]];
+                                }
+                            }
+                        });
+                        
+                        // Set active state
+                        const currentNavItem = document.querySelector('.nav-item[href="donate.html"]');
+                        if (currentNavItem) {
+                            currentNavItem.classList.add('active');
+                        }
+                    }, 150);
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                });
+        });
+
+        // Button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const inviteBtn = document.querySelector('.invite-btn');
+            const donateBtn = document.querySelector('.donate-now-btn');
+            const supportIcon = document.querySelector('.support-icon');
+
+            inviteBtn.addEventListener('click', function() {
+                const notification = document.getElementById('notification');
+                notification.classList.add('show');
+                
+                // Auto hide after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            });
+
+            donateBtn.addEventListener('click', function() {
+                const modal = document.getElementById('donateModal');
+                modal.classList.add('show');
+            });
+
+            // Close modal functionality
+            const closeBtn = document.getElementById('closeModal');
+            const modal = document.getElementById('donateModal');
+            
+            closeBtn.addEventListener('click', function() {
+                modal.classList.remove('show');
+            });
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+
+            supportIcon.addEventListener('click', function() {
+                // ติดต่อฝ่ายสนับสนุน
+            });
+        });
+
+        // Load user balance
+        function loadUserBalance() {
+            const userId = localStorage.getItem('userId');
+            
+            if (!userId) {
+                console.log('No user ID found');
+                const balanceAmount = document.getElementById('balanceAmount');
+                if (balanceAmount) {
+                    balanceAmount.textContent = t('pleaseLogin') || 'Please login';
+                }
+                return;
+            }
+
+            fetch('../api/get_user_balance.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const balanceAmount = document.getElementById('balanceAmount');
+                    if (balanceAmount) {
+                        balanceAmount.textContent = parseFloat(data.balance).toLocaleString('th-TH') + '฿';
+                    }
+                } else {
+                    console.error('Error loading balance:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Open donate modal
+        function openDonateModal() {
+            const modal = document.getElementById('donateModal');
+            modal.classList.add('show');
+            // Load balance when modal opens
+            setTimeout(() => {
+                loadUserBalance();
+            }, 100);
+        }
+
+        // Process donation
+        function processDonation() {
+            const amountInput = document.getElementById('amountInput');
+            const amount = amountInput.value;
+            
+            if (!amount || amount <= 0) {
+                alert('กรุณากรอกจำนวนเงินที่ต้องการบริจาค');
+                return;
+            }
+            
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName') || localStorage.getItem('username') || 'Unknown User';
+            
+            if (!userId) {
+                alert('กรุณาเข้าสู่ระบบก่อน');
+                return;
+            }
+            
+            // Disable button during processing
+            const donateBtn = document.querySelector('.donate-modal-btn');
+            const originalText = donateBtn.textContent;
+            donateBtn.disabled = true;
+            donateBtn.textContent = 'กำลังประมวลผล...';
+            
+            fetch('../api/process_donation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    user_name: userName,
+                    amount: parseFloat(amount)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show custom notification
+                    showNotification('บริจาคเสร็จ');
+                    
+                    // Clear input and close modal
+                    amountInput.value = '';
+                    const modal = document.getElementById('donateModal');
+                    modal.classList.remove('show');
+                    
+                    // Reload balance and donations
+                    loadUserBalance();
+                    loadUserDonations();
+                } else {
+                    alert('เกิดข้อผิดพลาด: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+            })
+            .finally(() => {
+                // Re-enable button
+                donateBtn.disabled = false;
+                donateBtn.textContent = originalText;
+            });
+        }
+
+        // Show notification function
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            // Auto hide after 2 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        // Load user donations
+        function loadUserDonations() {
+            const userId = localStorage.getItem('userId');
+            
+            if (!userId) {
+                console.log('No user ID found for donations');
+                return;
+            }
+
+            fetch('../api/get_user_donations.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const totalDonated = document.getElementById('totalDonated');
+                    const donationCount = document.getElementById('donationCount');
+                    
+                    if (totalDonated) {
+                        totalDonated.textContent = parseFloat(data.data.total_amount).toLocaleString('th-TH');
+                    }
+                    
+                    if (donationCount) {
+                        donationCount.textContent = data.data.donation_count;
+                    }
+                } else {
+                    console.error('Error loading donations:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Load balance when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserBalance();
+            loadUserDonations();
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

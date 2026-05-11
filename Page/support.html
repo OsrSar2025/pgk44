@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>ฝ่ายบริการออนไลน์ - PK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: rgb(0, 122, 255);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            opacity: 0.95;
+            line-height: 1.3;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+        }
+
+        .close-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .speaker-icon {
+            font-size: 12px;
+            cursor: pointer;
+            align-self: flex-start;
+            padding-top: 2px;
+        }
+
+        .toggle-section {
+            background: white;
+            padding: 12px 20px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            padding-top: 120px;
+            padding-bottom: 140px;
+            overflow-y: auto;
+            background: #f5f5f5;
+            margin: 0;
+            height: calc(100vh - 260px);
+            min-height: 400px;
+        }
+        
+        /* Custom scrollbar styling */
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 4px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+        }
+
+        .message-time {
+            color: #999;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .message-bubble {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            width: auto;
+            max-width: 80%;
+            font-size: 14px;
+            line-height: 1.3;
+            white-space: normal;
+            word-wrap: break-word;
+            margin: 2px 0;
+        }
+
+        .info-section {
+            background: white;
+            padding: 12px 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .info-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .info-list {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+            list-style: none;
+        }
+
+        .info-list li {
+            padding: 3px 0;
+        }
+
+        .input-section {
+            background: white;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #eee;
+            justify-content: space-between;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .icon-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #999;
+            cursor: pointer;
+            padding: 5px;
+            font-weight: 300;
+        }
+        
+        .icon-btn i {
+            font-weight: 300;
+        }
+
+        .message-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 8px;
+            background: transparent;
+        }
+
+        .message-input::placeholder {
+            color: #999;
+        }
+
+        .send-btn {
+            background: rgb(0, 122, 255);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .input-label {
+            background: white;
+            padding: 10px 15px;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: fixed;
+            bottom: 55px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .input-label .message-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .send-btn:active {
+            background: rgb(0, 100, 220);
+        }
+
+        /* Emoji Picker Styles */
+        .emoji-picker {
+            display: none;
+            position: fixed;
+            bottom: auto;
+            top: auto;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: white;
+            border-radius: 0;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .emoji-picker.show {
+            display: block;
+        }
+
+        .emoji-header {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+        }
+
+        .emoji-tabs {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            padding: 8px 10px;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .emoji-tab {
+            font-size: 20px;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .emoji-tab.active {
+            background: #e8f4ff;
+        }
+
+        .emoji-tab:hover {
+            background: #f0f0f0;
+        }
+
+        .emoji-category {
+            font-size: 12px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .emoji-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            padding: 10px;
+        }
+
+        .emoji-item {
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+        .emoji-item:hover {
+            background: #f0f0f0;
+        }
+
+        /* Fullscreen modal styles */
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+
+        .fullscreen-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen-content {
+            position: relative;
+            max-width: 95%;
+            max-height: 95%;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen-content img,
+        .fullscreen-content video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .fullscreen-close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .fullscreen-close:hover {
+            color: #ccc;
+        }
+
+        .fullscreen-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* Make images and videos clickable */
+        .message-bubble img,
+        .message-bubble video {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .message-bubble img:hover,
+        .message-bubble video:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-logo">
+            <i class="fas fa-headset"></i>
+        </div>
+        <div class="header-content">
+            <div class="header-title" id="pageTitle">ฝ่ายบริการออนไลน์</div>
+            <div class="header-subtitle" id="workingHoursText">กำลังโหลดข้อมูล...</div>
+        </div>
+        <button class="close-btn" onclick="goToProfile()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+        <div class="chat-message" style="text-align: left;">
+            <div class="message-time" id="welcomeTime" style="text-align: left;">ฝ่ายบริการออนไลน์ 01:11</div>
+            <div class="message-bubble" id="welcomeMessage">สวัสดี มีอะไรให้ช่วยไหม?</div>
+        </div>
+    </div>
+
+    <div class="input-label">
+        <textarea class="message-input" id="topMessageInput" placeholder="กรุณากรอก" style="resize: none; min-height: 40px; max-height: 120px; padding-top: 10px; padding-bottom: 10px;"></textarea>
+    </div>
+
+    <!-- Emoji Picker -->
+    <div class="emoji-picker" id="emojiPicker">
+        <div class="emoji-header">
+            <span class="emoji-category" id="emojiCategoryName">ใช้งานบ่อย</span>
+            <button class="emoji-close" onclick="closeEmojiPicker()">×</button>
+        </div>
+        <div class="emoji-tabs">
+            <div class="emoji-tab active" data-category="recent">🕒</div>
+            <div class="emoji-tab" data-category="smileys">😊</div>
+            <div class="emoji-tab" data-category="animals">🐶</div>
+            <div class="emoji-tab" data-category="food">🍎</div>
+            <div class="emoji-tab" data-category="activities">⚽</div>
+            <div class="emoji-tab" data-category="travel">🚗</div>
+            <div class="emoji-tab" data-category="objects">💡</div>
+            <div class="emoji-tab" data-category="symbols">🔣</div>
+            <div class="emoji-tab" data-category="flags">🏁</div>
+        </div>
+        <div class="emoji-grid" id="emojiGrid"></div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="input-section">
+        <div class="icon-group">
+            <button class="icon-btn" id="emojiBtn">
+                <i class="fa-solid fa-face-smile"></i>
+            </button>
+            <button class="icon-btn" id="imageBtn">
+                <i class="far fa-image"></i>
+            </button>
+            <button class="icon-btn" id="videoBtn">
+                <i class="far fa-play-circle"></i>
+            </button>
+        </div>
+        <button class="send-btn" id="sendButton">ส่ง</button>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+    <input type="file" id="videoInput" accept="video/*" style="display: none;">
+
+    <!-- Fullscreen Modal -->
+    <div id="fullscreenModal" class="fullscreen-modal">
+        <span class="fullscreen-close" onclick="closeFullscreen()">&times;</span>
+        <div class="fullscreen-content">
+            <img id="fullscreenImage" style="display: none;">
+            <video id="fullscreenVideo" controls style="display: none;"></video>
+        </div>
+        <div class="fullscreen-caption" id="fullscreenCaption"></div>
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in support.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Language translations
+        const translations = {
+            en: {
+                pageTitle: 'Online Support',
+                welcomeTime: 'Online Support 01:11',
+                welcomeMessage: 'Hello, how can I help you?',
+                messagePlaceholder: 'Please type your message',
+                sendButton: 'Send',
+                loadingText: 'Loading...',
+                workingHoursFallback: 'Welcome to our support service 11.00-22.30 Please contact our support team...',
+                uploadImageError: 'Unable to upload image: ',
+                uploadVideoError: 'Unable to upload video: ',
+                uploadImageErrorGeneral: 'Error occurred while uploading image',
+                uploadVideoErrorGeneral: 'Error occurred while uploading video',
+                recentEmojis: 'Recently Used',
+                smileysEmojis: 'Smileys & People',
+                animalsEmojis: 'Animals & Nature',
+                foodEmojis: 'Food & Drink',
+                activitiesEmojis: 'Activities',
+                travelEmojis: 'Travel & Places',
+                objectsEmojis: 'Objects',
+                symbolsEmojis: 'Symbols',
+                flagsEmojis: 'Flags'
+            },
+            cn: {
+                pageTitle: '在线客服',
+                welcomeTime: '在线客服 01:11',
+                welcomeMessage: '您好，有什么可以帮助您的吗？',
+                messagePlaceholder: '请输入您的消息',
+                sendButton: '发送',
+                loadingText: '加载中...',
+                workingHoursFallback: '欢迎使用我们的客服服务 11.00-22.30 如需联系客服请...',
+                uploadImageError: '无法上传图片：',
+                uploadVideoError: '无法上传视频：',
+                uploadImageErrorGeneral: '上传图片时发生错误',
+                uploadVideoErrorGeneral: '上传视频时发生错误',
+                recentEmojis: '最近使用',
+                smileysEmojis: '表情和人物',
+                animalsEmojis: '动物和自然',
+                foodEmojis: '食物和饮料',
+                activitiesEmojis: '活动',
+                travelEmojis: '旅行和地点',
+                objectsEmojis: '物品',
+                symbolsEmojis: '符号',
+                flagsEmojis: '旗帜'
+            },
+            th: {
+                pageTitle: 'ฝ่ายบริการออนไลน์',
+                welcomeTime: 'ฝ่ายบริการออนไลน์ 01:11',
+                welcomeMessage: 'สวัสดี มีอะไรให้ช่วยไหม?',
+                messagePlaceholder: 'กรุณากรอก',
+                sendButton: 'ส่ง',
+                loadingText: 'กำลังโหลดข้อมูล...',
+                workingHoursFallback: 'ต้อนรับงานของฝ่ายบริการ 11.00-22.30 ต้องการติดต่อหาฝ่ายบริการโปรด...',
+                uploadImageError: 'ไม่สามารถอัปโหลดรูปภาพได้: ',
+                uploadVideoError: 'ไม่สามารถอัปโหลดวิดีโอได้: ',
+                uploadImageErrorGeneral: 'เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ',
+                uploadVideoErrorGeneral: 'เกิดข้อผิดพลาดในการอัปโหลดวิดีโอ',
+                recentEmojis: 'ใช้งานบ่อย',
+                smileysEmojis: 'บุษยีมีและร่างกาย',
+                animalsEmojis: 'สัตว์และธรรมชาติ',
+                foodEmojis: 'อาหารและเครื่องดื่ม',
+                activitiesEmojis: 'กิจกรรม',
+                travelEmojis: 'การเดินทางและสถานที่',
+                objectsEmojis: 'วัตถุ',
+                symbolsEmojis: 'สัญลักษณ์',
+                flagsEmojis: 'ธง'
+            },
+            vi: {
+                pageTitle: 'Hỗ trợ trực tuyến',
+                welcomeTime: 'Hỗ trợ trực tuyến 01:11',
+                welcomeMessage: 'Xin chào, tôi có thể giúp gì cho bạn?',
+                messagePlaceholder: 'Vui lòng nhập tin nhắn',
+                sendButton: 'Gửi',
+                loadingText: 'Đang tải...',
+                workingHoursFallback: 'Chào mừng đến với dịch vụ hỗ trợ 11.00-22.30 Vui lòng liên hệ bộ phận hỗ trợ...',
+                uploadImageError: 'Không thể tải lên hình ảnh: ',
+                uploadVideoError: 'Không thể tải lên video: ',
+                uploadImageErrorGeneral: 'Lỗi xảy ra khi tải lên hình ảnh',
+                uploadVideoErrorGeneral: 'Lỗi xảy ra khi tải lên video',
+                recentEmojis: 'Sử dụng gần đây',
+                smileysEmojis: 'Cảm xúc và con người',
+                animalsEmojis: 'Động vật và thiên nhiên',
+                foodEmojis: 'Thức ăn và đồ uống',
+                activitiesEmojis: 'Hoạt động',
+                travelEmojis: 'Du lịch và địa điểm',
+                objectsEmojis: 'Đồ vật',
+                symbolsEmojis: 'Biểu tượng',
+                flagsEmojis: 'Cờ'
+            }
+        };
+
+        // Current language (read from main page)
+        let currentLang = localStorage.getItem('preferredLang') || 'th';
+
+        // Get translation
+        function t(key) {
+            const keys = key.split('.');
+            let value = translations[currentLang];
+            for (const k of keys) {
+                value = value[k];
+            }
+            return value || key;
+        }
+
+        // Update page language (read from localStorage, no language switching)
+        function updatePageLanguage() {
+            // Read language from localStorage (set by main page)
+            currentLang = localStorage.getItem('preferredLang') || 'th';
+            
+            const trans = translations[currentLang];
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = trans.pageTitle;
+            
+            // Update welcome message
+            document.getElementById('welcomeTime').textContent = trans.welcomeTime;
+            document.getElementById('welcomeMessage').textContent = trans.welcomeMessage.trim();
+            
+            // Update input placeholder
+            document.getElementById('topMessageInput').placeholder = trans.messagePlaceholder;
+            
+            // Update button text
+            document.getElementById('sendButton').textContent = trans.sendButton;
+        }
+
+        // Send message functionality
+        const messageInput = document.getElementById('topMessageInput');
+        const sendBtn = document.querySelector('.send-btn');
+        const chatContainer = document.querySelector('.chat-container');
+        
+        // Get user info from localStorage
+        let userId = localStorage.getItem('userId');
+        let userName = localStorage.getItem('userName') || localStorage.getItem('username') || '';
+        
+        // If not logged in, generate or retrieve a Guest ID
+        if (!userId) {
+            userId = localStorage.getItem('guestId');
+            if (!userId) {
+                userId = 'GUEST_' + Date.now();
+                localStorage.setItem('guestId', userId);
+            }
+            userName = 'ลูกค้านิรนาม';
+        }
+        
+        // Auto refresh variables
+        let messageRefreshInterval;
+        let lastMessageCount = 0;
+        
+        // Load user name if not available
+        loadUserName();
+        
+        // Load working hours from database
+        loadWorkingHours();
+        
+        // Load previous messages on page load
+        loadPreviousMessages();
+        
+        // Start auto refresh
+        startMessageRefresh();
+        
+        // Fullscreen modal functions
+        function openFullscreen(src, type, caption = '') {
+            const modal = document.getElementById('fullscreenModal');
+            const image = document.getElementById('fullscreenImage');
+            const video = document.getElementById('fullscreenVideo');
+            const captionElement = document.getElementById('fullscreenCaption');
+            
+            // Hide both elements first
+            image.style.display = 'none';
+            video.style.display = 'none';
+            
+            if (type === 'image') {
+                image.src = src;
+                image.style.display = 'block';
+                video.pause(); // Pause any playing video
+            } else if (type === 'video') {
+                video.src = src;
+                video.style.display = 'block';
+            }
+            
+            captionElement.textContent = caption;
+            modal.classList.add('show');
+            
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeFullscreen() {
+            const modal = document.getElementById('fullscreenModal');
+            const image = document.getElementById('fullscreenImage');
+            const video = document.getElementById('fullscreenVideo');
+            
+            modal.classList.remove('show');
+            
+            // Pause video and reset
+            video.pause();
+            video.currentTime = 0;
+            
+            // Reset src to stop loading
+            image.src = '';
+            video.src = '';
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside content
+        document.getElementById('fullscreenModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFullscreen();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeFullscreen();
+            }
+        });
+        
+        // Function to go back to profile page
+        function goToProfile() {
+            window.location.href = 'profile.html';
+        }
+
+        // Function to load user name from localStorage
+        function loadUserName() {
+            if (userId && !userId.startsWith('GUEST_')) {
+                // Try to get from various localStorage keys
+                let actualUserName = localStorage.getItem('userName') ||
+                                   localStorage.getItem('name') ||
+                                   localStorage.getItem('username') ||
+                                   localStorage.getItem('fullName') ||
+                                   localStorage.getItem('displayName');
+                
+                // If still no name, use User + ID
+                if (!actualUserName || actualUserName === 'ผู้ใช้') {
+                    actualUserName = 'User' + userId;
+                }
+                
+                console.log('Loaded user name:', actualUserName);
+                
+                // Update localStorage with the correct name
+                localStorage.setItem('userName', actualUserName);
+                // Update the global userName variable
+                userName = actualUserName;
+            } else if (userId && userId.startsWith('GUEST_')) {
+                userName = 'ลูกค้านิรนาม';
+                localStorage.setItem('userName', userName);
+            }
+        }
+
+        // Function to load working hours from database
+        function loadWorkingHours() {
+            fetch('../api/get_all_working_hours.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data && data.data.length > 0) {
+                        // Get the latest working hours (first item in the array)
+                        const latestWorkingHours = data.data[0].content;
+                        document.getElementById('workingHoursText').textContent = latestWorkingHours;
+                    } else {
+                        // Fallback text if no data found
+                        document.getElementById('workingHoursText').textContent = t('workingHoursFallback');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading working hours:', error);
+                    // Fallback text on error
+                    document.getElementById('workingHoursText').textContent = t('workingHoursFallback');
+                });
+        }
+
+        // Function to force scroll to bottom
+        function scrollToBottom() {
+            const chatContainer = document.querySelector('.chat-container');
+            if (chatContainer) {
+                // Force scroll to bottom with multiple methods
+                const scrollToBottomNow = () => {
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+                };
+                
+                // Immediate scroll
+                scrollToBottomNow();
+                
+                // Multiple delayed scrolls to ensure it works
+                setTimeout(scrollToBottomNow, 10);
+                setTimeout(scrollToBottomNow, 50);
+                setTimeout(scrollToBottomNow, 100);
+                setTimeout(scrollToBottomNow, 200);
+                setTimeout(scrollToBottomNow, 500);
+                
+                // Also try scrolling the last message into view
+                const messages = chatContainer.querySelectorAll('.chat-message');
+                if (messages.length > 0) {
+                    const lastMessage = messages[messages.length - 1];
+                    lastMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }
+            }
+        }
+        
+        // Function to load previous messages
+        function loadPreviousMessages() {
+            if (!userId) return;
+            
+            fetch('../api/get_messages.php', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data) {
+                    // Clear ALL messages
+                    chatContainer.innerHTML = '';
+                    
+                    // Add welcome message first (always on top)
+                    const welcomeMessage = document.createElement('div');
+                    welcomeMessage.className = 'chat-message';
+                    welcomeMessage.innerHTML = `
+                        <div class="message-time">${t('welcomeTime')}</div>
+                        <div class="message-bubble">
+                            ${t('welcomeMessage')}
+                        </div>
+                    `;
+                    chatContainer.appendChild(welcomeMessage);
+                    
+                    // Filter messages for current user and admin replies to this user
+                    const filteredMessages = data.data.filter(message => 
+                        message.user_id === userId
+                    );
+                    
+                    // Sort messages by created_at (oldest first) to display in chronological order
+                    filteredMessages.sort((a, b) => {
+                        return new Date(a.created_at) - new Date(b.created_at);
+                    });
+                    
+                    // Add previous messages in chronological order (after welcome message)
+                    filteredMessages.forEach(message => {
+                        addMessageToChat(message);
+                    });
+                    
+                    // Update message count
+                    lastMessageCount = filteredMessages.length;
+                    
+                    // Scroll to bottom - use multiple methods to ensure it works
+                    setTimeout(() => {
+                        scrollToBottom();
+                    }, 100);
+                    
+                    // Additional scroll attempts to ensure it reaches bottom
+                    setTimeout(() => {
+                        scrollToBottom();
+                    }, 300);
+                    
+                    setTimeout(() => {
+                        scrollToBottom();
+                    }, 500);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading messages:', error);
+            });
+        }
+        
+        // Auto refresh functions
+        function startMessageRefresh() {
+            if (messageRefreshInterval) {
+                clearInterval(messageRefreshInterval);
+            }
+            
+            messageRefreshInterval = setInterval(() => {
+                if (userId) {
+                    checkForNewMessages();
+                }
+            }, 3000); // Check every 3 seconds
+        }
+        
+        function stopMessageRefresh() {
+            if (messageRefreshInterval) {
+                clearInterval(messageRefreshInterval);
+                messageRefreshInterval = null;
+            }
+        }
+
+        // Build stable media URLs for localhost and production domains
+        function buildMediaUrl(filePath) {
+            if (!filePath) return '';
+
+            // Already absolute URL
+            if (/^https?:\/\//i.test(filePath)) {
+                return filePath;
+            }
+
+            // Normalize "../image/..." and "/image/..." to "image/..."
+            const normalizedPath = filePath
+                .replace(/^(\.\.\/)+/, '')
+                .replace(/^\.\//, '')
+                .replace(/^\/+/, '');
+
+            // Current app often runs in "/<project>/Page/support.html"
+            // so keep the project prefix to avoid broken URLs on real domains.
+            const pathname = window.location.pathname;
+            const pageIndex = pathname.indexOf('/Page/');
+            const projectPrefix = pageIndex > 0 ? pathname.substring(0, pageIndex) : '';
+
+            return `${window.location.origin}${projectPrefix}/${normalizedPath}`;
+        }
+        
+        // Check for new messages without refreshing the whole chat
+        function checkForNewMessages() {
+            fetch('../api/get_messages.php', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data) {
+                    // Filter messages for current user and admin replies to this user
+                    const filteredMessages = data.data.filter(message => 
+                        message.user_id === userId
+                    );
+                    
+                    // Check if there are new messages
+                    if (filteredMessages.length > lastMessageCount) {
+                        // Only reload if there are new messages
+                        loadPreviousMessages();
+                        lastMessageCount = filteredMessages.length;
+                        
+                        // Scroll to bottom when new messages arrive
+                        setTimeout(() => {
+                            scrollToBottom();
+                        }, 100);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error checking for new messages:', error);
+            });
+        }
+        
+        // Function to add message to chat
+        function addMessageToChat(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            
+            // Parse timestamp and display in Thailand local time
+            let time;
+            if (message.created_at) {
+                // Database stores in format: 'YYYY-MM-DD HH:MM:SS'
+                // Parse it as local time (Thailand time)
+                const parts = message.created_at.split(/[- :]/);
+                time = new Date(
+                    parseInt(parts[0]),      // year
+                    parseInt(parts[1]) - 1,  // month (0-indexed)
+                    parseInt(parts[2]),      // day
+                    parseInt(parts[3]),      // hour
+                    parseInt(parts[4]),      // minute
+                    parseInt(parts[5]) || 0  // second
+                );
+            } else {
+                time = new Date();
+            }
+            
+            const timeString = time.getHours().toString().padStart(2, '0') + ':' + 
+                             time.getMinutes().toString().padStart(2, '0');
+            
+            // Determine if message is from admin or user
+            const isAdmin = message.user_name === 'Admin' && message.user_id === userId;
+            const isUser = message.user_id === userId && message.user_name !== 'Admin';
+            
+            let messageContent = '';
+            let bubbleStyle = '';
+            let timeLabel = '';
+            let textAlign = '';
+            
+            if (isAdmin) {
+                // Admin message - left side
+                textAlign = 'left';
+                timeLabel = `${t('pageTitle')} ${timeString}`;
+                bubbleStyle = 'background: white; color: #333;';
+            } else if (isUser) {
+                // User message - right side
+                textAlign = 'right';
+                timeLabel = `คุณ ${timeString}`;
+                bubbleStyle = 'background: #1e90ff; color: white;';
+            }
+            
+            if (message.message_text) {
+                const formattedText = message.message_text.replace(/\n/g, '<br>');
+                messageContent = `<div class="message-bubble" style="${bubbleStyle}">${formattedText}</div>`;
+            } else if (message.emoji) {
+                messageContent = `<div class="message-bubble" style="${bubbleStyle}; font-size: 24px;">${message.emoji}</div>`;
+            } else if (message.image_path) {
+                const imageUrl = buildMediaUrl(message.image_path);
+                messageContent = `<div class="message-bubble" style="background: white; padding: 5px;"><img src="${imageUrl}" style="max-width: 200px; max-height: 200px; border-radius: 8px;" onclick="openFullscreen('${imageUrl}', 'image', 'รูปภาพ')"></div>`;
+            } else if (message.video_path) {
+                const videoUrl = buildMediaUrl(message.video_path);
+                messageContent = `<div class="message-bubble" style="background: white; padding: 5px;"><video src="${videoUrl}" controls style="max-width: 200px; max-height: 200px; border-radius: 8px;" onclick="openFullscreen('${videoUrl}', 'video', 'วิดีโอ')"></video></div>`;
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-time" style="text-align: ${textAlign};">${timeLabel}</div>
+                <div style="text-align: ${textAlign};">
+                    ${messageContent}
+                </div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+        }
+
+        function sendMessage() {
+            // Check if user is logged in or is a guest
+            if (!userId) {
+                userId = localStorage.getItem('guestId') || 'GUEST_' + Date.now();
+                localStorage.setItem('guestId', userId);
+                userName = 'ลูกค้านิรนาม';
+            }
+            
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                // Save message to database
+                saveMessageToDatabase(messageText, '', '', '', 0, 0, '');
+                
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                 now.getMinutes().toString().padStart(2, '0');
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message';
+                const formattedText = messageText.replace(/\n/g, '<br>');
+                messageDiv.innerHTML = `
+                    <div class="message-time" style="text-align: right;">คุณ ${timeString}</div>
+                    <div style="text-align: right;">
+                        <div class="message-bubble" style="background: #1e90ff; color: white;">
+                            ${formattedText}
+                        </div>
+                    </div>
+                `;
+                
+                chatContainer.appendChild(messageDiv);
+                messageInput.value = '';
+                // Reset textarea height
+                messageInput.style.height = '40px';
+                
+                // Update message count
+                lastMessageCount++;
+                
+                // Scroll to bottom immediately
+                scrollToBottom();
+                
+                // Additional scroll after DOM update
+                setTimeout(() => {
+                    scrollToBottom();
+                }, 100);
+            }
+        }
+        
+        // Function to save message to database
+        function saveMessageToDatabase(messageText, emoji, imagePath, videoPath, imageSize, videoSize, mimeType) {
+            console.log('Saving message with userId:', userId, 'current userName:', userName);
+            
+            // Get user name from localStorage or use a real name
+            let finalUserName = '';
+            
+            // Try to get from localStorage first
+            if (userName && userName !== 'ผู้ใช้') {
+                finalUserName = userName;
+            } else {
+                // Try to get from other localStorage keys
+                finalUserName = localStorage.getItem('name') || 
+                              localStorage.getItem('username') || 
+                              localStorage.getItem('fullName') ||
+                              localStorage.getItem('displayName') ||
+                              'User' + userId; // Use User + ID as fallback
+            }
+            
+            console.log('Final user name to save:', finalUserName);
+            
+            // Save the message with the user name
+            saveMessageWithUserName(messageText, emoji, imagePath, videoPath, imageSize, videoSize, mimeType, finalUserName);
+        }
+
+        // Function to actually save message with user name
+        function saveMessageWithUserName(messageText, emoji, imagePath, videoPath, imageSize, videoSize, mimeType, userNameToUse) {
+            console.log('Saving message with userName:', userNameToUse);
+            
+            fetch('../api/add_message.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message_text: messageText,
+                    emoji: emoji,
+                    image_path: imagePath,
+                    video_path: videoPath,
+                    image_size: imageSize,
+                    video_size: videoSize,
+                    mime_type: mimeType,
+                    user_id: userId,
+                    user_name: userNameToUse
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Message saved successfully:', data.message_id);
+                } else {
+                    console.error('Failed to save message:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving message:', error);
+            });
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Auto-resize textarea logic
+        messageInput.addEventListener('input', function() {
+            this.style.height = '40px';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // Icon button functionality
+        const emojiBtn = document.getElementById('emojiBtn');
+        const imageBtn = document.getElementById('imageBtn');
+        const videoBtn = document.getElementById('videoBtn');
+        const imageInput = document.getElementById('imageInput');
+        const videoInput = document.getElementById('videoInput');
+        const emojiPicker = document.getElementById('emojiPicker');
+        const emojiGrid = document.getElementById('emojiGrid');
+        const emojiCategoryName = document.getElementById('emojiCategoryName');
+
+        // Emoji categories
+        const emojiCategories = {
+            recent: {
+                name: t('recentEmojis'),
+                emojis: ['👍', '😊', '😘', '😍', '😂', '🥰', '�', '�']
+            },
+            smileys: {
+                name: t('smileysEmojis'),
+                emojis: [
+                    '😀', '😃', '😄', '😁', '😆', '😅', '�', '�',
+                    '🙂', '🙃', '😉', '�', '�', '🥰', '�', '🤩',
+                    '�', '�', '☺️', '😚', '😙', '🥲', '😋', '😛',
+                    '�😜', '🤪', '😝', '�', '�', '�', '🤫', '�',
+                    '�', '�', '�', '😑', '😶', '�😏', '😒', '�',
+                    '�', '🤥', '😌', '�😔', '�', '🤤', '�', '😷',
+                    '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '�‍🌫️',
+                    '😵', '😵‍💫', '🤯', '🤠', '🥳', '🥸', '😎', '🤓',
+                    '🧐', '😕', '😟', '�🙁', '☹️', '�', '�', '�',
+                    '�', '🥺', '�', '😧', '😨', '😰', '😥', '�😢',
+                    '😭', '�', '�', '�', '😞', '😓', '😩', '😫'
+                ]
+            },
+            animals: {
+                name: 'สัตว์และธรรมชาติ',
+                emojis: [
+                    '🐶', '🐱', '🐭', '🐹', '🐰', '�', '🐻', '🐼',
+                    '🐨', '🐯', '�', '�', '🐷', '🐽', '🐸', '🐵',
+                    '🙈', '🙉', '🙊', '🐒', '🐔', '🐧', '🐦', '🐤',
+                    '🐣', '🐥', '�', '🦅', '🦉', '🦇', '🐺', '🐗',
+                    '🐴', '�', '�', '�', '🦋', '🐌', '🐞', '🐜',
+                    '🦟', '🦗', '🕷️', '🕸️', '🦂', '🐢', '🐍', '🦎'
+                ]
+            },
+            food: {
+                name: 'อาหารและเครื่องดื่ม',
+                emojis: [
+                    '🍏', '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇',
+                    '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥',
+                    '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️',
+                    '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠',
+                    '🥐', '🥯', '🍞', '🥖', '🥨', '🧀', '🥚', '🍳',
+                    '🧈', '🥞', '🧇', '🥓', '🥩', '🍗', '🍖', '🌭'
+                ]
+            },
+            activities: {
+                name: 'กิจกรรม',
+                emojis: [
+                    '⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉',
+                    '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍',
+                    '🏏', '🪃', '🥅', '⛳', '🪁', '🏹', '🎣', '🤿',
+                    '🥊', '🥋', '🎽', '�', '�', '�', '⛸️', '🥌',
+                    '🎿', '⛷️', '🏂', '🪂', '🏋️', '🤼', '🤸', '⛹️',
+                    '🤺', '🤾', '🏌️', '🏇', '�', '🏊', '�', '🚣'
+                ]
+            },
+            travel: {
+                name: 'การเดินทางและสถานที่',
+                emojis: [
+                    '🚗', '🚕', '🚙', '🚌', '🚎', '🏎️', '🚓', '🚑',
+                    '🚒', '🚐', '🛻', '🚚', '🚛', '🚜', '�', '�',
+                    '�', '🛴', '🚲', '🛵', '🏍️', '🛺', '🚨', '🚔',
+                    '🚍', '🚘', '🚖', '🚡', '🚠', '�', '�', '�',
+                    '�', '�', '🚄', '🚅', '🚈', '🚂', '🚆', '🚇',
+                    '�', '�', '✈️', '�', '�', '�️', '💺', '🛰️'
+                ]
+            },
+            objects: {
+                name: 'วัตถุ',
+                emojis: [
+                    '⌚', '📱', '📲', '💻', '⌨️', '🖥️', '🖨️', '🖱️',
+                    '🖲️', '🕹️', '🗜️', '💽', '💾', '💿', '📀', '📼',
+                    '📷', '📸', '📹', '🎥', '📽️', '🎞️', '📞', '☎️',
+                    '📟', '📠', '📺', '📻', '🎙️', '🎚️', '🎛️', '�',
+                    '⏱️', '⏲️', '⏰', '�️', '⌛', '⏳', '📡', '🔋',
+                    '🔌', '💡', '🔦', '🕯️', '�', '🧯', '🛢️', '💸'
+                ]
+            },
+            symbols: {
+                name: 'สัญลักษณ์',
+                emojis: [
+                    '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍',
+                    '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖',
+                    '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️',
+                    '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈',
+                    '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐',
+                    '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️'
+                ]
+            },
+            flags: {
+                name: 'ธง',
+                emojis: [
+                    '🏁', '🚩', '🎌', '🏴', '🏳️', '🏳️‍🌈', '🏳️‍⚧️', '🏴‍☠️',
+                    '🇦🇨', '🇦🇩', '🇦🇪', '🇦🇫', '🇦🇬', '🇦🇮', '🇦🇱', '🇦🇲',
+                    '🇦🇴', '🇦🇶', '🇦🇷', '🇦🇸', '🇦🇹', '🇦🇺', '🇦🇼', '🇦🇽',
+                    '🇦🇿', '🇧🇦', '🇧🇧', '🇧🇩', '🇧🇪', '🇧🇫', '🇧🇬', '🇧🇭',
+                    '🇧🇮', '🇧🇯', '🇧🇱', '🇧🇲', '🇧🇳', '🇧🇴', '🇧🇶', '🇧🇷',
+                    '🇧🇸', '🇧🇹', '🇧🇻', '🇧🇼', '🇧🇾', '🇧🇿', '🇨🇦', '🇨🇨'
+                ]
+            }
+        };
+
+        // Current category
+        let currentCategory = 'recent';
+
+        // Populate emoji grid
+        function populateEmojiGrid(category) {
+            emojiGrid.innerHTML = '';
+            const categoryData = emojiCategories[category];
+            emojiCategoryName.textContent = categoryData.name;
+            
+            categoryData.emojis.forEach(emoji => {
+                const emojiItem = document.createElement('div');
+                emojiItem.className = 'emoji-item';
+                emojiItem.textContent = emoji;
+                emojiItem.onclick = function() {
+                    // Send emoji as message immediately
+                    sendEmojiMessage(emoji);
+                    closeEmojiPicker();
+                };
+                emojiGrid.appendChild(emojiItem);
+            });
+        }
+        
+        // Function to send emoji message
+        function sendEmojiMessage(emoji) {
+            // Check if user is logged in or is a guest
+            if (!userId) {
+                userId = localStorage.getItem('guestId') || 'GUEST_' + Date.now();
+                localStorage.setItem('guestId', userId);
+                userName = 'ลูกค้านิรนาม';
+            }
+            
+            // Save emoji to database
+            saveMessageToDatabase('', emoji, '', '', 0, 0, '');
+            
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                             now.getMinutes().toString().padStart(2, '0');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            messageDiv.innerHTML = `
+                <div class="message-time" style="text-align: right;">คุณ ${timeString}</div>
+                <div style="text-align: right;">
+                    <div class="message-bubble" style="background: #1e90ff; color: white; font-size: 24px;">
+                        ${emoji}
+                    </div>
+                </div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            
+            // Update message count
+            lastMessageCount++;
+            
+            scrollToBottom();
+            
+            // Additional scroll after DOM update
+            setTimeout(() => {
+                scrollToBottom();
+            }, 100);
+        }
+
+        // Initialize with recent emojis
+        populateEmojiGrid('recent');
+
+        // Tab click handlers
+        document.querySelectorAll('.emoji-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.emoji-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const category = this.getAttribute('data-category');
+                currentCategory = category;
+                populateEmojiGrid(category);
+            });
+        });
+
+        // Toggle emoji picker
+        emojiBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // Calculate position above input field
+            const inputLabel = document.querySelector('.input-label');
+            const inputRect = inputLabel.getBoundingClientRect();
+            
+            if (emojiPicker.classList.contains('show')) {
+                emojiPicker.classList.remove('show');
+            } else {
+                emojiPicker.style.bottom = (window.innerHeight - inputRect.top) + 'px';
+                emojiPicker.classList.add('show');
+            }
+        });
+
+        // Close emoji picker
+        function closeEmojiPicker() {
+            emojiPicker.classList.remove('show');
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!emojiPicker.contains(e.target) && !emojiBtn.contains(e.target)) {
+                closeEmojiPicker();
+            }
+        });
+
+        // Other icon buttons
+        document.querySelectorAll('.icon-btn').forEach((btn, index) => {
+            if (index > 0) { // Skip first button (emoji)
+                btn.addEventListener('click', function() {
+                    console.log('Icon button clicked');
+                });
+            }
+        });
+
+        // Image upload functionality
+        imageBtn.addEventListener('click', function() {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', function(e) {
+            // Check if user is logged in or is a guest
+            if (!userId) {
+                userId = localStorage.getItem('guestId') || 'GUEST_' + Date.now();
+                localStorage.setItem('guestId', userId);
+                userName = 'ลูกค้านิรนาม';
+            }
+            
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                // Upload file to server
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('file_type', 'image');
+                
+                fetch('../api/upload_file.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const imageUrl = buildMediaUrl(data.file_path);
+                        // Save message with image to database
+                        saveMessageToDatabase('', '', data.file_path, '', data.file_size, 0, data.mime_type);
+                        
+                        const now = new Date();
+                        const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                         now.getMinutes().toString().padStart(2, '0');
+                        
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'chat-message';
+                        messageDiv.innerHTML = `
+                            <div class="message-time" style="text-align: right;">คุณ ${timeString}</div>
+                            <div style="text-align: right;">
+                                <div class="message-bubble" style="background: white; padding: 5px;">
+                                    <img src="${imageUrl}" style="max-width: 200px; max-height: 200px; border-radius: 8px;" onclick="openFullscreen('${imageUrl}', 'image', 'รูปภาพ')">
+                                </div>
+                            </div>
+                        `;
+                        
+                        chatContainer.appendChild(messageDiv);
+                        
+                        // Update message count
+                        lastMessageCount++;
+                        
+                        scrollToBottom();
+                        
+                        // Additional scroll after DOM update
+                        setTimeout(() => {
+                            scrollToBottom();
+                        }, 100);
+                        
+                        console.log('Image uploaded successfully:', data.file_path);
+                    } else {
+                        console.error('Failed to upload image:', data.message);
+                        alert(t('uploadImageError') + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error uploading image:', error);
+                    alert(t('uploadImageErrorGeneral'));
+                });
+            }
+            imageInput.value = '';
+        });
+
+        // Video upload functionality
+        videoBtn.addEventListener('click', function() {
+            videoInput.click();
+        });
+
+        videoInput.addEventListener('change', function(e) {
+            // Check if user is logged in or is a guest
+            if (!userId) {
+                userId = localStorage.getItem('guestId') || 'GUEST_' + Date.now();
+                localStorage.setItem('guestId', userId);
+                userName = 'ลูกค้านิรนาม';
+            }
+            
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('video/')) {
+                // Upload file to server
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('file_type', 'video');
+                
+                fetch('../api/upload_file.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const videoUrl = buildMediaUrl(data.file_path);
+                        // Save message with video to database
+                        saveMessageToDatabase('', '', '', data.file_path, 0, data.file_size, data.mime_type);
+                        
+                        const now = new Date();
+                        const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                         now.getMinutes().toString().padStart(2, '0');
+                        
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'chat-message';
+                        messageDiv.innerHTML = `
+                            <div class="message-time" style="text-align: right;">คุณ ${timeString}</div>
+                            <div style="text-align: right;">
+                                <div class="message-bubble" style="background: white; padding: 5px;">
+                                    <video src="${videoUrl}" controls style="max-width: 200px; max-height: 200px; border-radius: 8px;" onclick="openFullscreen('${videoUrl}', 'video', 'วิดีโอ')"></video>
+                                </div>
+                            </div>
+                        `;
+                        
+                        chatContainer.appendChild(messageDiv);
+                        
+                        // Update message count
+                        lastMessageCount++;
+                        
+                        scrollToBottom();
+                        
+                        // Additional scroll after DOM update
+                        setTimeout(() => {
+                            scrollToBottom();
+                        }, 100);
+                        
+                        console.log('Video uploaded successfully:', data.file_path);
+                    } else {
+                        console.error('Failed to upload video:', data.message);
+                        alert(t('uploadVideoError') + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error uploading video:', error);
+                    alert(t('uploadVideoErrorGeneral'));
+                });
+            }
+            videoInput.value = '';
+        });
+
+        // Auto-logout functionality (10 minutes inactivity)
+        let inactivityTimer;
+        const LOGOUT_TIME = 10 * 60 * 1000;
+        
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                localStorage.clear();
+                window.location.href = '../login.html';
+            }, LOGOUT_TIME);
+        }
+        
+        function trackUserActivity() {
+            resetInactivityTimer();
+        }
+
+        // Start auto-logout on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load language from main page on page load
+            updatePageLanguage();
+            
+            resetInactivityTimer();
+            
+            document.addEventListener('mousemove', trackUserActivity);
+            document.addEventListener('keypress', trackUserActivity);
+            document.addEventListener('keydown', trackUserActivity);
+            document.addEventListener('click', trackUserActivity);
+            document.addEventListener('scroll', trackUserActivity);
+            document.addEventListener('touchstart', trackUserActivity);
+            document.addEventListener('touchmove', trackUserActivity);
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

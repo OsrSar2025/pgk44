@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>ถอนเงิน</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff;
+            min-height: 100vh;
+            padding-bottom: 20px;
+        }
+
+        .header {
+            background: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+            text-align: center;
+            margin-right: 33px;
+        }
+
+        .content-container {
+            background: #fff;
+            padding: 10px;
+        }
+
+        .balance-section {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .balance-amount {
+            font-size: 14px;
+            font-weight: normal;
+            color: #ff0000;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #000;
+            background: #fff;
+        }
+
+        .bank-info-box {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .bank-info-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            margin-left: 10px;
+        }
+
+        .bank-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .bank-info-label {
+            font-size: 14px;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .bank-info-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            width: 80%;
+            max-width: 500px;
+            margin: 20px auto 0 auto;
+            display: block;
+            height: 50px;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #333;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .contact-section {
+            margin-top: 30px;
+            padding-top: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #666;
+            margin-left: 30px;
+        }
+
+        .contact-item i {
+            margin-right: 8px;
+            color: #000;
+        }
+
+        .contact-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Custom Alert Styles */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-alert.show {
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .custom-alert-content {
+            background: #000;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 200px;
+        }
+
+        .custom-alert-message {
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spinner 0.6s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="header-title">ถอนเงิน</div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="content-container">
+        <!-- Balance Section -->
+        <div class="balance-section">
+            <div class="balance-label">ยอดเงินในบัญชีปัจจุบัน：</div>
+            <div class="balance-amount" id="currentBalance">0</div>
+        </div>
+
+        <!-- Withdrawal Amount Input -->
+        <div class="input-group">
+            <input type="number" 
+                   class="input-field" 
+                   id="withdrawAmount" 
+                   placeholder="กรุณากรอกจำนวนเงินที่ต้องการถอน"
+                   min="1"
+                   step="1">
+        </div>
+
+        <!-- Bank Information -->
+        <div class="input-group">
+            <div class="bank-info-box">
+                <div class="bank-info-row">
+                    <span class="bank-info-label">หมายเลขบัญชี:</span>
+                    <span class="bank-info-value" id="accountNumber">-</span>
+                </div>
+                <div class="bank-info-row">
+                    <span class="bank-info-label">ชื่อเจ้าของบัญชี:</span>
+                    <span class="bank-info-value" id="bankName">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="input-group">
+            <label class="input-label">รหัสการถอน:</label>
+            <input type="password" 
+                   class="input-field" 
+                   id="withdrawPassword" 
+                   placeholder="กรุณากรอกรหัสผ่านการถอนเงิน">
+        </div>
+
+        <!-- Submit Button -->
+        <button class="submit-btn" id="submitBtn" onclick="handleWithdraw()">
+            ส่งคำขอถอนเงิน
+        </button>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <div class="contact-item">
+                <span>ติดต่อแอดมิน</span>
+            </div>
+            <div class="contact-item">
+                <span>เวลาออนไลน์: 11:00—23:00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert -->
+    <div class="custom-alert" id="customAlert">
+        <div class="custom-alert-content">
+            <div class="custom-alert-message" id="alertMessage"></div>
+        </div>
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in cashout.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Translation System
+        const translations = {
+            th: {
+                pageTitle: 'ถอนเงิน',
+                currentBalance: 'ยอดเงินในบัญชีปัจจุบัน',
+                enterAmount: 'กรุณากรอกจำนวนเงินที่ต้องการถอน',
+                confirmBankInfo: '',
+                accountNumber: 'หมายเลขบัญชี',
+                bankName: 'ชื่อเจ้าของบัญชี',
+                withdrawPassword: 'รหัสการถอน',
+                enterPassword: 'กรุณากรอกรหัสผ่านการถอนเงิน',
+                submitWithdraw: 'ส่งคำขอถอนเงิน',
+                contactAdmin: 'ติดต่อแอดมิน',
+                onlineTime: 'เวลาออนไลน์: 11:00—23:00',
+                pleaseLogin: 'กรุณาเข้าสู่ระบบ',
+                addBankFirst: 'กรุณาเพิ่มข้อมูลบัญชีธนาคารก่อน',
+                loadError: 'เกิดข้อผิดพลาดในการโหลดข้อมูล',
+                enterWithdrawAmount: 'กรุณากรอกจำนวนเงินที่ต้องการถอน',
+                minWithdraw: 'ยอดถอนขั้นต่ำ 100 บาท',
+                insufficientBalance: 'ยอดเงินไม่เพียงพอ',
+                enterWithdrawPassword: 'กรุณากรอกรหัสการถอน',
+                processing: 'กำลังดำเนินการ...',
+                withdrawSuccess: 'ถอนสำเร็จแล้ว',
+                error: 'เกิดข้อผิดพลาด',
+                connectionError: 'เกิดข้อผิดพลาดในการเชื่อมต่อ'
+            },
+            en: {
+                pageTitle: 'Withdraw',
+                currentBalance: 'Current Balance',
+                enterAmount: 'Please enter withdrawal amount',
+                confirmBankInfo: '',
+                accountNumber: 'Account Number',
+                bankName: 'Account Holder Name',
+                withdrawPassword: 'Withdrawal Password',
+                enterPassword: 'Please enter withdrawal password',
+                submitWithdraw: 'Submit Withdrawal Request',
+                contactAdmin: 'Contact Admin',
+                onlineTime: 'Online Time: 11:00—23:00',
+                pleaseLogin: 'Please login',
+                addBankFirst: 'Please add bank account first',
+                loadError: 'Error loading data',
+                enterWithdrawAmount: 'Please enter withdrawal amount',
+                minWithdraw: 'Minimum withdrawal 100 baht',
+                insufficientBalance: 'Insufficient balance',
+                enterWithdrawPassword: 'Please enter withdrawal password',
+                processing: 'Processing...',
+                withdrawSuccess: 'Withdrawal successful',
+                error: 'Error occurred',
+                connectionError: 'Connection error'
+            },
+            cn: {
+                pageTitle: '提现',
+                currentBalance: '当前余额',
+                enterAmount: '请输入提现金额',
+                confirmBankInfo: '',
+                accountNumber: '账号',
+                bankName: '账户持有人姓名',
+                withdrawPassword: '提现密码',
+                enterPassword: '请输入提现密码',
+                submitWithdraw: '提交提现申请',
+                contactAdmin: '联系管理员',
+                onlineTime: '在线时间：11:00—23:00',
+                pleaseLogin: '请登录',
+                addBankFirst: '请先添加银行账户',
+                loadError: '加载数据时出错',
+                enterWithdrawAmount: '请输入提现金额',
+                minWithdraw: '最低提现金额 100 泰铢',
+                insufficientBalance: '余额不足',
+                enterWithdrawPassword: '请输入提现密码',
+                processing: '处理中...',
+                withdrawSuccess: '提现成功',
+                error: '发生错误',
+                connectionError: '连接错误'
+            },
+            vi: {
+                pageTitle: 'Rút tiền',
+                currentBalance: 'Số dư hiện tại',
+                enterAmount: 'Vui lòng nhập số tiền rút',
+                confirmBankInfo: '',
+                accountNumber: 'Số tài khoản',
+                bankName: 'Tên chủ tài khoản',
+                withdrawPassword: 'Mật khẩu rút tiền',
+                enterPassword: 'Vui lòng nhập mật khẩu rút tiền',
+                submitWithdraw: 'Gửi yêu cầu rút tiền',
+                contactAdmin: 'Liên hệ quản trị viên',
+                onlineTime: 'Thời gian trực tuyến: 11:00—23:00',
+                pleaseLogin: 'Vui lòng đăng nhập',
+                addBankFirst: 'Vui lòng thêm tài khoản ngân hàng trước',
+                loadError: 'Lỗi tải dữ liệu',
+                enterWithdrawAmount: 'Vui lòng nhập số tiền rút',
+                minWithdraw: 'Rút tối thiểu 100 baht',
+                insufficientBalance: 'Số dư không đủ',
+                enterWithdrawPassword: 'Vui lòng nhập mật khẩu rút tiền',
+                processing: 'Đang xử lý...',
+                withdrawSuccess: 'Rút tiền thành công',
+                error: 'Đã xảy ra lỗi',
+                connectionError: 'Lỗi kết nối'
+            }
+        };
+
+        // Translation helper function
+        function t(key) {
+            const currentLang = localStorage.getItem('preferredLang') || 'th';
+            return translations[currentLang][key] || translations.th[key] || key;
+        }
+
+        // Update page language
+        function updatePageLanguage() {
+            // Update header title
+            document.querySelector('.header-title').textContent = t('pageTitle');
+            
+            // Update balance label
+            document.querySelector('.balance-label').textContent = t('currentBalance') + '：';
+            
+            // Update input placeholder
+            document.getElementById('withdrawAmount').placeholder = t('enterAmount');
+            
+            // Update bank info labels
+            const bankInfoLabels = document.querySelectorAll('.bank-info-label');
+            if (bankInfoLabels[0]) bankInfoLabels[0].textContent = t('accountNumber') + ':';
+            if (bankInfoLabels[1]) bankInfoLabels[1].textContent = t('bankName') + ':';
+            
+            // Update password label
+            const passwordLabel = document.querySelectorAll('.input-label')[0];
+            if (passwordLabel) {
+                passwordLabel.textContent = t('withdrawPassword') + ':';
+            }
+            
+            // Update password input placeholder
+            document.getElementById('withdrawPassword').placeholder = t('enterPassword');
+            
+            // Update submit button
+            document.getElementById('submitBtn').textContent = t('submitWithdraw');
+            
+            // Update contact section
+            const contactItems = document.querySelectorAll('.contact-item span');
+            if (contactItems[0]) contactItems[0].textContent = t('contactAdmin');
+            if (contactItems[1]) contactItems[1].textContent = t('onlineTime');
+        }
+
+        // Custom Alert Function
+        function showAlert(message) {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertMessage.textContent = message;
+            customAlert.classList.add('show');
+            
+            setTimeout(() => {
+                customAlert.classList.remove('show');
+            }, 2000);
+        }
+
+        // Back button functionality
+        function goBack() {
+            window.history.back();
+        }
+
+        // Function to mask account number (show first 2 and last 3 digits)
+        function maskAccountNumber(accountNumber) {
+            if (!accountNumber || accountNumber.length < 5) {
+                return accountNumber;
+            }
+            
+            // Get first 2 digits and last 3 digits
+            const firstTwo = accountNumber.slice(0, 2);
+            const lastThree = accountNumber.slice(-3);
+            
+            // Find the last dash position to keep format
+            const lastDashIndex = accountNumber.lastIndexOf('-');
+            
+            if (lastDashIndex !== -1) {
+                // Keep everything before last dash + first 2 + **** + last 3 digits
+                const beforeLastDash = accountNumber.substring(0, lastDashIndex + 1);
+                const afterLastDash = accountNumber.substring(lastDashIndex + 1);
+                
+                // Calculate how many digits to hide (all except first 2 and last 3)
+                const digitsToHide = afterLastDash.length - 5;
+                const masked = '*'.repeat(Math.max(digitsToHide, 4)); // At least 4 asterisks
+                
+                return beforeLastDash + firstTwo + ' ' + masked + lastThree;
+            } else {
+                // No dash found, show first 2 + space + **** + last 3
+                const middleDigits = accountNumber.length - 5;
+                const masked = '*'.repeat(Math.max(middleDigits, 4)); // At least 4 asterisks
+                return firstTwo + ' ' + masked + lastThree;
+            }
+        }
+
+        // Load user data and bank information
+        function loadUserData() {
+            const userId = localStorage.getItem('userId');
+            
+            if (!userId) {
+                showAlert(t('pleaseLogin'));
+                setTimeout(() => {
+                    window.location.href = '../login.html';
+                }, 2000);
+                return;
+            }
+
+            // Load user balance (you'll need to create this API)
+            // For now, using dummy data
+            // TODO: Create API to get user balance
+            const balance = localStorage.getItem('userBalance') || '0';
+            document.getElementById('currentBalance').textContent = balance;
+
+            // Load bank information
+            fetch(`../api/get_bank.php?user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        // Mask account number for display
+                        const maskedAccountNumber = maskAccountNumber(data.data.account_number || '');
+                        document.getElementById('accountNumber').textContent = maskedAccountNumber;
+                        document.getElementById('bankName').textContent = data.data.recipient_name || '-';
+                    } else {
+                        showAlert(t('addBankFirst'));
+                        setTimeout(() => {
+                            window.location.href = './bank.html';
+                        }, 2000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading bank data:', error);
+                    showAlert(t('loadError'));
+                });
+        }
+
+        // Handle withdraw submission
+        function handleWithdraw() {
+            const withdrawAmount = document.getElementById('withdrawAmount').value.trim();
+            const withdrawPassword = document.getElementById('withdrawPassword').value.trim();
+            const currentBalanceText = document.getElementById('currentBalance').textContent;
+            const currentBalance = parseInt(currentBalanceText.replace(/,/g, ''));
+
+            // Validation
+            if (!withdrawAmount || withdrawAmount <= 0) {
+                showAlert(t('enterWithdrawAmount'));
+                return;
+            }
+
+            // ตรวจสอบขั้นต่ำถอน 100 บาท
+            if (parseInt(withdrawAmount) < 100) {
+                showAlert(t('minWithdraw'));
+                return;
+            }
+
+            if (parseInt(withdrawAmount) > currentBalance) {
+                showAlert(t('insufficientBalance'));
+                return;
+            }
+
+            if (!withdrawPassword) {
+                showAlert(t('enterWithdrawPassword'));
+                return;
+            }
+
+            // Disable button and show loading
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span>' + t('processing');
+
+            // Process withdrawal with API
+            const userId = localStorage.getItem('userId');
+            const username = localStorage.getItem('username') || 'Unknown User';
+            
+            const formData = new FormData();
+            formData.append('user_id', userId);
+            formData.append('user_name', username);
+            formData.append('amount', withdrawAmount);
+            formData.append('withdrawal_password', withdrawPassword);
+            
+            fetch('../api/process_withdrawal.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                
+                if (data.success) {
+                    showAlert(t('withdrawSuccess'));
+                    
+                    // Clear form
+                    document.getElementById('withdrawAmount').value = '';
+                    document.getElementById('withdrawPassword').value = '';
+                    
+                    // Redirect to support page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'support.html';
+                    }, 2000);
+                } else {
+                    showAlert(data.message || t('error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                showAlert(t('connectionError'));
+            });
+        }
+
+        // Load user balance
+        function loadUserBalance() {
+            const userId = localStorage.getItem('userId');
+            
+            if (!userId) {
+                console.log('No user ID found');
+                return;
+            }
+
+            fetch('../api/get_user_balance.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const currentBalance = document.getElementById('currentBalance');
+                    if (currentBalance) {
+                        currentBalance.textContent = parseFloat(data.balance).toLocaleString('th-TH');
+                    }
+                } else {
+                    console.error('Error loading balance:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update page language first
+            updatePageLanguage();
+            
+            // Then load data
+            loadUserData();
+            loadUserBalance();
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

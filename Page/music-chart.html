@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>ชาร์ตเพลง - PK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            padding-bottom: 50px;
+        }
+
+        .image-container {
+            width: 100vw;
+            height: calc(100vh - 50px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .banner-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Floating Support Icon (ปุ่ม Support) -->
+    <a href="support.html" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        <i class="fa-solid fa-headset" style="color: #333; font-size: 35px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));"></i>
+    </a>
+
+    <!-- Banner Image -->
+    <div class="image-container">
+        <img src="../Photo/tiktok.jpg" alt="Banner" class="banner-image">
+    </div>
+
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in music-chart.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Auto-logout functionality (10 minutes inactivity)
+        let inactivityTimer;
+        const LOGOUT_TIME = 10 * 60 * 1000;
+        
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                localStorage.clear();
+                window.location.href = '../login.html';
+            }, LOGOUT_TIME);
+        }
+        
+        function trackUserActivity() {
+            resetInactivityTimer();
+        }
+
+        // Load Footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // เริ่ม auto-logout timer
+            resetInactivityTimer();
+            
+            // ติดตามการใช้งาน
+            document.addEventListener('mousemove', trackUserActivity);
+            document.addEventListener('keypress', trackUserActivity);
+            document.addEventListener('keydown', trackUserActivity);
+            document.addEventListener('click', trackUserActivity);
+            document.addEventListener('scroll', trackUserActivity);
+            document.addEventListener('touchstart', trackUserActivity);
+            document.addEventListener('touchmove', trackUserActivity);
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+            
+            // Load footer
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                    
+                    // Wait for footer to render, then update language and set active state
+                    setTimeout(() => {
+                        // Force update footer language
+                        const currentLang = localStorage.getItem('preferredLang') || 'th';
+                        const footerTranslations = {
+                            en: { home: 'Home', welfare: 'Public Welfare List', chart: 'Anti-Fraud', profile: 'My Profile' },
+                            cn: { home: '首页', welfare: '公共福利列表', chart: '反欺诈', profile: '我的' },
+                            th: { home: 'หน้าแรก', welfare: 'รายการสวัสดิการสาธารณะ', chart: 'ต่อต้านการฉ้อโกง', profile: 'ของฉัน' },
+                            vi: { home: 'Trang chủ', welfare: 'Danh sách phúc lợi công cộng', chart: 'Chống gian lận', profile: 'Của tôi' }
+                        };
+                        
+                        const footerLabels = document.querySelectorAll('.bottom-nav .nav-label[data-lang-key]');
+                        footerLabels.forEach(label => {
+                            const key = label.getAttribute('data-lang-key');
+                            const keys = key.split('.');
+                            if (keys.length === 2 && keys[0] === 'footer') {
+                                const translation = footerTranslations[currentLang];
+                                if (translation && translation[keys[1]]) {
+                                    label.textContent = translation[keys[1]];
+                                }
+                            }
+                        });
+                        
+                        // Set active state
+                        const currentNavItem = document.querySelector('.nav-item[href="music-chart.html"]');
+                        if (currentNavItem) {
+                            currentNavItem.classList.add('active');
+                        }
+                    }, 150);
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                });
+        });
+
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

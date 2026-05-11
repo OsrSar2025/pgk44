@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>บันทึกการทำธุรกรรม - PK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding-bottom: 0;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+            text-align: center;
+        }
+
+        .content-container {
+            padding: 0;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .empty-description {
+            font-size: 14px;
+            color: #999;
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .bet-history-container {
+            max-width: 100%;
+            margin: 0;
+            background: white;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: none;
+            border: 1px solid #f0f0f0;
+        }
+
+        .bet-table-header {
+            background: #f5f5f5;
+            color: #333;
+            padding: 0;
+            display: flex;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .bet-table-header .header-cell {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+        }
+
+        .bet-table-header .header-cell:first-child {
+            text-align: left;
+        }
+
+        .bet-table-header .header-cell:last-child {
+            text-align: right;
+        }
+
+        .bet-item {
+            display: flex;
+            align-items: center;
+            padding: 0;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+        }
+
+        .bet-row {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .bet-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .bet-item:last-child {
+            border-bottom: none;
+        }
+
+        .bet-cell {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bet-cell:first-child {
+            text-align: left;
+            justify-content: flex-start;
+        }
+
+        .bet-cell:last-child {
+            text-align: right;
+            justify-content: flex-end;
+        }
+
+        /* Responsive design for mobile */
+        @media (max-width: 768px) {
+            .bet-cell {
+                padding: 10px 5px;
+                font-size: 12px;
+            }
+            
+            .bet-row {
+                flex-wrap: nowrap;
+            }
+        }
+
+        .bet-value.red {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .bet-value.blue {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .bet-value.green {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .bet-value.orange {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .bet-value.status-pending {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        
+        .bet-value.status-pending i {
+            margin-right: 5px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .bet-value.status-won {
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .bet-value.status-red-win {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .bet-value.status-blue-win {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .bet-value.status-lost {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .bet-value.status-completed {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .bet-value.status-red-win {
+            color: #e74c3c;
+            font-weight: normal;
+        }
+
+        .bet-value.status-blue-win {
+            color: #3498db;
+            font-weight: normal;
+        }
+
+        .bet-value.status-lose {
+            color: #e74c3c;
+            font-weight: normal;
+        }
+
+        .bet-value.time {
+            color: #666;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        /* Spinning animation for jackpot and profit */
+        .spinning {
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Spinning icon animation */
+        .spinning-icon {
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            color: #ff8c00;
+            font-size: 16px;
+        }
+
+        /* Countdown timer styles */
+        .countdown-timer {
+            color: #ff8c00;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .countdown-finished {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+
+        @media (max-width: 768px) {
+            .bet-table-header .header-cell {
+                font-size: 12px;
+                padding: 12px 8px;
+            }
+            
+            .bet-cell {
+                font-size: 12px;
+                padding: 12px 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bet-table-header .header-cell {
+                font-size: 11px;
+                padding: 10px 5px;
+            }
+            
+            .bet-cell {
+                font-size: 11px;
+                padding: 10px 5px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="header-title" id="pageTitle">บันทึกการทำธุรกรรม</div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="content-container">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 10px;"></i>
+            <div id="loadingText">กำลังโหลดข้อมูล...</div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" style="display: none; text-align: center; padding: 40px 20px;">
+            <div class="empty-icon">
+                <i class="fas fa-receipt"></i>
+            </div>
+            <div class="empty-title" id="emptyTitle">ยังไม่มีรายการธุรกรรม</div>
+            <div class="empty-description" id="emptyDescription">
+                เมื่อคุณเริ่มทำธุรกรรม รายการจะแสดงที่นี่
+            </div>
+        </div>
+
+        <!-- Bet History Container -->
+        <div id="betHistoryContainer" class="bet-history-container" style="display: none;">
+            <!-- Bet items will be dynamically inserted here -->
+        </div>
+    </div>
+
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        let currentUserAutoWin = false;
+        let autoWinLastSide = localStorage.getItem('autoWinLastSide') || 'blue';
+
+        function getNextAutoWinSide(hasRedBet, hasBlueBet) {
+            if (hasRedBet && hasBlueBet) {
+                autoWinLastSide = autoWinLastSide === 'red' ? 'blue' : 'red';
+            } else if (hasRedBet) {
+                autoWinLastSide = 'red';
+            } else if (hasBlueBet) {
+                autoWinLastSide = 'blue';
+            } else {
+                autoWinLastSide = autoWinLastSide === 'red' ? 'blue' : 'red';
+            }
+            localStorage.setItem('autoWinLastSide', autoWinLastSide);
+            return autoWinLastSide;
+        }
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in order.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+
+        function loadUserAutoWin(userId) {
+            if (!userId) {
+                currentUserAutoWin = false;
+                autoWinLastSide = 'blue';
+                localStorage.setItem('autoWinLastSide', autoWinLastSide);
+                return Promise.resolve();
+            }
+            
+            return fetch('../api/get_user.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: userId })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Don't throw error, just return empty data
+                    return { success: false, data: null };
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success && data.data) {
+                    currentUserAutoWin = parseInt(data.data.auto_win, 10) === 1;
+                    if (currentUserAutoWin) {
+                        autoWinLastSide = localStorage.getItem('autoWinLastSide') || 'blue';
+                    } else {
+                        autoWinLastSide = 'blue';
+                        localStorage.setItem('autoWinLastSide', autoWinLastSide);
+                    }
+                } else {
+                    currentUserAutoWin = false;
+                    autoWinLastSide = 'blue';
+                    localStorage.setItem('autoWinLastSide', autoWinLastSide);
+                }
+            })
+            .catch(error => {
+                // Silently handle error - use default values
+                currentUserAutoWin = false;
+                autoWinLastSide = 'blue';
+                localStorage.setItem('autoWinLastSide', autoWinLastSide);
+            });
+        }
+        
+        // Language translations
+        const translations = {
+            en: {
+                pageTitle: 'Transaction Records',
+                loadingText: 'Loading data...',
+                emptyTitle: 'No transactions yet',
+                emptyDescription: 'When you start making transactions, they will appear here',
+                loginRequiredTitle: 'Please login',
+                loginRequiredDescription: 'You need to login to view betting history',
+                errorTitle: 'Error occurred',
+                errorDescription: 'Unable to load data, please try again',
+                redBetHeader: 'Red Bet',
+                blueBetHeader: 'Blue Bet',
+                statusHeader: 'Status',
+                timeHeader: 'Time',
+                profitHeader: 'Profit',
+                pendingStatus: 'Pending',
+                redWinStatus: 'Red Win',
+                blueWinStatus: 'Blue Win',
+                loseStatus: 'Lose',
+                wonStatus: 'Won',
+                lostStatus: 'Lost',
+                completedStatus: 'Completed',
+                currency: ' THB'
+            },
+            cn: {
+                pageTitle: '交易记录',
+                loadingText: '加载数据中...',
+                emptyTitle: '暂无交易记录',
+                emptyDescription: '当您开始交易时，记录将显示在这里',
+                loginRequiredTitle: '请登录',
+                loginRequiredDescription: '您需要登录才能查看投注历史',
+                errorTitle: '发生错误',
+                errorDescription: '无法加载数据，请重试',
+                redBetHeader: '红色投注',
+                blueBetHeader: '蓝色投注',
+                statusHeader: '状态',
+                timeHeader: '时间',
+                profitHeader: '利润',
+                pendingStatus: '待处理',
+                redWinStatus: '红色获胜',
+                blueWinStatus: '蓝色获胜',
+                loseStatus: '失败',
+                wonStatus: '获胜',
+                lostStatus: '失败',
+                completedStatus: '已完成',
+                currency: ' 泰铢'
+            },
+            th: {
+                pageTitle: 'บันทึกการทำธุรกรรม',
+                loadingText: 'กำลังโหลดข้อมูล...',
+                emptyTitle: 'ยังไม่มีรายการธุรกรรม',
+                emptyDescription: 'เมื่อคุณเริ่มทำธุรกรรม รายการจะแสดงที่นี่',
+                loginRequiredTitle: 'กรุณาเข้าสู่ระบบ',
+                loginRequiredDescription: 'คุณต้องเข้าสู่ระบบก่อนดูประวัติการเดิมพัน',
+                errorTitle: 'เกิดข้อผิดพลาด',
+                errorDescription: 'ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                redBetHeader: 'เดิมพันสีแดง',
+                blueBetHeader: 'เดิมพันสีน้ำเงิน',
+                statusHeader: 'สถานะ',
+                timeHeader: 'เวลา',
+                profitHeader: 'กำไร',
+                pendingStatus: 'รอดำเนินการ',
+                redWinStatus: 'แดงชนะ',
+                blueWinStatus: 'น้ำเงินชนะ',
+                loseStatus: 'แพ้',
+                wonStatus: 'ชนะ',
+                lostStatus: 'แพ้',
+                completedStatus: 'เสร็จสิ้น',
+                currency: ' บาท'
+            },
+            vi: {
+                pageTitle: 'Hồ sơ giao dịch',
+                loadingText: 'Đang tải dữ liệu...',
+                emptyTitle: 'Chưa có giao dịch nào',
+                emptyDescription: 'Khi bạn bắt đầu giao dịch, chúng sẽ hiển thị ở đây',
+                loginRequiredTitle: 'Vui lòng đăng nhập',
+                loginRequiredDescription: 'Bạn cần đăng nhập để xem lịch sử cá cược',
+                errorTitle: 'Đã xảy ra lỗi',
+                errorDescription: 'Không thể tải dữ liệu, vui lòng thử lại',
+                redBetHeader: 'Cược đỏ',
+                blueBetHeader: 'Cược xanh',
+                statusHeader: 'Trạng thái',
+                timeHeader: 'Thời gian',
+                profitHeader: 'Lợi nhuận',
+                pendingStatus: 'Đang chờ',
+                redWinStatus: 'Đỏ thắng',
+                blueWinStatus: 'Xanh thắng',
+                loseStatus: 'Thua',
+                wonStatus: 'Thắng',
+                lostStatus: 'Thua',
+                completedStatus: 'Hoàn thành',
+                currency: ' THB'
+            }
+        };
+
+        // Current language (read from main page)
+        let currentLang = localStorage.getItem('preferredLang') || 'th';
+
+        // Get translation
+        function t(key) {
+            const keys = key.split('.');
+            let value = translations[currentLang];
+            for (const k of keys) {
+                value = value[k];
+            }
+            return value || key;
+        }
+
+        // Update page language (read from localStorage, no language switching)
+        function updatePageLanguage() {
+            // Read language from localStorage (set by main page)
+            currentLang = localStorage.getItem('preferredLang') || 'th';
+            
+            const trans = translations[currentLang];
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = trans.pageTitle;
+            
+            // Update loading text
+            document.getElementById('loadingText').textContent = trans.loadingText;
+            
+            // Update empty state
+            document.getElementById('emptyTitle').textContent = trans.emptyTitle;
+            document.getElementById('emptyDescription').textContent = trans.emptyDescription;
+        }
+
+        // Back button functionality
+        function goBack() {
+            window.history.back();
+        }
+
+        // Load bet history from database
+        function loadBetHistory() {
+            console.log('Loading bet history...');
+            
+            const loadingState = document.getElementById('loadingState');
+            const emptyState = document.getElementById('emptyState');
+            const betHistoryContainer = document.getElementById('betHistoryContainer');
+            
+            // แสดงข้อมูลทันที
+            loadingState.style.display = 'none';
+            emptyState.style.display = 'none';
+            betHistoryContainer.style.display = 'block';
+            
+            
+            // Get user ID from localStorage
+            const userId = localStorage.getItem('userId');
+            
+            console.log('Loading bet history for userId:', userId);
+            
+            if (!userId) {
+                console.log('No userId found in localStorage');
+                loadingState.style.display = 'none';
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <div class="empty-icon">
+                        <i class="fas fa-user-slash"></i>
+                    </div>
+                    <div class="empty-title">${t('loginRequiredTitle')}</div>
+                    <div class="empty-description">
+                        ${t('loginRequiredDescription')}
+                    </div>
+                `;
+                return;
+            }
+            
+            // Fetch bet history from API
+            console.log('Fetching bet history from API...');
+            fetch('../api/get_bet_history.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => {
+                console.log('API response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('API response data:', data);
+                
+                if (data.success && data.data && Array.isArray(data.data) && data.data.length > 0) {
+                    console.log('Showing bet history with', data.data.length, 'records');
+                    
+                    // Store bets data globally for later use
+                    window.loadedBets = data.data;
+                    
+                    // ซ่อน error state เมื่อโหลดข้อมูลสำเร็จ
+                    emptyState.style.display = 'none';
+                    
+                    // Show bet history
+                    displayBetHistory(data.data);
+                    
+                } else {
+                    console.log('No bet history found, showing empty state');
+                    // Show empty state
+                    emptyState.style.display = 'block';
+                    betHistoryContainer.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading bet history:', error);
+                loadingState.style.display = 'none';
+                emptyState.style.display = 'block';
+                betHistoryContainer.style.display = 'none';
+                emptyState.innerHTML = `
+                    <div class="empty-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="empty-title">เกิดข้อผิดพลาด</div>
+                    <div class="empty-description">
+                        ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง
+                    </div>
+                `;
+            });
+        }
+
+        // Display bet history
+        function displayBetHistory(betHistory) {
+            console.log('Displaying bet history with', betHistory.length, 'bets');
+            const container = document.getElementById('betHistoryContainer');
+            
+            // ตรวจสอบว่า container มีอยู่หรือไม่
+            if (!container) {
+                console.error('betHistoryContainer not found');
+                return;
+            }
+            
+            // ตรวจสอบว่า betHistory เป็น array หรือไม่
+            if (!Array.isArray(betHistory)) {
+                console.error('betHistory is not an array:', betHistory);
+                return;
+            }
+            
+            // Create table header
+            const header = document.createElement('div');
+            header.className = 'bet-table-header';
+            header.innerHTML = `
+                <div class="bet-cell">เดิมพันสีแดง</div>
+                <div class="bet-cell">เดิมพันสีน้ำเงิน</div>
+                <div class="bet-cell">สถานะ</div>
+                <div class="bet-cell">เวลา</div>
+                <div class="bet-cell">กำไร</div>
+            `;
+            
+            container.innerHTML = '';
+            container.appendChild(header);
+            
+            // Sort bet history - pending bets first, then by date
+            const sortedBetHistory = betHistory.sort((a, b) => {
+                // Pending bets first
+                if (a.status === 'pending' && b.status !== 'pending') return -1;
+                if (a.status !== 'pending' && b.status === 'pending') return 1;
+                
+                // Then sort by date (newest first)
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                return dateB - dateA;
+            });
+            
+            // Create table rows
+            sortedBetHistory.forEach((bet, index) => {
+                console.log('Creating bet item', index + 1, ':', bet);
+                console.log('Bet status:', bet.status, 'isPending:', bet.status === 'pending');
+                
+                try {
+                const betItem = createBetItem(bet, index + 1);
+                    
+                    // ตรวจสอบว่า betItem เป็น DOM element หรือไม่
+                    if (betItem && betItem.nodeType === 1) {
+                container.appendChild(betItem);
+                        console.log('Successfully appended bet item', index + 1);
+                    } else {
+                        console.error('Failed to create bet item', index + 1, 'betItem:', betItem);
+                    }
+                } catch (error) {
+                    console.error('Error creating bet item', index + 1, ':', error);
+                }
+            });
+            
+            // Check if there are any pending bets
+            const pendingBets = betHistory.filter(bet => bet.status === 'pending');
+            console.log('Found pending bets:', pendingBets.length, pendingBets);
+            
+            // รีเซ็ต flag หลังจากแสดงเสร็จ
+            window.isDisplayingBetHistory = false;
+            console.log('Reset isDisplayingBetHistory flag to false');
+        }
+
+        // Create bet item element
+        function createBetItem(bet, index) {
+            console.log('Creating bet item for bet:', bet, 'index:', index);
+            
+            // ตรวจสอบว่า bet object มีข้อมูลที่จำเป็นหรือไม่
+            if (!bet || !bet.user_id || !bet.date) {
+                console.error('Invalid bet data:', bet);
+                return null;
+            }
+            
+            const betItem = document.createElement('div');
+            betItem.className = 'bet-item';
+            
+            // Create unique betId using user_id, index, date, betting amounts, and hash
+            const hashString = `${bet.user_id}_${index}_${bet.date}_${bet.betting_red}_${bet.betting_blue}`;
+            const hash = hashString.split('').reduce((a, b) => {
+                a = ((a << 5) - a) + b.charCodeAt(0);
+                return a & a;
+            }, 0);
+            const betId = `${hashString}_${Math.abs(hash)}`;
+            betItem.setAttribute('data-bet-id', betId);
+            
+            // Calculate total amount
+            const totalAmount = (parseInt(bet.betting_red) || 0) + (parseInt(bet.betting_blue) || 0);
+            
+            // Format date - ใช้เวลาจากฐานข้อมูลเสมอเพื่อความสอดคล้อง
+            let formattedDate;
+            
+            // Parse วันที่จากฐานข้อมูลอย่างถูกต้อง
+            // เวลาจากฐานข้อมูลเป็นเวลาไทย (UTC+7) แล้ว ต้อง parse ให้ถูกต้อง
+            // ใช้วิธีที่ทำงานได้ทั้งใน localhost และ domain
+            let betDate;
+            if (bet.date) {
+                try {
+                    // รองรับหลายรูปแบบของวันที่
+                    if (typeof bet.date === 'string') {
+                        // ถ้าเป็น string ให้ parse อย่างระมัดระวัง
+                        if (bet.date.includes('T')) {
+                            // ISO format: 2024-01-01T12:00:00
+                            // ถ้ามี timezone indicator แล้ว ให้ใช้ตามนั้น
+                            if (bet.date.includes('+') || bet.date.includes('Z') || bet.date.match(/[+-]\d{2}:\d{2}$/)) {
+                                betDate = new Date(bet.date);
+                            } else {
+                                // ถ้าไม่มี timezone ให้ถือว่าเป็นเวลาไทย (UTC+7)
+                                betDate = new Date(bet.date + '+07:00');
+                            }
+                        } else if (bet.date.includes('-') && bet.date.includes(' ')) {
+                            // MySQL datetime format: 2024-01-01 12:00:00
+                            // เวลาจากฐานข้อมูลเป็นเวลาไทย (UTC+7) แล้ว
+                            // ต้องเพิ่ม timezone indicator เพื่อให้ JavaScript parse ถูกต้อง
+                            // ใช้วิธีที่ทำงานได้ทั้งใน localhost และ domain
+                            const dateStr = bet.date.replace(' ', 'T');
+                            betDate = new Date(dateStr + '+07:00');
+                            
+                            // ถ้า parse ไม่สำเร็จ ลอง parse แบบอื่น
+                            if (isNaN(betDate.getTime())) {
+                                // ลอง parse โดยไม่ใส่ timezone แล้วปรับ offset
+                                const tempDate = new Date(dateStr);
+                                if (!isNaN(tempDate.getTime())) {
+                                    // ปรับ offset จาก UTC เป็น UTC+7 (เพิ่ม 7 ชั่วโมง)
+                                    betDate = new Date(tempDate.getTime() + (7 * 60 * 60 * 1000));
+                                }
+                            }
+                        } else {
+                            // ลอง parse แบบอื่น
+                            betDate = new Date(bet.date);
+                        }
+                    } else {
+                        betDate = new Date(bet.date);
+                    }
+                    
+                    // ตรวจสอบว่า parse สำเร็จหรือไม่
+                    if (isNaN(betDate.getTime())) {
+                        console.warn('Invalid date format:', bet.date, '- using current time');
+                        betDate = new Date();
+                    } else {
+                        // ตรวจสอบว่า betDate ไม่ใช่เวลาอนาคตมากเกินไป (ไม่ควรมากกว่าปัจจุบันมากกว่า 5 นาที)
+                        // แต่ถ้าเป็น bet ใหม่ betDate อาจเป็นอนาคตเล็กน้อย (ไม่เกิน 1 นาที) ซึ่งเป็นเรื่องปกติ
+                        const now = new Date();
+                        const timeDiff = betDate.getTime() - now.getTime();
+                        if (timeDiff > 300000) {
+                            // ถ้า betDate เป็นอนาคตมากกว่า 5 นาที แสดงว่าอาจ parse ผิดพลาด
+                            console.warn('Bet date is in the future (more than 5 minutes), using current time instead. bet.date:', bet.date, 'betDate:', betDate, 'timeDiff:', timeDiff, 'ms');
+                            betDate = new Date();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error parsing bet.date:', bet.date, 'error:', error);
+                    betDate = new Date();
+                }
+            } else {
+                // ถ้าไม่มีวันที่ให้ใช้เวลาปัจจุบัน
+                betDate = new Date();
+            }
+            
+            // ตรวจสอบอีกครั้งว่า betDate เป็น valid date
+            if (isNaN(betDate.getTime())) {
+                console.error('betDate is still invalid after parsing, using current time');
+                betDate = new Date();
+            }
+            
+            // Log สำหรับ debug
+            console.log('Date parsing result for betId:', betId, 'bet.date:', bet.date, 'betDate:', betDate, 'betDate.getTime():', betDate.getTime());
+            
+            // Format วันที่เป็นรูปแบบไทย
+            // วิธีที่แน่นอนที่สุด: Parse วันที่จากฐานข้อมูลโดยตรง
+            // bet.date format: "2024-12-01 20:02:50" (เวลาไทย UTC+7 จากฐานข้อมูล)
+            // ฐานข้อมูลตั้ง timezone เป็น +07:00 แล้ว ดังนั้น bet.date เป็นเวลาไทยอยู่แล้ว
+            // ไม่ต้องแปลง timezone เพียงแค่ format ให้แสดงผล
+            
+            if (bet.date && typeof bet.date === 'string' && bet.date.includes('-') && bet.date.includes(' ')) {
+                // Parse วันที่จากฐานข้อมูลโดยตรง (ฐานข้อมูลเก็บเวลาไทย UTC+7 อยู่แล้ว)
+                const [datePart, timePart] = bet.date.split(' ');
+                const [year, month, day] = datePart.split('-');
+                const [hours, minutes, seconds] = timePart.split(':');
+                
+                // ใช้ปี พ.ศ. (เพิ่ม 543)
+                const buddhistYear = parseInt(year) + 543;
+                
+                // Format: DD/MM/YYYY HH:MM:SS
+                formattedDate = `${day}/${month}/${buddhistYear} ${hours}:${minutes}:${seconds}`;
+                
+                console.log('Formatted date from DB (Thai time, no conversion):', formattedDate, 'original bet.date:', bet.date);
+            } else {
+                // Fallback: ใช้เวลาปัจจุบันของไทย
+                const now = new Date();
+                // now.getTime() ให้ค่า UTC timestamp
+                // ต้องแปลงเป็นเวลาไทย (UTC+7) โดยเพิ่ม 7 ชั่วโมง
+                const thaiOffset = 7 * 60 * 60 * 1000; // 7 ชั่วโมง
+                const thaiTimestamp = now.getTime() + thaiOffset;
+                const thaiDate = new Date(thaiTimestamp);
+                
+                const year = thaiDate.getUTCFullYear() + 543;
+                const month = String(thaiDate.getUTCMonth() + 1).padStart(2, '0');
+                const day = String(thaiDate.getUTCDate()).padStart(2, '0');
+                const hours = String(thaiDate.getUTCHours()).padStart(2, '0');
+                const minutes = String(thaiDate.getUTCMinutes()).padStart(2, '0');
+                const seconds = String(thaiDate.getUTCSeconds()).padStart(2, '0');
+                
+                formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+                console.log('Formatted date using current Thai time:', formattedDate);
+            }
+            
+            // Check if this is a pending bet
+            const isPending = bet.status === 'pending';
+            console.log('Bet status check:', bet.status, 'isPending:', isPending);
+            
+            // ไม่ต้องคำนวณหรือแสดง countdown ใด ๆ สำหรับ pending bet
+            let initialTimeDisplay = '-';
+            let showSpinners = false;
+            let isCountdownExpired = false;
+            
+            // ตรวจสอบว่า bet.status มีอยู่หรือไม่
+            if (!bet.status) {
+                console.error('Bet status is missing:', bet);
+                return null;
+            }
+            
+            // แสดงสถานะ
+            let statusElement;
+            if (bet.status === 'pending') {
+                // แสดง spinner และ "รอผล" สำหรับ pending bets
+                statusElement = `<span class="bet-value status-pending" id="status-${betId}"><i class="fa-solid fa-spinner fa-spin"></i> รอผล</span>`;
+            } else {
+                // แสดงสถานะปกติสำหรับ bets ที่เสร็จแล้ว
+                const statusText = getStatusText(bet.status);
+                statusElement = `<span class="bet-value status-${bet.status.replace(' ', '-')}">${statusText}</span>`;
+            }
+            
+            console.log('Final status element for betId:', betId, 'statusElement:', statusElement);
+            
+            // คำนวณ actual_total_return = ทุนทั้งสองฝั่ง + กำไรทั้งสองฝั่ง
+            let profitDisplay = '-';
+            if (bet.status !== 'pending' && bet.status !== 'lose' && bet.status !== 'lost') {
+                const bettingRed = parseInt(bet.betting_red) || 0;
+                const bettingBlue = parseInt(bet.betting_blue) || 0;
+                const percentage = parseFloat(bet.percentage) || 0;
+                const percentageMultiplier = percentage / 100;
+                
+                // คำนวณกำไรของแต่ละฝั่ง
+                let profitRed = 0;
+                let profitBlue = 0;
+                
+                if (bettingRed > 0) {
+                    profitRed = Math.floor(bettingRed * percentageMultiplier);
+                }
+                
+                if (bettingBlue > 0) {
+                    profitBlue = Math.floor(bettingBlue * percentageMultiplier);
+                }
+                
+                // คำนวณยอดคืน = ทุนทั้งสองฝั่ง + กำไรทั้งสองฝั่ง
+                const totalCapital = bettingRed + bettingBlue;
+                const totalProfit = profitRed + profitBlue;
+                const actualTotalReturn = totalCapital + totalProfit;
+                
+                if (actualTotalReturn > 0) {
+                    profitDisplay = `${actualTotalReturn.toLocaleString()} บาท`;
+                    console.log('Calculated actual_total_return:', {
+                        betting_red: bettingRed,
+                        betting_blue: bettingBlue,
+                        profit_red: profitRed,
+                        profit_blue: profitBlue,
+                        total_capital: totalCapital,
+                        total_profit: totalProfit,
+                        actual_total_return: actualTotalReturn,
+                        status: bet.status
+                    });
+                }
+            }
+            
+            betItem.innerHTML = `
+                <div class="bet-row">
+                <div class="bet-cell">
+                    <span class="bet-value red">${parseInt(bet.betting_red) > 0 ? parseInt(bet.betting_red).toLocaleString() : '-'}</span>
+                </div>
+                <div class="bet-cell">
+                    <span class="bet-value blue">${parseInt(bet.betting_blue) > 0 ? parseInt(bet.betting_blue).toLocaleString() : '-'}</span>
+                </div>
+                <div class="bet-cell">
+                    ${statusElement}
+                </div>
+                <div class="bet-cell">
+                    <span class="bet-value time" id="time-${betId}">${formattedDate}</span>
+                </div>
+                <div class="bet-cell">
+                    <span class="bet-value green">${profitDisplay}</span>
+                </div>
+                </div>
+            `;
+            
+            return betItem;
+        }
+
+        // Calculate total profit
+        function calculateTotalProfit(profit) {
+            let totalProfit = 0;
+            
+            // Add profit amount
+            if (profit && profit > 0) {
+                totalProfit += parseFloat(profit);
+            }
+            
+            // Return formatted result
+            if (totalProfit > 0) {
+                return totalProfit.toLocaleString() + t('currency');
+            } else {
+                return '-';
+            }
+        }
+
+        // Get status text based on current language
+        function getStatusText(status) {
+            switch (status) {
+                case 'pending':
+                    // แสดง spinner และ "รอผล" สำหรับ pending bets
+                    return '<i class="fa-solid fa-spinner fa-spin"></i> รอผล';
+                case 'red win':
+                    return t('redWinStatus');
+                case 'blue win':
+                    return t('blueWinStatus');
+                case 'lose':
+                    return t('loseStatus');
+                case 'lost':
+                    return t('lostStatus');
+                case 'completed':
+                    return t('completedStatus');
+                default:
+                    return status;
+            }
+        }
+
+        // Save pending bet to database
+        function savePendingBetToDatabase(bet) {
+            console.log('Saving pending bet to database:', bet);
+            
+            // ใช้ API ที่มีอยู่แล้วแทน
+            fetch('../api/update_bet_status_by_date.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: bet.user_id,
+                    betting_red: bet.betting_red,
+                    betting_blue: bet.betting_blue,
+                    status: 'pending',
+                    date: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                    jackpot: 0,
+                    percentage: 5,
+                    profit: 0
+                })
+            })
+            .then(response => {
+                console.log('Save bet response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('Pending bet saved successfully:', data);
+            } else {
+                    console.error('Failed to save pending bet:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving pending bet:', error);
+                // ไม่ต้องแสดง error ถ้า API ไม่มีอยู่
+                console.log('API not available, skipping save operation');
+            });
+        }
+
+        // Start countdown timer based on database date
+        function startCountdownFromDatabase(betId, bettingRed, bettingBlue, percentage = 5, betDate) {
+            // ปิดการเปลี่ยนสถานะจากหน้า order.html โดยเด็ดขาด
+            return;
+            // Robust date parsing
+            let betDateTime;
+            try {
+                if (betDate.includes('T')) {
+                    betDateTime = new Date(betDate);
+                } else {
+                    betDateTime = new Date(betDate.replace(' ', 'T'));
+                }
+                if (isNaN(betDateTime.getTime())) {
+                    betDateTime = new Date(betDate + '+07:00');
+                }
+            } catch (error) {
+                betDateTime = new Date();
+            }
+            console.log('betDateTime:', betDateTime);
+
+            const countdownElement = document.getElementById(`countdown-${betId}`);
+            console.log('Countdown element:', countdownElement);
+            if (!countdownElement) {
+                console.error('Countdown element not found!');
+                return;
+            }
+            if (isNaN(betDateTime.getTime())) {
+                console.error('Invalid betDateTime:', betDateTime, betDate);
+                return;
+            }
+            
+            let timeLeft = Math.max(0, 300 - Math.floor((Date.now() - betDateTime.getTime()) / 1000));
+            console.log('Initial timeLeft:', timeLeft);
+
+            if (timeLeft <= 0) {
+                if (!countdownElement.dataset.finished) {
+                    countdownElement.dataset.finished = '1';
+                determineWinner(betId, bettingRed, bettingBlue, betDate);
+                }
+                return;
+            }
+            
+            const interval = setInterval(() => {
+                timeLeft--;
+                countdownElement.textContent = `${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}`;
+                console.log('Countdown tick:', timeLeft);
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    if (!countdownElement.dataset.finished) {
+                        countdownElement.dataset.finished = '1';
+                        determineWinner(betId, bettingRed, bettingBlue, betDate);
+                    }
+                }
+            }, 1000);
+        }
+        
+        // Main countdown using setTimeout recursion - DOMAIN COMPATIBLE VERSION
+        function startCountdownWithTimeout(betId, bettingRed, bettingBlue, percentage, betDate, betDateTime, countdownElement) {
+            // ปิดการเปลี่ยนสถานะจากหน้า order.html โดยเด็ดขาด
+            return;
+            console.log('Starting DOMAIN COMPATIBLE countdown for betId:', betId);
+            
+            // Store countdown state
+            window[`countdown_${betId}`] = {
+                active: true,
+                startTime: Date.now()
+            };
+            
+            function updateCountdown() {
+                try {
+                    // Check if countdown is still active
+                    if (!window[`countdown_${betId}`] || !window[`countdown_${betId}`].active) {
+                        console.log('Countdown stopped for betId:', betId);
+                        return;
+                    }
+                    
+                    // Check if element still exists
+                    const element = document.getElementById(`countdown-${betId}`);
+                    if (!element) {
+                        console.log('Countdown element not found, stopping countdown for betId:', betId);
+                        window[`countdown_${betId}`].active = false;
+                        return;
+                    }
+                    
+                    const currentTime = new Date();
+                    const elapsed = Math.floor((currentTime.getTime() - betDateTime.getTime()) / 1000);
+                const remainingTime = Math.max(0, 300 - elapsed);
+                    
+                    console.log('DOMAIN COUNTDOWN update for betId:', betId, 'elapsed:', elapsed, 'remainingTime:', remainingTime);
+                
+                if (remainingTime <= 0) {
+                    console.log('DOMAIN COUNTDOWN finished for betId:', betId, 'determining winner');
+                        window[`countdown_${betId}`].active = false;
+                    determineWinner(betId, bettingRed, bettingBlue, betDate);
+                    return;
+                }
+                
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = remainingTime % 60;
+                    const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    console.log('DOMAIN updating countdown display for betId:', betId, 'to:', timeDisplay);
+                    
+                    // Update the display
+                    element.textContent = timeDisplay;
+                    console.log('DOMAIN successfully updated countdown for betId:', betId, 'to:', timeDisplay);
+                    
+                    // Force update display - make it VERY visible for domain
+                    element.style.color = 'red';
+                    element.style.fontWeight = 'bold';
+                    element.style.fontSize = '20px';
+                    element.style.backgroundColor = 'yellow';
+                    element.style.padding = '10px';
+                    element.style.border = '4px solid red';
+                    element.style.borderRadius = '8px';
+                    element.style.boxShadow = '0 0 15px red';
+                    element.style.textAlign = 'center';
+                    element.style.display = 'inline-block';
+                    element.style.minWidth = '60px';
+                    
+                    // Schedule next update
+                    setTimeout(updateCountdown, 1000);
+                } catch (error) {
+                    console.error('DOMAIN ERROR in countdown for betId:', betId, error);
+                    window[`countdown_${betId}`].active = false;
+                }
+            }
+            
+            // Start the recursive timeout
+            console.log('Starting DOMAIN recursive timeout for betId:', betId);
+            
+            // Force start countdown immediately
+            setTimeout(() => {
+                console.log('DOMAIN Force starting countdown update for betId:', betId);
+                updateCountdown();
+            }, 100);
+            
+            // Also try to start countdown after a longer delay
+            setTimeout(() => {
+                console.log('DOMAIN Secondary countdown start attempt for betId:', betId);
+                if (window[`countdown_${betId}`] && window[`countdown_${betId}`].active) {
+                    console.log('DOMAIN Countdown already active for betId:', betId);
+                } else {
+                    console.log('DOMAIN Restarting countdown for betId:', betId);
+                    window[`countdown_${betId}`] = {
+                        active: true,
+                        startTime: Date.now()
+                    };
+                    updateCountdown();
+                }
+            }, 1000);
+            
+            // Third attempt after 3 seconds
+            setTimeout(() => {
+                console.log('DOMAIN Third countdown start attempt for betId:', betId);
+                const element = document.getElementById(`countdown-${betId}`);
+                if (element) {
+                    console.log('DOMAIN Element found for third attempt, starting countdown');
+                    window[`countdown_${betId}`] = {
+                        active: true,
+                        startTime: Date.now()
+                    };
+                    updateCountdown();
+                } else {
+                    console.log('DOMAIN Element not found for third attempt');
+                }
+            }, 3000);
+            
+            // Fourth attempt after 5 seconds
+            setTimeout(() => {
+                console.log('DOMAIN Fourth countdown start attempt for betId:', betId);
+                const element = document.getElementById(`countdown-${betId}`);
+                if (element) {
+                    console.log('DOMAIN Element found for fourth attempt, starting countdown');
+                    window[`countdown_${betId}`] = {
+                        active: true,
+                        startTime: Date.now()
+                    };
+                    updateCountdown();
+                } else {
+                    console.log('DOMAIN Element not found for fourth attempt');
+                }
+            }, 5000);
+            
+            // Fifth attempt after 10 seconds - DOMAIN SPECIFIC
+            setTimeout(() => {
+                console.log('DOMAIN Fifth countdown start attempt for betId:', betId);
+                const element = document.getElementById(`countdown-${betId}`);
+                if (element) {
+                    console.log('DOMAIN Element found for fifth attempt, starting countdown');
+                    window[`countdown_${betId}`] = {
+                        active: true,
+                        startTime: Date.now()
+                    };
+                    updateCountdown();
+                } else {
+                    console.log('DOMAIN Element not found for fifth attempt');
+                }
+            }, 10000);
+        }
+
+        // Start countdown timer for pending bets
+        function startCountdown(betId, bettingRed, bettingBlue, percentage = 5) {
+            // ปิดการเปลี่ยนสถานะจากหน้า order.html โดยเด็ดขาด
+            return;
+            const countdownElement = document.getElementById(`countdown-${betId}`);
+            
+            if (!countdownElement) {
+                // Try again after a short delay
+                setTimeout(() => {
+                    startCountdown(betId, bettingRed, bettingBlue, percentage);
+                }, 100);
+                return;
+            }
+            
+            // Calculate countdown based on database date, not localStorage
+            const countdownKey = `countdown_${betId}`;
+            let timeLeft;
+            
+            // Get the bet date from the current bet data
+            const betDate = new Date(bet.date);
+            const currentTime = Date.now();
+            const elapsed = Math.floor((currentTime - betDate.getTime()) / 1000);
+            timeLeft = Math.max(0, 300 - elapsed); // 300 seconds = 5 minutes
+            
+            // If time already expired, determine winner immediately
+            if (timeLeft <= 0) {
+                determineWinner(betId, bettingRed, bettingBlue);
+                return;
+            }
+            
+            // Store the calculated start time for this session
+            const calculatedStartTime = currentTime - elapsed;
+            localStorage.setItem(countdownKey, calculatedStartTime.toString());
+            
+            // If time already expired, determine winner immediately
+            if (timeLeft <= 0) {
+                determineWinner(betId, bettingRed, bettingBlue);
+                return;
+            }
+            
+            // Start countdown interval
+            const countdownInterval = setInterval(() => {
+                const currentTime = Date.now();
+                const elapsed = Math.floor((currentTime - parseInt(localStorage.getItem(countdownKey))) / 1000);
+                const remainingTime = Math.max(0, 300 - elapsed);
+                
+                if (remainingTime <= 0) {
+                    clearInterval(countdownInterval);
+                    localStorage.removeItem(countdownKey);
+                    determineWinner(betId, bettingRed, bettingBlue);
+                    return;
+                }
+                
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = remainingTime % 60;
+                countdownElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+
+
+        // Show final result (when bet already has result)
+        function showFinalResult(betId, status, bettingRed, bettingBlue, betData = null) {
+            const countdownElement = document.getElementById(`countdown-${betId}`);
+            const profitElement = document.getElementById(`profit-${betId}`);
+            
+            // Update status
+            if (countdownElement) {
+                countdownElement.textContent = getStatusText(status);
+                countdownElement.className = `bet-value status-${status.replace(' ', '-')}`;
+            }
+            
+            // ดึง percentage จาก bet data หรือใช้ค่าเริ่มต้น
+            let percentage = '1.90'; // ค่าเริ่มต้น 1.90%
+            if (betData && betData.percentage) {
+                percentage = betData.percentage;
+            }
+            
+            console.log('Calculating profit with percentage:', percentage);
+            
+            // Calculate and show profit using stored percentage
+            let profitAmount = 0;
+            const percentageMultiplier = parseFloat(percentage) / 100; // แปลงจาก 1.90 เป็น 0.019
+            if (status === 'red win' && bettingRed > 0) {
+                profitAmount = parseInt(bettingRed) * percentageMultiplier;
+            } else if (status === 'blue win' && bettingBlue > 0) {
+                profitAmount = parseInt(bettingBlue) * percentageMultiplier;
+            }
+            
+            console.log('Calculated profit:', profitAmount, 'from betting amount:', bettingRed || bettingBlue);
+            
+            if (profitElement) {
+                if (profitAmount > 0) {
+                    profitElement.textContent = Math.floor(profitAmount).toLocaleString() + t('currency');
+                } else {
+                    profitElement.textContent = '-';
+                }
+            }
+        }
+
+        // Determine winner and update status
+        function determineWinner(betId, bettingRed, bettingBlue, betDate = null) {
+            // ปิดการเปลี่ยนสถานะจากหน้า order.html โดยเด็ดขาด
+            return;
+            console.log('Determining winner for betId:', betId);
+            
+            // หาข้อมูล bet จาก loadedBets
+            const betRow = window.loadedBets?.find(bet => {
+                const hashString = `${bet.user_id}_${betId.split('_')[1]}_${bet.date}_${bet.betting_red}_${bet.betting_blue}`;
+                let hash = 0;
+                for (let i = 0; i < hashString.length; i++) {
+                    hash = ((hash << 5) - hash) + hashString.charCodeAt(i);
+                    hash = hash & hash;
+                }
+                const expectedBetId = `${hashString}_${Math.abs(hash)}`;
+                return expectedBetId === betId;
+            });
+            
+            if (!betRow || betRow.status !== 'pending') {
+                // ถ้าไม่ใช่ pending ให้ข้าม ไม่เปลี่ยนสถานะซ้ำ
+                return;
+            }
+            
+            // ดึง percentage และ betting amounts จาก bet data
+            const percentage = betRow.percentage || '5';
+            const actualBettingRed = betRow.betting_red || bettingRed;
+            const actualBettingBlue = betRow.betting_blue || bettingBlue;
+            
+            console.log('Using percentage from bet data:', percentage);
+            console.log('Using betting amounts - red:', actualBettingRed, 'blue:', actualBettingBlue);
+            
+            // Process winner determination directly - ส่ง betting amounts ที่ดึงจาก database
+            const userId = betRow.user_id || betId.split('_')[0];
+            loadUserAutoWin(userId).finally(() => {
+                processWinnerDetermination(
+                    betId,
+                    actualBettingRed,
+                    actualBettingBlue,
+                    percentage,
+                    betDate,
+                    parseInt(actualBettingRed) > 0,
+                    parseInt(actualBettingBlue) > 0,
+                    userId,
+                    betRow
+                );
+            });
+        }
+        
+        // Process winner determination logic
+        function processWinnerDetermination(betId, bettingRed, bettingBlue, percentage, betDate, hasRedBet, hasBlueBet, userId, betRowRef = null) {
+            let finalStatus = '';
+            let statusTextValue = '';
+            let statusClass = '';
+            let profitAmount = 0;
+            
+            console.log('Calculating profit with percentage:', percentage, 'for betting amounts:', bettingRed, bettingBlue);
+            
+            // แปลง percentage จาก string เป็นตัวเลข แล้วหารด้วย 100
+            // เช่น "5.00" → 0.05, "15.00" → 0.15, "1.90" → 0.019
+            const percentageMultiplier = parseFloat(percentage) / 100;
+            
+            if (currentUserAutoWin) {
+                const nextSide = getNextAutoWinSide(hasRedBet, hasBlueBet);
+                if (nextSide === 'red') {
+                    finalStatus = 'red win';
+                    statusTextValue = t('redWinStatus');
+                    statusClass = 'status-red-win';
+                    profitAmount = parseInt(bettingRed || 0) * percentageMultiplier;
+                } else {
+                    finalStatus = 'blue win';
+                    statusTextValue = t('blueWinStatus');
+                    statusClass = 'status-blue-win';
+                    profitAmount = parseInt(bettingBlue || 0) * percentageMultiplier;
+                }
+            } else {
+                finalStatus = 'lose';
+                statusTextValue = t('loseStatus');
+                statusClass = 'status-lose';
+                profitAmount = 0;
+                autoWinLastSide = 'blue';
+                localStorage.setItem('autoWinLastSide', autoWinLastSide);
+            }
+            
+            // Update the status element
+            const countdownElement = document.getElementById(`countdown-${betId}`);
+            if (countdownElement) {
+                countdownElement.textContent = statusTextValue;
+                countdownElement.className = `bet-value ${statusClass}`;
+            }
+            
+            // Update profit
+            const profitElement = document.getElementById(`profit-${betId}`);
+            if (profitElement) {
+                if (profitAmount > 0) {
+                    profitElement.textContent = Math.floor(profitAmount).toLocaleString() + t('currency');
+                } else {
+                    profitElement.textContent = '-';
+                }
+            }
+            
+            // อัปเดตข้อมูลใน loadedBets เพื่อไม่ให้กลับไปแสดง "รอผล"
+            if (betRowRef && typeof betRowRef === 'object') {
+                betRowRef.status = finalStatus;
+                betRowRef.profit = Math.floor(profitAmount);
+            }
+            if (Array.isArray(window.loadedBets)) {
+                const targetBet = window.loadedBets.find(bet => {
+                    const hashString = `${bet.user_id}_${betId.split('_')[1]}_${bet.date}_${bet.betting_red}_${bet.betting_blue}`;
+                    let hash = 0;
+                    for (let i = 0; i < hashString.length; i++) {
+                        hash = ((hash << 5) - hash) + hashString.charCodeAt(i);
+                        hash = hash & hash;
+                    }
+                    const expectedBetId = `${hashString}_${Math.abs(hash)}`;
+                    return expectedBetId === betId;
+                });
+                if (targetBet) {
+                    targetBet.status = finalStatus;
+                    targetBet.profit = Math.floor(profitAmount);
+                }
+            }
+            
+            // Remove countdown from localStorage
+            localStorage.removeItem(`countdown_${betId}`);
+            
+            // Update database status (API จะคำนวณ total_return และอัปเดต balance เอง)
+            updateBetStatusInDatabase(betId, finalStatus, profitAmount, betDate);
+            
+            // ไม่ต้องเรียก updateUserBalance ที่นี่ เพราะ API update_bet_status_by_date.php 
+            // จะคำนวณ total_return = betting_amount + profit และอัปเดต balance ให้เองแล้ว
+        }
+
+        // ฟังก์ชันนี้ไม่ได้ถูกใช้งานแล้ว เพราะ API update_bet_status_by_date.php 
+        // จะคำนวณ total_return = betting_amount + profit และอัปเดต balance ให้เอง
+        // เก็บไว้เพื่ออ้างอิงเท่านั้น
+
+        // Update bet status in database
+        function updateBetStatusInDatabase(userIdOrBetId, status, profit = null, betDate = null) {
+            // ปิดการเปลี่ยนสถานะจากหน้า order.html โดยเด็ดขาด
+            return;
+            console.log('Updating bet status in database:', userIdOrBetId, status, profit === null ? 'calculated by API' : profit);
+            
+            // ตรวจสอบว่าสถานะไม่ใช่ pending แล้ว
+            if (status === 'pending') {
+                console.log('Cannot update to pending status - skipping');
+                return;
+            }
+            
+            // ตรวจสอบว่าได้อัปเดตแล้วหรือไม่
+            const updateKey = `updated_${userIdOrBetId}`;
+            if (window[updateKey]) {
+                console.log('Already updated for key:', updateKey, '- skipping update');
+                return;
+            }
+            
+            // ตั้งค่า flag ก่อนทำการอัปเดตเพื่อป้องกันการเรียกซ้ำ
+            window[updateKey] = true;
+            console.log('Set updated flag for key:', updateKey, 'to true before API call');
+            
+            // userIdOrBetId อาจเป็น user_id ตัวเลข หรือ hash string
+            let currentUserId = userIdOrBetId;
+            if (typeof userIdOrBetId === 'string' && userIdOrBetId.includes('_')) {
+                // ถ้าเป็น hash ให้ extract user_id
+                currentUserId = userIdOrBetId.split('_')[0];
+            }
+            
+            console.log('🔷 Making API request to update_bet_status_by_date.php');
+            console.log('📤 Request data:', {
+                user_id: currentUserId,
+                status: status,
+                profit: profit === null ? 'calculate by API' : profit
+            });
+            
+            // สร้าง request body - ส่งแค่ user_id และ status, API จะหา pending bet เอง
+            const requestBody = {
+                user_id: currentUserId,
+                status: status
+            };
+            
+            // ถ้าส่ง profit มา ให้เพิ่มเข้าไป (แต่ถ้าเป็น null จะไม่ส่งไป API จะคำนวณเอง)
+            if (profit !== null) {
+                requestBody.profit = profit;
+            }
+            
+            fetch('../api/update_bet_status_by_date.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                console.log('Update response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Update response data:', data);
+                
+                if (data.success) {
+                    console.log('✅ Status updated successfully:', status, 'affected_rows:', data.affected_rows);
+                    console.log('✅ Final status set for userId:', currentUserId, '- no further updates');
+                } else {
+                    console.error('❌ Failed to update bet status:', data.message);
+                    console.error('❌ API response details:', data);
+                    // รีเซ็ต flag เพื่อให้ลองใหม่
+                    window[updateKey] = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error updating bet status:', error);
+                // รีเซ็ต flag เพื่อให้ลองใหม่
+                window[updateKey] = false;
+            });
+        }
+
+
+        // Function to clean up expired countdowns
+        function cleanupExpiredCountdowns() {
+            const currentTime = Date.now();
+            const keysToRemove = [];
+            
+            // Check all countdown keys
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('countdown_')) {
+                    const startTime = localStorage.getItem(key);
+                    if (startTime) {
+                        const elapsed = Math.floor((currentTime - parseInt(startTime)) / 1000);
+                        if (elapsed >= 300) { // 5 minutes = 300 seconds
+                            keysToRemove.push(key);
+                        }
+                    }
+                }
+            }
+            
+            // Remove expired countdowns
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+                console.log('Removed expired countdown:', key);
+            });
+        }
+
+        // Auto refresh function for bet display
+        function autoRefreshBets() {
+        }
+
+        // Enhanced auto refresh that also fetches fresh data and reloads the table
+        function enhancedAutoRefresh() {
+            // First, try to refresh data from server
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                loadUserAutoWin(userId)
+                    .catch(() => {})
+                    .finally(() => {
+                        fetch('../api/get_bet_history.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                user_id: userId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success && data.data) {
+                                window.loadedBets = data.data;
+                                console.log('Refreshed bet data from server');
+                                displayBetHistory(data.data);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error refreshing bet data:', error);
+                        });
+                    });
+            }
+        }
+
+        // Auto-logout functionality (10 minutes inactivity)
+        let inactivityTimer;
+        const LOGOUT_TIME = 10 * 60 * 1000;
+        
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                localStorage.removeItem('userId');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('username');
+                window.location.href = '../login.html';
+            }, LOGOUT_TIME);
+        }
+        
+        function trackUserActivity() {
+            resetInactivityTimer();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded - Initializing order page');
+            console.log('JavaScript is working on domain');
+            
+            // ตรวจสอบว่ามีการเริ่มต้นอยู่แล้วหรือไม่
+            if (window.pageInitialized) {
+                console.log('Page already initialized - skipping');
+                return;
+            }
+            
+            // ตั้งค่า flag เพื่อป้องกันการเริ่มต้นซ้ำ
+            window.pageInitialized = true;
+            console.log('Set pageInitialized flag to true');
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+            
+            // Domain compatibility countdown removed
+            console.log('Domain compatibility countdown removed');
+            
+            // Test basic JavaScript functionality
+            console.log('Testing basic JS functionality...');
+            try {
+                const testDiv = document.createElement('div');
+                testDiv.textContent = 'JS Test';
+                console.log('DOM manipulation works');
+                
+                const testDate = new Date();
+                console.log('Date object works:', testDate);
+                
+                const testTimeout = setTimeout(() => {
+                    console.log('setTimeout works');
+                }, 100);
+                
+                const testInterval = setInterval(() => {
+                    console.log('setInterval works');
+                    clearInterval(testInterval);
+                }, 200);
+                
+                console.log('All basic JS functionality works');
+                
+                // Test domain-specific functionality
+                console.log('Testing domain-specific functionality...');
+                console.log('Location:', window.location.href);
+                console.log('Domain:', window.location.hostname);
+                console.log('Protocol:', window.location.protocol);
+                
+                // Test if we're on domain
+                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                    console.log('Running on domain, applying domain-specific fixes...');
+                    
+                    // Force start countdown for domain
+                    setTimeout(() => {
+                        console.log('Domain-specific countdown starting...');
+                        const domainCountdown = document.getElementById('domain-countdown');
+                        if (domainCountdown) {
+                            console.log('Domain countdown element found');
+                        } else {
+                            console.log('Domain countdown element not found');
+                        }
+                    }, 2000);
+                } else {
+                    console.log('Running on localhost, using localhost mode');
+                }
+                
+            } catch (error) {
+                console.error('Basic JS test failed:', error);
+            }
+            
+            // Load language from main page on page load
+            updatePageLanguage();
+            
+            // เริ่ม auto-logout timer
+            resetInactivityTimer();
+            
+            // ตรวจสอบว่ามีการโหลดข้อมูลอยู่แล้วหรือไม่
+            if (window.isLoadingBetHistory || window.isDisplayingBetHistory) {
+                console.log('Already loading or displaying bet history - skipping');
+                return;
+            }
+            
+            // แสดงข้อมูลทันทีเพื่อป้องกันหน้าขาว
+            console.log('Showing data immediately to prevent white page...');
+            const betHistoryContainer = document.getElementById('betHistoryContainer');
+            if (betHistoryContainer) {
+                betHistoryContainer.innerHTML = `
+                    <div class="bet-table-header">
+                        <div class="bet-cell">เดิมพันสีแดง</div>
+                        <div class="bet-cell">เดิมพันสีน้ำเงิน</div>
+                        <div class="bet-cell">สถานะ</div>
+                        <div class="bet-cell">เวลา</div>
+                        <div class="bet-cell">กำไร</div>
+                    </div>
+                `;
+                betHistoryContainer.style.display = 'block';
+            }
+            
+            // ไม่ต้องเช็ค expired bets ตอนโหลดหน้า - ให้รอ timeout 3 นาทีตามปกติ
+            console.log('Skipping expired bets check on page load - bets will resolve in 3 minutes via timeout');
+            
+            // ไม่ต้องเช็ค expired bets ทุก 30 วินาที - ให้รอ timeout 3 นาทีตามปกติ
+            console.log('Skipping interval check - bets will resolve in 3 minutes via timeout');
+            
+            // ติดตามการใช้งาน
+            document.addEventListener('mousemove', trackUserActivity);
+            document.addEventListener('keypress', trackUserActivity);
+            document.addEventListener('keydown', trackUserActivity);
+            document.addEventListener('click', trackUserActivity);
+            document.addEventListener('scroll', trackUserActivity);
+            document.addEventListener('touchstart', trackUserActivity);
+            document.addEventListener('touchmove', trackUserActivity);
+            
+            // ฟัง localStorage changes จากหน้าเว็บอื่นๆ เพื่อ refresh ข้อมูล
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'refresh_order_page' && e.newValue) {
+                    console.log('Received refresh signal from another page, refreshing order page...');
+                    enhancedAutoRefresh();
+                    // ล้าง flag หลังจาก refresh
+                    localStorage.removeItem('refresh_order_page');
+                }
+            });
+            
+            // Auto refresh ทุก 3 วินาทีเพื่อให้ข้อมูลอัพเดทอัตโนมัติ (จะถูกตั้งค่าใหม่ที่บรรทัด 1894)
+            
+            // Clean up expired countdowns first
+            cleanupExpiredCountdowns();
+            
+            // Debug localStorage
+            console.log('All localStorage items:');
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                console.log(key + ':', localStorage.getItem(key));
+            }
+            
+            // Test countdown functionality removed
+            console.log('Test countdown functionality removed');
+            
+            // Test countdowns removed - using real data only
+            console.log('Test countdowns removed - using real data only');
+            
+            // Backup countdown removed - using real data only
+            console.log('Backup countdown removed - using real data only');
+            
+            // Third countdown removed - using real data only
+            console.log('Third countdown removed - using real data only');
+            
+            // Fourth countdown removed - using real data only
+            console.log('Fourth countdown removed - using real data only');
+            
+            // All test countdowns removed - using real data only
+            console.log('All test countdowns removed - using real data only');
+            
+            // Check if user is logged in
+            const userId = localStorage.getItem('userId');
+            console.log('Current userId from localStorage:', userId);
+            
+            if (!userId) {
+                console.log('No userId found, redirecting to login...');
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            loadUserAutoWin(userId).finally(() => {
+                console.log('Loading bet history for user with auto_win:', currentUserAutoWin);
+                loadBetHistory();
+                setInterval(enhancedAutoRefresh, 3000);
+            });
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>
+

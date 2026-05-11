@@ -1,0 +1,3147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>รายการสวัสดิการสาธารณะ - PK44</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding-bottom: 50px;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background-color: #000;
+            background-image: url('../Photo/homeBg.6be568e2.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+
+        .header-logo {
+            display: block;
+            margin: 0 auto 10px;
+            max-width: 140px;
+            max-height: 85px;
+            position: relative;
+            z-index: 1;
+            opacity: 0.18;
+        }
+
+        .round-frame {
+            background: linear-gradient(90deg, #e74c3c, #9b59b6);
+            padding: 15px 20px;
+            text-align: center;
+            margin: 10px auto;
+            border-radius: 50px;
+            display: inline-flex;
+            width: auto;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .alert-banner {
+            background: #fff9f2;
+            color: rgb(179, 111, 110);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-radius: 8px;
+            margin: 10px;
+        }
+
+        .alert-banner .speaker-icon {
+            width: 15px;
+            height: 15px;
+            background: #e74c3c !important;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white !important;
+            font-weight: bold;
+            font-size: 15px;
+            transform: none !important;
+            border: none !important;
+            outline: none !important;
+        }
+        
+
+        .nav-tabs {
+            background: white;
+            display: flex;
+            border-bottom: 1px solid #eee;
+            width: 100%;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 8px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 90px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover {
+            background: #f8f9fa;
+        }
+        
+        .nav-tab.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+            background: #f8f9fa;
+        }
+
+        .welfare-container {
+            padding: 0px 10px 0px 10px;
+            background: white;
+            margin: 0;
+            border-radius: 15px;
+        }
+
+        .time-settings-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+            gap: 0px;
+            padding-left: 0px;
+            flex-wrap: nowrap;
+        }
+
+
+
+        @media (max-width: 767px) {
+            .time-settings-bar {
+                flex-direction: row !important;
+                gap: 10px !important;
+                align-items: flex-start !important;
+            }
+            
+            .time-left, .time-right {
+                flex: 1 !important;
+                width: auto !important;
+                justify-content: flex-start !important;
+            }
+        }
+
+        .time-left, .time-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+        
+        .time-label {
+            font-size: 17px;
+            color: #666;
+            margin-bottom: 0px;
+            font-weight: bold;
+            text-align: left;
+        }
+        
+        .time-value {
+            font-size: 17px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .time-label-text {
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .time-number {
+            color: #e74c3c;
+            font-weight: normal;
+        }
+
+        .closed-text {
+            color: #e74c3c;
+            font-weight: normal;
+        }
+
+        .black-text {
+            color: #000;
+        }
+
+        .time-value {
+            font-size: 17px;
+            font-weight: normal;
+            color: #e74c3c;
+        }
+
+        .time-value.closed {
+            color: #e74c3c;
+        }
+
+        .round-label {
+            color: rgb(255, 198, 100);
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+        .content-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px 9px 0px 9px;
+            margin: 0 0 15px 0;
+            border: 1px solid #eee;
+        }
+
+        .content-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .content-left, .content-right {
+            flex: 1;
+        }
+
+        .vip-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .vip-col-1 {
+            flex: 0 0 auto;
+            width: auto;
+        }
+
+        .vip-col-2 {
+            flex: 0 0 auto;
+            width: auto;
+            margin-left: 10px;
+        }
+
+        .vip-col-3 {
+            flex: 1;
+            text-align: right;
+        }
+
+        .news-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            margin-top: -40px;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .pk-battle-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            min-height: 90px;
+            position: relative;
+            margin-top: -20px;
+            justify-content: center;
+            overflow: visible; /* อนุญาตให้แสดงเนื้อหาทั้งหมด */
+            gap: 0px;
+            flex-wrap: nowrap;
+            padding: 0;
+        }
+
+        .pk-left-panel, .pk-right-panel {
+            flex: 1;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            max-width: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0;
+            overflow: visible;
+            flex-shrink: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pk-left-panel {
+            background: url('../Photo/red.png');
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 90px;
+            border-radius: 0;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .pk-left-panel:hover {
+            transform: scale(1.02);
+        }
+
+        .pk-right-panel {
+            background: url('../Photo/blue.png');
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 0;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .pk-right-panel:hover {
+            transform: scale(1.02);
+        }
+
+        .pk-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: url('../Photo/pgk.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 68px;
+            height: 68px;
+            z-index: 10;
+            margin: 0;
+            padding: 0;
+            pointer-events: none; /* ป้องกันการคลิก */
+        }
+
+
+        .vip-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+            position: relative;
+        }
+
+        .vip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .vip-label {
+            font-size: 21px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .vip-label.red {
+            background: none;
+            color: #e74c3c;
+            font-weight: normal;
+        }
+
+        .vip-minimum-black {
+            font-size: 15px;
+            color: #000;
+        }
+
+
+        .vip-time {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .vip-description {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .pk-battle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .pk-left {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .pk-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .pk-button {
+            padding: 15px 25px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            width: 120px;
+            text-align: center;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .pk-button.red {
+            background: white;
+            color: #e74c3c;
+            margin-left: 20px;
+            margin-right: auto;
+        }
+
+        .pk-button.blue {
+            background: white;
+            color: #4a90e2;
+            margin-right: 20px;
+            margin-left: auto;
+        }
+
+        .pk-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .pk-button.red:hover {
+            background: #f8f9fa;
+            border-color: #e74c3c;
+        }
+        
+        .pk-button.blue:hover {
+            background: #f8f9fa;
+            border-color: #4a90e2;
+        }
+
+
+        .support-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 20px;
+            opacity: 0.7;
+        }
+
+
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 15px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                  'GRAD' 0,
+                'opsz' 20;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background: url('../Photo/vip new.png') no-repeat center center;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: 0% 0%;
+            margin: 0 auto;
+            padding: 0;
+            border-radius: 5px;
+            width: 350px;
+            max-width: 350px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            height: auto;
+            min-height: 500px;
+        }
+
+        .modal-header {
+            background: none;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0;
+            position: relative;
+            height: 120px;
+            width: 100%;
+            margin-top: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .close-btn {
+            pointer-events: auto;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: normal;
+            color: white;
+            margin-top: -75px;
+        }
+
+        .close-btn {
+            background: none;
+            border: 2px solid #666;
+            font-size: 16px;
+            cursor: pointer;
+            color: #666;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            background: #666;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .team-selection {
+            margin-bottom: 20px;
+            padding: 0px 20px 20px 20px;
+            margin-top: -70px;
+        }
+
+        .team-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            justify-content: center;
+            margin-top: -40px;
+            position: relative;
+            z-index: 100;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+
+        .team-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            background: #eee !important;
+            color: #666 !important;
+            font-size: 14px !important;
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 101;
+            width: 83px;
+            height: 29px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .team-btn:hover {
+            opacity: 0.8;
+        }
+
+        .team-btn.active {
+            background: #999 !important;
+            color: white !important;
+        }
+
+        .team-btn.red.active {
+            background: #ff1800 !important;
+            color: white !important;
+        }
+
+        .team-btn.blue.active {
+            background: #4a90e2 !important;
+            color: white !important;
+        }
+
+
+        .balance-info {
+            font-size: 14px;
+            font-weight: normal;
+            color: #666;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .odds-info {
+            font-size: 14px;
+            font-weight: normal;
+            color: #666;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            text-align: center;
+            line-height: 2;
+        }
+        
+        .number-black {
+            color: #000;
+        }
+
+        .amount-section {
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .amount-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+            margin-top: -20px;
+        }
+
+        .amount-btn {
+            min-width: 40px;
+            width: 40px;
+            min-height: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            border-radius: 0px;
+            background: #f7f4f4ee !important;
+            color: #f6ad4a;
+            font-size: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding: 0;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .amount-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .amount-btn img {
+            filter: brightness(0) saturate(100%) invert(76%) sepia(52%) saturate(463%) hue-rotate(340deg) brightness(99%) contrast(95%);
+            width: 40px;
+            height: 40px;
+        }
+        
+        .amount-btn i,
+        .amount-btn .material-symbols-outlined {
+            color: #f6ad4a;
+            font-size: 32px;
+        }
+
+        .amount-input {
+            flex: 0 0 auto;
+            width: 180px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: normal;
+            background: #eee !important;
+            color: #565656;
+            transition: all 0.3s ease;
+        }
+        
+        .amount-input:focus {
+            outline: none;
+            transform: scale(1.02);
+        }
+
+        .quick-amounts {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quick-amount-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #eee;
+            color: #666;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-amount-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .quick-amount-btn.active {
+            background: #f6ad4a !important;
+            color: white !important;
+        }
+
+        .join-btn {
+            width: 265px;
+            height: 48px;
+            margin: 30px auto 18px auto;
+            padding: 15px;
+            background: linear-gradient(-90deg, #ff5b3b, #ffa439);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .join-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .jackpot-btn {
+            width: 265px;
+            height: 48px;
+            margin: 10px auto 18px auto;
+            padding: 15px;
+            background: linear-gradient(-90deg, #9b59b6, #e74c3c);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .jackpot-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 480px) {
+            .time-settings-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .vip-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .pk-battle {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .pk-left, .pk-right {
+                width: 100%;
+            }
+            
+            .pk-battle-section {
+                height: auto;
+                min-height: 90px;
+            }
+            
+            .pk-left-panel, .pk-right-panel {
+                min-height: 90px;
+            }
+            
+            .pk-center {
+                width: 56px;
+                height: 56px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+    </div>
+
+    <!-- Round Frame -->
+    <div style="text-align: center; background: white;">
+        <div class="round-frame">
+            <div class="round-label"><span data-lang-key="round">รอบที่</span> <span id="roundNumber">25681013142</span></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="bettingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">อันดับ 1</div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="team-selection">
+                <div class="team-buttons">
+                    <button class="team-btn red" id="redTeam" type="button" onclick="selectTeam('red')" data-lang-key="redTeam">ทีมสีแดง</button>
+                    <button class="team-btn blue" id="blueTeam" type="button" onclick="selectTeam('blue')" data-lang-key="blueTeam">ทีมสีน้ำเงิน</button>
+                </div>
+                <div class="balance-info"><span data-lang-key="balance">ยอดคงเหลือ</span>: <span class="number-black" id="userBalance">0</span></div>
+                <div class="odds-info" id="oddsInfo"></div>
+            </div>
+            
+            <div class="amount-section">
+                <div class="amount-controls">
+                    <button class="amount-btn" onclick="decreaseAmount()"><img src="../icon/remove_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg" alt="-" style="width: 40px; height: 40px;"></button>
+                    <input type="number" class="amount-input" id="amountInput" value="100" min="1">
+                    <span style="margin-left: -3px; font-size: 16px !important; font-weight: normal;">฿</span>
+                    <button class="amount-btn" onclick="increaseAmount()"><img src="../icon/add_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg" alt="+" style="width: 40px; height: 40px;"></button>
+                </div>
+                
+                <div class="quick-amounts">
+                    <button class="quick-amount-btn active" onclick="setQuickAmount(10000, this)">10000</button>
+                    <button class="quick-amount-btn" onclick="setQuickAmount(50000, this)">50000</button>
+                    <button class="quick-amount-btn" onclick="setAllAmount(this)" data-lang-key="all">ทั้งหมด</button>
+                    <button class="quick-amount-btn" onclick="closeModal()" data-lang-key="cancel">ยกเลิก</button>
+                </div>
+            </div>
+            
+            <button class="join-btn" onclick="joinBattle()" data-lang-key="joinNow">เข้าร่วมทันที</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification (แจ้งเตือนแบบหน้าต่างสีดำ) -->
+    <div id="toastNotification" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.85); color: white; padding: 15px 30px; border-radius: 8px; font-size: 14px; text-align: center; z-index: 10000; max-width: 90%; width: auto; white-space: nowrap; border: 1px solid rgba(255,255,255,0.1);">
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Floating Support Icon (ปุ่ม Support) -->
+    <a href="support.html" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; border-radius: 50%; width: 60px; height: 60px;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        <i class="fa-solid fa-headset" style="color: #333; font-size: 35px;"></i>
+    </a>
+
+
+    <!-- Main Content -->
+    <div class="welfare-container">
+        <!-- Time Settings Bar -->
+        <div class="time-settings-bar">
+            <div class="time-left">
+                <div class="time-label"><span class="black-text" data-lang-key="joinTime">กำหนดเวลาในการเข้าร่วม:</span></div>
+                <div class="time-value"><span class="time-label-text">ร่วม:</span> <span id="join-timer" class="time-number">04:45</span></div>
+            </div>
+            <div class="time-right">
+                <div class="time-label"><span class="black-text" data-lang-key="prizeTime">กำหนดเวลาออกรางวัล:</span></div>
+                <div class="time-value"><span class="time-label-text">รางวัล:</span> <span id="prize-timer" class="time-number">00:00</span></div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP1</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 1000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 13:49:45</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    สัญญาหลักของสัญญาซื้อขายล่วงหน้าโลหะเงินเซี่ยงไฮ้ดิ่งลงที่ระดับสูง โดยแคบลงเหลือ 2.9% และเพิ่มขึ้นมากกว่า 7.6% ในช่
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    อัตราผลตอบแทนพันธบัตรรัฐบาลสหรัฐฯ อายุ 10 ปีลดลงสู่ระดับต่ําสุดในรอบ 1 เดือนที่ 4.0240% รายงานล่าสุดอยู่ที่ 4.0302
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP2 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP2</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 50000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 11:44:45</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    หลังจากการแทรกแซงด้วยวาจาของสำนักงานแลกเปลี่ยนเงินตราต่างประเทศของเกาหลีใต้อัตรา...
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    อัตราผลตอบแทนพันธบัตรรัฐบาลสหรัฐฯ อายุ 10 ปีลดลงสู่ระดับต่ําสุดในรอบ 1 เดือนที่ 4.0240% รายงานล่าสุดอยู่ที่ 4.0302
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP3 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP3</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 100000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 10:30:15</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาทองคำในตลาดโลกปรับตัวขึ้นอย่างต่อเนื่อง หลังจากการประกาศนโยบายการเงินของธนาคารกลาง
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ดัชนีหุ้นหลักทั่วโลกปิดตัวในระดับสูงสุดในรอบ 3 เดือน หลังจากการฟื้นตัวของเศรษฐกิจ
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP4 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP4</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 200000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 09:15:30</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาน้ำมันดิบในตลาดโลกปรับตัวขึ้น หลังจากการลดลงของสต็อกน้ำมันในสหรัฐอเมริกา
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    อัตราแลกเปลี่ยนเงินบาทต่อดอลลาร์สหรัฐอ่อนค่าลงเล็กน้อย หลังจากการประกาศข้อมูลเศรษฐกิจ
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP5 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP5</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 500000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 08:45:20</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินดิจิทัล Bitcoin ปรับตัวขึ้นอย่างรุนแรง หลังจากการอนุมัติกองทุน ETF ใหม่
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ดัชนีความเชื่อมั่นผู้บริโภคในสหรัฐอเมริกาปรับตัวขึ้น หลังจากการฟื้นตัวของตลาดแรงงาน
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP6 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP6</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 1000000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 07:30:45</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินเยนญี่ปุ่นอ่อนค่าลงอย่างต่อเนื่อง หลังจากการประกาศนโยบายการเงินของธนาคารกลางญี่ปุ่น
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินยูโรแข็งค่าขึ้น หลังจากการประกาศข้อมูลเศรษฐกิจที่ดีกว่าที่คาดการณ์
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP7 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP7</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 2000000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 06:20:10</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินปอนด์อังกฤษปรับตัวขึ้น หลังจากการประกาศข้อมูลการเติบโตทางเศรษฐกิจที่ดี
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินฟรังก์สวิสแข็งค่าขึ้น หลังจากการประกาศนโยบายการเงินของธนาคารกลางสวิส
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP8 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP8</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 5000000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 05:15:35</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินดอลลาร์ออสเตรเลียปรับตัวขึ้น หลังจากการประกาศข้อมูลการค้าต่างประเทศที่ดี
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินดอลลาร์แคนาดาแข็งค่าขึ้น หลังจากการประกาศข้อมูลการเติบโตทางเศรษฐกิจ
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP9 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP9</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 10000000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 04:10:25</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินดอลลาร์นิวซีแลนด์ปรับตัวขึ้น หลังจากการประกาศข้อมูลการเติบโตทางเศรษฐกิจที่ดี
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินดอลลาร์สิงคโปร์แข็งค่าขึ้น หลังจากการประกาศข้อมูลการค้าต่างประเทศที่ดี
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP10 Section -->
+        <div class="content-section">
+            <div class="vip-info">
+                <div class="vip-col-1">
+                    <span class="vip-label red">VIP10</span>
+                </div>
+                <div class="vip-col-2">
+                    <span class="vip-minimum-black"><span data-lang-key="minimum">ขั้นต่ำ</span>: 20000000</span>
+                </div>
+                <div class="vip-col-3">
+                    <span class="vip-time">2568-10-13 03:05:15</span>
+                </div>
+            </div>
+            <div class="news-text" style="display: flex; align-items: center; gap: 10px; margin-top: -40px; margin-bottom: 15px;">
+                <div style="flex: 1; text-align: left; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินดอลลาร์ฮ่องกงปรับตัวขึ้น หลังจากการประกาศข้อมูลการเติบโตทางเศรษฐกิจที่ดี
+                </div>
+                <div style="flex: 0 0 10px;">
+                </div>
+                <div style="flex: 1; text-align: right; padding: 10px; background: #f8f9fa; border-radius: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ราคาเงินดอลลาร์เกาหลีใต้แข็งค่าขึ้น หลังจากการประกาศข้อมูลการค้าต่างประเทศที่ดี
+                </div>
+            </div>
+            
+            <!-- PK Battle Section -->
+            <div class="pk-battle-section">
+                <div class="pk-left-panel">
+                    <div class="pk-button red" data-lang-key="recommendRed">แนะนำสีแดง</div>
+                </div>
+                <div class="pk-center"></div>
+                <div class="pk-right-panel">
+                    <div class="pk-button blue" data-lang-key="recommendBlue">แนะนำสีน้ำเงิน</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in pkg44.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Language translations
+        const translations = {
+            en: {
+                round: 'Round',
+                minimum: 'Minimum'
+            },
+            cn: {
+                round: '轮次',
+                minimum: '最低'
+            },
+            th: {
+                round: 'รอบ',
+                minimum: 'ขั้นต่ำ'
+            },
+            vi: {
+                round: 'Vòng',
+                minimum: 'Tối thiểu'
+            }
+        };
+
+        // Current language (default: Thai)
+        let currentLang = localStorage.getItem('preferredLang') || 'th';
+
+        // Get translation
+        function t(key) {
+            const keys = key.split('.');
+            let value = translations[currentLang];
+            for (const k of keys) {
+                value = value[k];
+            }
+            return value || key;
+        }
+
+        var selectedTeam = '';
+        var currentAmount = 100;
+        var vipLevelsData = [];
+
+        function selectTeam(team) {
+            var redBtn = document.getElementById('redTeam');
+            var blueBtn = document.getElementById('blueTeam');
+            var oddsInfo = document.getElementById('oddsInfo');
+            
+            if (!redBtn || !blueBtn || !oddsInfo) {
+                return false;
+            }
+            
+            // Toggle selection (เปิด/ปิด การเลือก)
+            if (team === 'red') {
+                if (redBtn.className.indexOf('active') > -1) {
+                    redBtn.className = 'team-btn red'; // ถ้าเลือกอยู่แล้วให้ยกเลิก
+                } else {
+                    redBtn.className = 'team-btn red active'; // ถ้ายังไม่เลือกให้เลือก
+                }
+            } else if (team === 'blue') {
+                if (blueBtn.className.indexOf('active') > -1) {
+                    blueBtn.className = 'team-btn blue'; // ถ้าเลือกอยู่แล้วให้ยกเลิก
+                } else {
+                    blueBtn.className = 'team-btn blue active'; // ถ้ายังไม่เลือกให้เลือก
+                }
+            }
+            
+            // อัพเดทข้อความแสดงอัตราต่อรอง
+            var redActive = redBtn.className.indexOf('active') > -1;
+            var blueActive = blueBtn.className.indexOf('active') > -1;
+            
+            // ดึงข้อมูลเปอร์เซ็นต์จากฐานข้อมูล
+            var currentPercentage = getCurrentVIPPercentage();
+            
+            var oddsText = '';
+            if (redActive && blueActive) {
+                oddsText = 'อัตราต่อรองทีมแดง: <span class="number-black">' + currentPercentage + '</span><br>ราคาต่อรองทีมสีน้ำเงิน: <span class="number-black">' + currentPercentage + '</span>';
+            } else if (redActive) {
+                oddsText = 'อัตราต่อรองทีมแดง: <span class="number-black">' + currentPercentage + '</span>';
+            } else if (blueActive) {
+                oddsText = 'ราคาต่อรองทีมสีน้ำเงิน: <span class="number-black">' + currentPercentage + '</span>';
+            }
+            
+            oddsInfo.innerHTML = oddsText;
+            
+            // อัพเดท selectedTeam
+            if (redActive && blueActive) {
+                selectedTeam = 'both';
+            } else if (redActive) {
+                selectedTeam = 'red';
+            } else if (blueActive) {
+                selectedTeam = 'blue';
+            } else {
+                selectedTeam = '';
+            }
+            
+            return true;
+        }
+
+        // ฟังก์ชันดึงเปอร์เซ็นต์จากฐานข้อมูลตาม VIP level ปัจจุบัน
+        function getCurrentVIPPercentage() {
+            // หา VIP level ปัจจุบันจาก modal title
+            var modalTitle = document.querySelector('.modal-title');
+            if (modalTitle && vipLevelsData.length > 0) {
+                var titleText = modalTitle.textContent.trim();
+                // หา VIP level จาก title (เช่น "อันดับ 1" = VIP1, "Rank 2" = VIP2, etc.)
+                var vipNumber = titleText.replace('อันดับ ', '').replace('Rank ', '').replace('排名 ', '').replace('Xếp hạng ', '');
+                var vipLevel = 'VIP' + vipNumber;
+                
+                // หาข้อมูลจากฐานข้อมูล
+                var levelData = vipLevelsData.find(level => (level.vip_code || level.level) === vipLevel);
+                if (levelData && levelData.percentage) {
+                    console.log('✅ Found percentage for', vipLevel, ':', levelData.percentage);
+                    return levelData.percentage;
+                } else {
+                    console.log('⚠️ No percentage found for', vipLevel, ', returning null');
+                    return null;
+                }
+            }
+            
+            // ถ้าไม่เจอข้อมูล ให้คืนค่า null
+            return null;
+        }
+
+        function openModal() {
+            document.getElementById('bettingModal').style.display = 'block';
+            
+            // ตรวจสอบข้อมูลจาก localStorage
+            var userId = localStorage.getItem('userId');
+            var userName = localStorage.getItem('userName') || localStorage.getItem('username');
+            
+            // หา VIP level ปัจจุบันจาก modal title
+            var modalTitle = document.querySelector('.modal-title');
+            var vipLevel = 'VIP1'; // ค่าเริ่มต้น
+            var minimumAmount = 1000; // ค่าเริ่มต้น
+            
+            if (modalTitle) {
+                var titleText = modalTitle.textContent.trim();
+                // หา VIP level จาก title (เช่น "อันดับ 1" = VIP1, "Rank 2" = VIP2, etc.)
+                var vipNumber = titleText.replace('อันดับ ', '').replace('Rank ', '').replace('排名 ', '').replace('Xếp hạng ', '');
+                vipLevel = 'VIP' + vipNumber;
+                
+                // ดึงข้อมูลจาก vipLevelsData ถ้ามี
+                if (vipLevelsData.length > 0) {
+                    var levelData = vipLevelsData.find(level => (level.vip_code || level.level) === vipLevel);
+                    if (levelData) {
+                        minimumAmount = parseFloat(levelData.minimum_amount || 1000);
+                        console.log('✅ VIP data found:', vipLevel, 'Minimum:', minimumAmount, 'Percentage:', levelData.percentage);
+                    } else {
+                        // ถ้าไม่เจอ ใช้ค่าเริ่มต้นตาม VIP level
+                        switch(vipNumber) {
+                            case '1': minimumAmount = 1000; break;
+                            case '2': minimumAmount = 50000; break;
+                            case '3': minimumAmount = 100000; break;
+                            case '4': minimumAmount = 200000; break;
+                            case '5': minimumAmount = 500000; break;
+                            case '6': minimumAmount = 1000000; break;
+                            case '7': minimumAmount = 2000000; break;
+                            case '8': minimumAmount = 5000000; break;
+                            case '9': minimumAmount = 10000000; break;
+                            case '10': minimumAmount = 20000000; break;
+                            default: minimumAmount = 1000; break;
+                        }
+                        console.log('⚠️ VIP data not found, using default:', vipLevel, '=', minimumAmount);
+                    }
+                } else {
+                    // ถ้ายังไม่โหลดข้อมูล ให้ใช้ค่าเริ่มต้น
+                    switch(vipNumber) {
+                        case '1': minimumAmount = 1000; break;
+                        case '2': minimumAmount = 50000; break;
+                        case '3': minimumAmount = 100000; break;
+                        case '4': minimumAmount = 200000; break;
+                        case '5': minimumAmount = 500000; break;
+                        case '6': minimumAmount = 1000000; break;
+                        case '7': minimumAmount = 2000000; break;
+                        case '8': minimumAmount = 5000000; break;
+                        case '9': minimumAmount = 10000000; break;
+                        case '10': minimumAmount = 20000000; break;
+                        default: minimumAmount = 1000; break;
+                    }
+                    console.log('⚠️ VIP levels data not loaded, using default:', vipLevel, '=', minimumAmount);
+                }
+            }
+            
+            // อัปเดต currentAmount ด้วย minimum ของ VIP level นี้
+            currentAmount = minimumAmount;
+            
+            // บังคับเปิดใช้งาน input ทันที
+            var amountInput = document.getElementById('amountInput');
+            if (amountInput) {
+                amountInput.placeholder = '';
+                amountInput.disabled = false;
+                amountInput.value = minimumAmount; // ตั้งค่าเป็นยอดขั้นต่ำของ VIP level
+                amountInput.style.backgroundColor = '#eee';
+                amountInput.style.color = '#565656';
+                console.log('✅ Input field set to VIP minimum:', vipLevel, '=', minimumAmount);
+            }
+            
+            // ตรวจสอบสถานะล็อกอิน
+            if (userId && userName) {
+                console.log('✅ User is logged in, loading balance');
+                // แสดงข้อมูลผู้ใช้ที่ล็อกอินแล้ว
+                document.getElementById('userBalance').textContent = 'กำลังโหลด...';
+            } else {
+                document.getElementById('userBalance').textContent = 'กรุณาเข้าสู่ระบบ';
+                console.log('❌ User not logged in');
+            }
+            
+            // โหลดยอดเงินล่าสุดเมื่อเปิด modal
+            loadUserBalance();
+            startModalBalanceAutoRefresh();
+            
+            // รอให้ Modal แสดงผลก่อน
+            setTimeout(function() {
+                var redBtn = document.getElementById('redTeam');
+                var blueBtn = document.getElementById('blueTeam');
+                var oddsInfo = document.getElementById('oddsInfo');
+                
+                if (redBtn && blueBtn && oddsInfo) {
+                    redBtn.className = 'team-btn red';
+                    blueBtn.className = 'team-btn blue';
+                    selectedTeam = '';
+                    oddsInfo.textContent = '';
+                }
+            }, 10);
+        }
+
+        function closeModal() {
+            document.getElementById('bettingModal').style.display = 'none';
+            stopModalBalanceAutoRefresh();
+        }
+
+        function startModalBalanceAutoRefresh() {
+            stopModalBalanceAutoRefresh();
+            modalBalanceRefreshInterval = setInterval(function() {
+                var modal = document.getElementById('bettingModal');
+                if (!modal || modal.style.display !== 'block') {
+                    stopModalBalanceAutoRefresh();
+                    return;
+                }
+                loadUserBalance({ silent: true });
+            }, 4000);
+        }
+
+        function stopModalBalanceAutoRefresh() {
+            if (modalBalanceRefreshInterval) {
+                clearInterval(modalBalanceRefreshInterval);
+                modalBalanceRefreshInterval = null;
+            }
+        }
+
+
+        function increaseAmount() {
+            currentAmount += 100;
+            document.getElementById('amountInput').value = currentAmount;
+        }
+
+        function decreaseAmount() {
+            if (currentAmount > 100) {
+                currentAmount -= 100;
+                document.getElementById('amountInput').value = currentAmount;
+            }
+        }
+
+        function setQuickAmount(amount, clickedButton) {
+            currentAmount = amount;
+            document.getElementById('amountInput').value = currentAmount;
+            
+            document.querySelectorAll('.quick-amount-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+        }
+
+        function setAllAmount(clickedButton) {
+            // ดึงยอดเงินจริงจากฐานข้อมูล
+            const userId = localStorage.getItem('userId');
+            
+            if (!userId) {
+                showAlert('กรุณาเข้าสู่ระบบก่อน');
+                return;
+            }
+            
+            // ดึงยอดเงินจากฐานข้อมูล
+            fetch('../api/get_user_balance.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const balance = parseFloat(data.balance || 0);
+                    currentAmount = balance;
+                    document.getElementById('amountInput').value = currentAmount;
+                    
+                    document.querySelectorAll('.quick-amount-btn').forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    if (clickedButton) {
+                        clickedButton.classList.add('active');
+                    }
+                    
+                    console.log('Set all amount to:', balance);
+                } else {
+                    showAlert('ไม่สามารถดึงยอดเงินได้: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading balance:', error);
+                showAlert('เกิดข้อผิดพลาดในการดึงยอดเงิน');
+            });
+        }
+
+        function joinBattle() {
+            // ตรวจสอบสถานะเวลาการเข้าร่วม
+            var joinTimerElement = document.getElementById('join-timer');
+            if (joinTimerElement && joinTimerElement.textContent === 'ปิดแล้ว') {
+                showAlert('ปิดแล้ว');
+                return;
+            }
+
+            // ดึงข้อมูลจาก localStorage
+            var userId = localStorage.getItem('userId');
+            var userName = localStorage.getItem('userName') || localStorage.getItem('username');
+            
+            // ตรวจสอบการล็อกอินแบบเดียวกับหน้า profile
+            if (!userId) {
+                showAlert('กรุณาล็อกอินก่อน');
+                return;
+            }
+            
+            console.log('joinBattle - Real userId:', userId);
+            console.log('joinBattle - Real userName:', userName);
+
+            var betAmount = parseInt(document.getElementById('amountInput').value) || 0;
+            
+            console.log('Bet amount:', betAmount);
+            
+            if (betAmount <= 0) {
+                showAlert('กรุณาใส่จำนวนเงินที่ต้องการเดิมพัน');
+                return;
+            }
+            
+            // ตรวจสอบการเลือกทีม
+            var redBtn = document.getElementById('redTeam');
+            var blueBtn = document.getElementById('blueTeam');
+            var redActive = redBtn && redBtn.className.indexOf('active') > -1;
+            var blueActive = blueBtn && blueBtn.className.indexOf('active') > -1;
+            
+            if (!redActive && !blueActive) {
+                showAlert('กรุณาเลือกทีมที่ต้องการเดิมพัน');
+                return;
+            }
+
+            // คำนวณยอดเงินที่จะหัก
+            var totalDeduction = betAmount;
+            if (redActive && blueActive) {
+                totalDeduction = betAmount * 2; // หัก 2 เท่าถ้าเลือก 2 ทีม
+            }
+
+            // แสดงการยืนยัน
+            var teamText = '';
+            var bettingRed = 0;
+            var bettingBlue = 0;
+            
+            if (redActive) {
+                teamText += 'ทีมสีแดง ';
+                bettingRed = betAmount;
+            }
+            if (blueActive) {
+                teamText += 'ทีมสีน้ำเงิน ';
+                bettingBlue = betAmount;
+            }
+
+            // ฟังก์ชันสำหรับประมวลผลการเดิมพัน
+            function processBetting() {
+                // ถ้าไม่มี userName ให้ดึงจากฐานข้อมูล
+                if (!userName) {
+                    fetchUserRealName(userId, function(realName) {
+                        if (realName) {
+                            userName = realName;
+                            localStorage.setItem('userName', realName);
+                            console.log('Loaded real user name:', realName);
+                        } else {
+                            userName = 'User' + userId;
+                        }
+                        // เรียกใช้ processBet หลังจากได้ userName แล้ว
+                        processBetWithUserName(userId, userName, bettingRed, bettingBlue, totalDeduction);
+                    });
+                } else {
+                    // เรียกใช้ processBet ปกติ
+                    processBetWithUserName(userId, userName, bettingRed, bettingBlue, totalDeduction);
+                }
+            }
+
+            // ดึงยอดล่าสุดจากฐานข้อมูล (balance.amount) ก่อนเดิมพันทุกครั้ง
+            fetchServerBalance(userId)
+                .then(function(serverBalance) {
+                    if (serverBalance < totalDeduction) {
+                        showAlert('ยอดเงินไม่เพียงพอ (ต้องการ: ' + totalDeduction.toLocaleString() + ' บาท)');
+                        return;
+                    }
+
+                    // แสดงข้อมูลการเดิมพันใน console เพื่อ debug
+                    console.log('=== Betting Information ===');
+                    console.log('Bet Amount per team:', betAmount);
+                    console.log('Red Active:', redActive);
+                    console.log('Blue Active:', blueActive);
+                    console.log('Total Deduction:', totalDeduction);
+                    console.log('Current Balance from DB:', serverBalance);
+                    console.log('========================');
+
+                    // แสดงหน้าต่างยืนยันแบบสวย
+                    showBettingConfirmation(teamText, betAmount, totalDeduction, function() {
+                        // ส่งข้อมูลการเดิมพัน
+                        processBetting();
+                    });
+                })
+                .catch(function(error) {
+                    console.error('Error fetching server balance:', error);
+                    showAlert('ไม่สามารถดึงยอดเงินล่าสุดได้');
+                });
+        }
+
+        // ฟังก์ชันดึงชื่อจริงของผู้ใช้จากฐานข้อมูล
+        function fetchUserRealName(userId, callback) {
+            fetch('../api/get_user.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data) {
+                    // ลองใช้ username, user_name, name, หรือ full_name ตามลำดับ
+                    var realName = data.data.username || data.data.user_name || data.data.name || data.data.full_name;
+                    callback(realName);
+                } else {
+                    callback(null);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user name:', error);
+                callback(null);
+            });
+        }
+
+        // ฟังก์ชันประมวลผลการเดิมพัน
+        function processBetWithUserName(userId, userName, bettingRed, bettingBlue, totalDeduction) {
+            // ตรวจสอบข้อมูลที่จำเป็น
+            console.log('processBetWithUserName called with:', {
+                userId: userId,
+                userName: userName,
+                bettingRed: bettingRed,
+                bettingBlue: bettingBlue,
+                totalDeduction: totalDeduction
+            });
+            
+            if (!userId) {
+                console.error('Error: userId is required');
+                showAlert('เกิดข้อผิดพลาด: ไม่พบรหัสผู้ใช้');
+                return;
+            }
+            
+            if (!totalDeduction || totalDeduction <= 0) {
+                console.error('Error: totalDeduction is required and must be greater than 0');
+                showAlert('เกิดข้อผิดพลาด: จำนวนเงินไม่ถูกต้อง');
+                return;
+            }
+            
+            // หักเงินก่อน
+            fetch('../api/deduct_balance.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    amount: totalDeduction
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // ดึงค่า percentage จากฐานข้อมูล
+                    var currentPercentage = getCurrentVIPPercentage();
+                    
+                    // ถ้า percentage เป็น null ให้ดึงจาก vipLevelsData
+                    if (currentPercentage === null && vipLevelsData.length > 0) {
+                        var modalTitle = document.querySelector('.modal-title');
+                        if (modalTitle) {
+                            var titleText = modalTitle.textContent.trim();
+                            var vipNumber = titleText.replace('อันดับ ', '').replace('Rank ', '').replace('排名 ', '').replace('Xếp hạng ', '');
+                            var vipLevel = 'VIP' + vipNumber;
+                            var levelData = vipLevelsData.find(level => (level.vip_code || level.level) === vipLevel);
+                            if (levelData && levelData.percentage) {
+                                currentPercentage = levelData.percentage;
+                                console.log('✅ Got percentage from vipLevelsData:', currentPercentage);
+                            }
+                        }
+                    }
+                    
+                    // ถ้ายังไม่มี percentage ให้ใช้ค่าเริ่มต้น "5"
+                    if (!currentPercentage) {
+                        currentPercentage = '5';
+                        console.log('⚠️ Using default percentage:', currentPercentage);
+                    }
+                    
+                    // ดึง VIP level จาก modal title
+                    var modalTitle2 = document.querySelector('.modal-title');
+                    var vipLevel = 'VIP1';
+                    if (modalTitle2) {
+                        var titleText = modalTitle2.textContent.trim();
+                        var vipNumber = titleText.replace('อันดับ ', '').replace('Rank ', '').replace('排名 ', '').replace('Xếp hạng ', '');
+                        vipLevel = 'VIP' + vipNumber;
+                    }
+                    
+                    console.log('✅ Saving bet with VIP level:', vipLevel, 'Percentage:', currentPercentage);
+                    
+                    // บันทึกประวัติการเดิมพัน
+                    return fetch('../api/add_bet_history.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: userId,
+                            user_name: userName,
+                            betting_red: bettingRed,
+                            betting_blue: bettingBlue,
+                            status: 'pending',
+                            jackpot: 0,
+                            percentage: currentPercentage,
+                            vip_level: vipLevel
+                        })
+                    });
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Bet history response:', data);
+                if (data.success) {
+                    // ดึงยอดจากฐานข้อมูลใหม่เสมอ ห้ามคำนวณจากข้อความบนหน้าจอ
+                    loadUserBalance();
+                    
+                    // เริ่มระบบอัปเดตสถานะอัตโนมัติ
+                    if (data.bet_id) {
+                        console.log('Starting auto update with bet_id:', data.bet_id);
+                        startAutoStatusUpdate(data.bet_id, bettingRed, bettingBlue);
+                    } else {
+                        console.error('No bet_id received from API');
+                    }
+                    
+                    showAlert('เสร็จสิ้นแล้ว');
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('เกิดข้อผิดพลาด: ' + error.message);
+            });
+        }
+
+        // ดึงยอดเงินจริงจากฐานข้อมูล (ตาราง balance.amount ตาม user_id)
+        function fetchServerBalance(userId) {
+            return fetch('../api/get_user_balance.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to load balance');
+                }
+                return parseFloat(data.balance || 0);
+            });
+        }
+
+        // โหลดยอดเงินของผู้ใช้
+        function loadUserBalance(options = {}) {
+            const { silent = false } = options;
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName') || localStorage.getItem('username');
+            const balanceElement = document.getElementById('userBalance');
+            
+            if (!userId) {
+                if (balanceElement) balanceElement.textContent = 'กรุณาเข้าสู่ระบบ';
+                console.log('No userId found in localStorage');
+                return;
+            }
+
+            if (isLoadingModalBalance) return;
+            isLoadingModalBalance = true;
+            
+            console.log('Loading balance for userId:', userId, 'userName:', userName);
+            
+            fetch('../api/get_user_balance.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('API response:', data);
+                if (data.success) {
+                    const balance = parseFloat(data.balance || 0);
+                    const nextText = balance.toLocaleString('th-TH') + '฿';
+                    // อัปเดตเฉพาะตอนข้อมูลเปลี่ยน ลดการกระพริบ/กระตุก
+                    if (balanceElement && (!silent || nextText !== lastModalBalanceText)) {
+                        balanceElement.textContent = nextText;
+                        lastModalBalanceText = nextText;
+                    }
+                    console.log('Balance loaded from database:', balance);
+                } else {
+                    if (balanceElement) balanceElement.textContent = '0฿';
+                    console.log('Failed to load balance:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading balance:', error);
+                if (balanceElement) balanceElement.textContent = '0฿';
+            })
+            .finally(() => {
+                isLoadingModalBalance = false;
+            });
+        }
+
+        // ฟังก์ชันแสดง Toast Notification (หน้าต่างสีดำแจ้งเตือน)
+        function showAlert(message) {
+            var toast = document.getElementById('toastNotification');
+            var toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.style.display = 'block';
+            
+            // ซ่อนหน้าต่างอัตโนมัติหลัง 2 วินาที
+            setTimeout(function() {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+
+        // ฟังก์ชันเริ่มระบบอัปเดตสถานะอัตโนมัติ
+        function startAutoStatusUpdate(betId, bettingRed, bettingBlue) {
+            console.log('Starting auto status update for bet ID:', betId);
+            
+            // ไม่ให้เริ่ม countdown ใหม่ในหน้า pkg44.html
+            // ให้ countdown ทำงานในหน้า order.html เท่านั้น
+            console.log('Countdown will be handled in order.html page only');
+            
+            // ไม่ให้เริ่ม countdown ใหม่เลย
+            return;
+        }
+
+        // ฟังก์ชันอัปเดตสถานะการเดิมพัน
+        function updateBetStatus(betId, bettingRed, bettingBlue) {
+            console.log('Updating bet status for ID:', betId);
+            console.log('Betting Red:', bettingRed, 'Betting Blue:', bettingBlue);
+            
+            // สุ่มผลลัพธ์ (แดงชนะ หรือ น้ำเงินชนะ) ใช้ seed ที่คงที่
+            var seed = betId; // ใช้ betId เป็น seed เพื่อให้ผลลัพธ์เหมือนเดิมเสมอ
+            var random = Math.sin(seed) * 10000;
+            var randomValue = random - Math.floor(random);
+            var winner = randomValue < 0.5 ? 'red' : 'blue';
+            var status = '';
+            
+            console.log('Random winner:', winner);
+            
+            // ถ้าเดิมพันทั้งสองทีม ให้อัปเดตสถานะตามทีมที่ชนะ
+            if (bettingRed > 0 && bettingBlue > 0) {
+                if (winner === 'red') {
+                    status = 'red win'; // แดงชนะ
+                } else {
+                    status = 'blue win'; // น้ำเงินชนะ
+                }
+            } else if (bettingRed > 0) {
+                // เดิมพันเฉพาะแดง
+                if (winner === 'red') {
+                    status = 'red win'; // แดงชนะ
+                } else {
+                    status = 'lose'; // แดงแพ้ (น้ำเงินชนะ)
+                }
+            } else if (bettingBlue > 0) {
+                // เดิมพันเฉพาะน้ำเงิน
+                if (winner === 'blue') {
+                    status = 'blue win'; // น้ำเงินชนะ
+                } else {
+                    status = 'lose'; // น้ำเงินแพ้ (แดงชนะ)
+                }
+            }
+            
+            console.log('Final status:', status);
+            
+            // คำนวณกำไร
+            var profitAmount = 0;
+            if (status === 'red win' && bettingRed > 0) {
+                profitAmount = bettingRed * 0.05; // 5% ของเงินเดิมพันแดง
+            } else if (status === 'blue win' && bettingBlue > 0) {
+                profitAmount = bettingBlue * 0.05; // 5% ของเงินเดิมพันน้ำเงิน
+            }
+            
+            console.log('Profit amount:', profitAmount);
+            
+            // ส่งคำขออัปเดตสถานะ
+            var requestData = {
+                bet_id: betId,
+                status: status,
+                profit: profitAmount
+            };
+            
+            console.log('Sending update request:', requestData);
+            
+            fetch('../api/update_bet_status.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Bet status updated successfully:', status);
+                    // ไม่แสดงผลลัพธ์ในหน้า pkg44.html
+                    // ให้แสดงผลลัพธ์ในหน้า order.html เท่านั้น
+                } else {
+                    console.error('Failed to update bet status:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating bet status:', error);
+            });
+        }
+
+        // ฟังก์ชันแสดงหน้าต่างยืนยันการเดิมพันแบบสวย
+        function showBettingConfirmation(teamText, betAmount, totalDeduction, callback) {
+            // สร้าง modal overlay
+            var overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: fadeIn 0.3s ease;
+            `;
+
+            // สร้าง modal content
+            var modal = document.createElement('div');
+            modal.style.cssText = `
+                background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+                border-radius: 20px;
+                padding: 30px;
+                max-width: 400px;
+                width: 90%;
+                border: 1px solid #333;
+                animation: slideIn 0.3s ease;
+                position: relative;
+            `;
+
+            // ไม่สร้างไอคอน
+
+            // สร้าง title
+            var title = document.createElement('h3');
+            title.style.cssText = `
+                color: #fff;
+                text-align: center;
+                margin: 0 0 15px 0;
+                font-size: 16px;
+                font-weight: normal;
+            `;
+            title.textContent = 'ยืนยันการเดิมพัน';
+
+            // สร้าง message
+            var message = document.createElement('div');
+            message.style.cssText = `
+                color: #ccc;
+                text-align: center;
+                margin-bottom: 25px;
+                line-height: 1.6;
+                font-size: 14px;
+            `;
+            
+            // สร้างข้อความแสดงทีมและจำนวนเงิน
+            var teamDisplayText = '';
+            if (teamText.includes('ทีมสีแดง') && teamText.includes('ทีมสีน้ำเงิน')) {
+                // ถ้าเดิมพันทั้งสองทีม
+                teamDisplayText = `ทีมสีแดง ${betAmount.toLocaleString()} บาท ทีมสีน้ำเงิน ${betAmount.toLocaleString()} บาท`;
+            } else {
+                // ถ้าเดิมพันทีมเดียว
+                teamDisplayText = `${teamText} ${betAmount.toLocaleString()} บาท`;
+            }
+            
+            message.innerHTML = `
+                <div style="margin-bottom: 10px;">
+                    <span style="color: #fff;">${teamDisplayText}</span>
+                </div>
+            `;
+
+            // สร้างปุ่ม
+            var buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = `
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+            `;
+
+            // ปุ่ม Cancel
+            var cancelBtn = document.createElement('button');
+            cancelBtn.style.cssText = `
+                background: #444;
+                color: #fff;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: normal;
+                transition: all 0.3s ease;
+                min-width: 80px;
+            `;
+            cancelBtn.textContent = 'ยกเลิก';
+            cancelBtn.onmouseover = function() {
+                this.style.background = '#555';
+                this.style.transform = 'translateY(-2px)';
+            };
+            cancelBtn.onmouseout = function() {
+                this.style.background = '#444';
+                this.style.transform = 'translateY(0)';
+            };
+            cancelBtn.onclick = function() {
+                document.body.removeChild(overlay);
+            };
+
+            // ปุ่ม OK
+            var okBtn = document.createElement('button');
+            okBtn.style.cssText = `
+                background: linear-gradient(135deg, #4CAF50, #45a049);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: normal;
+                transition: all 0.3s ease;
+                min-width: 80px;
+            `;
+            okBtn.textContent = 'ยืนยัน';
+            okBtn.onmouseover = function() {
+                this.style.background = 'linear-gradient(135deg, #45a049, #3d8b40)';
+                this.style.transform = 'translateY(-2px)';
+            };
+            okBtn.onmouseout = function() {
+                this.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                this.style.transform = 'translateY(0)';
+            };
+            okBtn.onclick = function() {
+                document.body.removeChild(overlay);
+                if (callback) callback();
+            };
+
+            // รวม elements
+            buttonContainer.appendChild(cancelBtn);
+            buttonContainer.appendChild(okBtn);
+            modal.appendChild(title);
+            modal.appendChild(message);
+            modal.appendChild(buttonContainer);
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            // เพิ่ม CSS animations
+            var style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes slideIn {
+                    from { 
+                        opacity: 0;
+                        transform: translateY(-30px) scale(0.9);
+                    }
+                    to { 
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Timer System - นับเวลาถอยหลังพร้อม localStorage
+        var CYCLE_DURATION = 360; // รอบเต็ม = 6 นาที (300 วินาทีนับถอยหลัง + 60 วินาทีค้าง)
+        var PRIZE_COUNTDOWN = 300; // 5:00 นาที
+        var PRIZE_WAIT = 60; // ค้าง 1 นาที
+        var JOIN_COUNTDOWN = 285; // 4:45 นาที (285 วินาที)
+
+        function initializeTimer() {
+            var now = Math.floor(Date.now() / 1000); // เวลาปัจจุบันเป็นวินาที
+            var savedStartTime = localStorage.getItem('timerStartTime');
+            
+            // ลบสถานะเก่าที่อาจทำให้ค้าง
+            localStorage.removeItem('timerState');
+            
+            if (!savedStartTime) {
+                // ครั้งแรกที่เข้า - บันทึกเวลาเริ่มต้น
+                localStorage.setItem('timerStartTime', now);
+                savedStartTime = now;
+            } else {
+                // แปลงเป็นตัวเลข
+                savedStartTime = parseInt(savedStartTime);
+            }
+            
+            // คำนวณว่าผ่านไปกี่วินาทีแล้วในรอบปัจจุบัน
+            var elapsed = (now - savedStartTime) % CYCLE_DURATION;
+            
+            return elapsed;
+        }
+
+        var lastRoundIncrement = localStorage.getItem('lastRoundIncrement') || '0';
+        var roundIncrementTriggered = false;
+        var textShuffleTriggered = false;
+        var autoRefreshTimer = null;
+        var closedStateStartTime = null;
+        var autoRefreshCountdown = null;
+        var modalBalanceRefreshInterval = null;
+        var isLoadingModalBalance = false;
+        var lastModalBalanceText = '';
+        var lastPrizeAutoUpdateCycle = localStorage.getItem('lastPrizeAutoUpdateCycle') || '-1';
+        var prizeUpdateRetryInterval = null;
+        var lastPrizeTriggerAt = 0;
+
+        function updateTimers() {
+            var joinTimerElement = document.getElementById('join-timer');
+            var prizeTimerElement = document.getElementById('prize-timer');
+            
+            // ตรวจสอบว่า elements มีอยู่จริงหรือไม่
+            if (!joinTimerElement || !prizeTimerElement) {
+                return;
+            }
+            
+            var now = Math.floor(Date.now() / 1000);
+            var savedStartTime = localStorage.getItem('timerStartTime');
+            
+            // แปลงเป็นตัวเลข
+            if (savedStartTime) {
+                savedStartTime = parseInt(savedStartTime);
+            } else {
+                savedStartTime = now;
+                localStorage.setItem('timerStartTime', now);
+            }
+            
+            var elapsed = (now - savedStartTime) % CYCLE_DURATION;
+            var currentCycle = Math.floor((now - savedStartTime) / CYCLE_DURATION);
+            
+            
+
+            // ตรวจสอบว่าเข้าสู่รอบใหม่หรือไม่ (elapsed กลับมาเริ่มจาก 0)
+            if (elapsed < 5 && !roundIncrementTriggered) {
+                // ตรวจสอบว่าเคยบวกรอบนี้แล้วหรือไม่
+                if (lastRoundIncrement !== currentCycle.toString()) {
+                    // บวกรอบใหม่
+                    incrementRound();
+                    lastRoundIncrement = currentCycle.toString();
+                    localStorage.setItem('lastRoundIncrement', lastRoundIncrement);
+                    roundIncrementTriggered = true;
+                    
+                    // ลบสถานะข้อความสลับเมื่อเริ่มรอบใหม่
+                    localStorage.removeItem('textShuffleState');
+                }
+            } else if (elapsed >= 5) {
+                roundIncrementTriggered = false;
+            }
+
+            // ตรวจสอบการสลับข้อความเมื่อเวลาการเข้าร่วมปิดแล้ว
+            if (elapsed >= JOIN_COUNTDOWN && !textShuffleTriggered) {
+                // สลับข้อความเมื่อเวลาการเข้าร่วมปิดแล้ว
+                shuffleVIPTexts();
+                textShuffleTriggered = true;
+                
+                // เริ่มนับเวลาสถานะปิด
+                if (!closedStateStartTime) {
+                    closedStateStartTime = now;
+                    localStorage.setItem('closedStateStartTime', closedStateStartTime);
+                    
+                    // ตั้งเวลา auto-refresh หลังจาก 1 นาที (60 วินาที)
+                    autoRefreshTimer = setTimeout(function() {
+                        // บวกรอบใหม่ก่อน
+                        incrementRound();
+                        
+                        // ลบสถานะปิด
+                        localStorage.removeItem('closedStateStartTime');
+                        localStorage.removeItem('textShuffleState');
+                        
+                        // เริ่มรอบใหม่โดยการรีเซ็ตเวลาเริ่มต้น
+                        var newStartTime = Math.floor(Date.now() / 1000);
+                        localStorage.setItem('timerStartTime', newStartTime);
+                        
+                        // อัปเดตข้อมูลเฉพาะส่วนโดยไม่รีโหลดหน้า (ป้องกัน modal หาย)
+                        updateTimers();
+                        forceLoadRoundNumber();
+                    }, 60000); // 60 วินาที
+                    
+                    // เริ่มนับถอยหลังสำหรับ auto-refresh
+                    startAutoRefreshCountdown();
+                }
+            } else if (elapsed < JOIN_COUNTDOWN) {
+                // รีเซ็ตเมื่อเวลาการเข้าร่วมเปิดใหม่
+                textShuffleTriggered = false;
+                closedStateStartTime = null;
+                localStorage.removeItem('closedStateStartTime');
+                
+                // ยกเลิก auto-refresh timer
+                if (autoRefreshTimer) {
+                    clearTimeout(autoRefreshTimer);
+                    autoRefreshTimer = null;
+                }
+                
+                // ยกเลิก auto-refresh countdown
+                if (autoRefreshCountdown) {
+                    clearInterval(autoRefreshCountdown);
+                    autoRefreshCountdown = null;
+                }
+            }
+
+            // คำนวณเวลาที่เหลือสำหรับ Prize Timer
+            if (elapsed < PRIZE_COUNTDOWN) {
+                // นับถอยหลังจาก 5:00
+                var prizeTimeLeft = PRIZE_COUNTDOWN - elapsed;
+                var minutes = Math.floor(prizeTimeLeft / 60);
+                var seconds = prizeTimeLeft % 60;
+                prizeTimerElement.textContent = 
+                    (minutes < 10 ? '0' : '') + minutes + ':' + 
+                    (seconds < 10 ? '0' : '') + seconds;
+
+                // ช่วงยังไม่หมดเวลา หยุด retry และรอให้หมดจริงก่อนค่อยอัปเดต
+                if (prizeUpdateRetryInterval) {
+                    clearInterval(prizeUpdateRetryInterval);
+                    prizeUpdateRetryInterval = null;
+                }
+                lastPrizeTriggerAt = 0;
+            } else {
+                // ค้างที่ 00:00
+                prizeTimerElement.textContent = '00:00';
+
+                // เมื่อเวลารางวัลหมด ให้ยิงอัปเดตซ้ำทุก 5 วินาทีจนกว่าจะขึ้นรอบใหม่
+                // (กันพลาดจากการโหลดหน้า/เน็ตช้า/แท็บหลับ)
+                var nowMs = Date.now();
+                if (!lastPrizeTriggerAt || nowMs - lastPrizeTriggerAt >= 5000) {
+                    lastPrizeAutoUpdateCycle = currentCycle.toString();
+                    localStorage.setItem('lastPrizeAutoUpdateCycle', lastPrizeAutoUpdateCycle);
+                    lastPrizeTriggerAt = nowMs;
+                    triggerPendingBetsAutoUpdate();
+                }
+            }
+
+            // คำนวณเวลาที่เหลือสำหรับ Join Timer
+            if (elapsed < JOIN_COUNTDOWN) {
+                // นับถอยหลังจาก 4:45
+                var joinTimeLeft = JOIN_COUNTDOWN - elapsed;
+                var minutes = Math.floor(joinTimeLeft / 60);
+                var seconds = joinTimeLeft % 60;
+                joinTimerElement.textContent = 
+                    (minutes < 10 ? '0' : '') + minutes + ':' + 
+                    (seconds < 10 ? '0' : '') + seconds;
+                joinTimerElement.className = 'time-value';
+                
+            } else {
+                // แสดง "ปิดแล้ว"
+                joinTimerElement.textContent = 'ปิดแล้ว';
+                joinTimerElement.className = 'closed-text';
+                
+            }
+        }
+
+
+        // ฟังก์ชันบวกรอบ
+        function incrementRound() {
+            fetch('../api/increment_round.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Round incremented:', data.new_number);
+                    // โหลดข้อมูลรอบใหม่ทันที
+                    loadRoundNumber();
+                } else {
+                    console.error('Failed to increment round:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error incrementing round:', error);
+            });
+        }
+
+        function triggerPendingBetsAutoUpdate() {
+            const currentCycle = localStorage.getItem('lastPrizeAutoUpdateCycle') || '0';
+            fetch(`../api/auto_update_pending_bets.php?trigger=prize_end&t=${Date.now()}`, {
+                method: 'POST',
+                cache: 'no-store',
+                keepalive: true,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    trigger: 'prize_end',
+                    cycle: currentCycle
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.success) {
+                    console.log('[PRIZE_END] pending update success:', data.updated_count);
+                    // ส่งสัญญาณให้หน้า order รีเฟรชข้อมูลทันที (ถ้าเปิดอยู่)
+                    try {
+                        localStorage.setItem('refresh_order_page', Date.now().toString());
+                    } catch (e) {
+                        console.error('Error sending refresh_order_page signal:', e);
+                    }
+                } else {
+                    console.error('Auto update pending bets failed:', data && data.message ? data.message : 'unknown');
+                }
+            })
+            .catch(error => {
+                console.error('Error auto updating pending bets:', error);
+                // retry ทันทีถ้าคำขอล้มเหลว
+                setTimeout(() => {
+                    fetch(`../api/auto_update_pending_bets.php?trigger=prize_end&t=${Date.now()}`, {
+                        method: 'POST',
+                        cache: 'no-store',
+                        keepalive: true,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ trigger: 'prize_end', cycle: currentCycle })
+                    })
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d && d.success) {
+                            console.log('[PRIZE_END][RETRY] pending update success:', d.updated_count);
+                            try {
+                                localStorage.setItem('refresh_order_page', Date.now().toString());
+                            } catch (e) {}
+                        }
+                    })
+                    .catch(() => {});
+                }, 1200);
+            });
+        }
+
+        // เริ่มต้นระบบเวลา
+        updateTimers(); // อัพเดททันที
+        setInterval(updateTimers, 1000); // อัพเดททุก 1 วินาที
+        
+        // อัปเดตวันที่ทุกๆ วินาที
+        setInterval(updateVIPDates, 1000);
+        
+        // โหลดรอบจากฐานข้อมูลทุกๆ 5 วินาที
+        setInterval(forceLoadRoundNumber, 5000);
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('bettingModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // ฟังก์ชันโหลดข้อมูลรอบ
+        function loadRoundNumber() {
+            fetch('../api/get_round.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        const roundElement = document.querySelector('.round-label');
+                        if (roundElement) {
+                            roundElement.innerHTML = '<span data-lang-key="round">' + t('round') + '</span> <span id="roundNumber">' + data.data.number + '</span>';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading round number:', error);
+                });
+        }
+
+        // ฟังก์ชันบังคับโหลดรอบจากฐานข้อมูล
+        function forceLoadRoundNumber() {
+            fetch('../api/get_round.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        const roundElement = document.querySelector('.round-label');
+                        if (roundElement) {
+                            roundElement.innerHTML = '<span data-lang-key="round">' + t('round') + '</span> <span id="roundNumber">' + data.data.number + '</span>';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading round number:', error);
+                });
+        }
+
+        // ฟังก์ชันโหลดข้อมูล VIP levels
+        function loadVIPLevels() {
+            fetch('../api/get_level_data.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        // เก็บข้อมูลในตัวแปร global พร้อมกำหนดรหัส VIP มาตรฐานตามลำดับ
+                        vipLevelsData = data.data.map((item, index) => ({
+                            ...item,
+                            vip_code: `VIP${index + 1}`
+                        }));
+
+                        // ผูกข้อมูลตามลำดับแถวของ level_data -> VIP1..VIP10
+                        // โดยแสดงชื่อในช่อง level แทนข้อความ VIP เดิม
+                        const vipSections = document.querySelectorAll('.content-section');
+                        vipSections.forEach((section, index) => {
+                            const level = vipLevelsData[index];
+                            if (!level) return;
+
+                            const vipLabel = section.querySelector('.vip-label');
+                            if (vipLabel) {
+                                vipLabel.textContent = level.level || level.vip_code;
+                                vipLabel.setAttribute('data-vip-number', String(index + 1));
+                            }
+
+                            // อัปเดตยอดเงินขั้นต่ำ
+                            const minAmountElement = section.querySelector('.vip-minimum-black');
+                            if (minAmountElement) {
+                                minAmountElement.innerHTML = `<span data-lang-key="minimum">${t('minimum')}</span>: ${parseFloat(level.minimum_amount)}`;
+                            }
+
+                            // อัปเดตข้อความฝั่งแดง (news-text ด้านซ้าย)
+                            const redTextElements = section.querySelectorAll('.news-text > div:first-child');
+                            if (redTextElements.length > 0) {
+                                redTextElements[0].textContent = level.red;
+                            }
+
+                            // อัปเดตข้อความฝั่งน้ำเงิน (news-text ด้านขวา)
+                            const blueTextElements = section.querySelectorAll('.news-text > div:last-child');
+                            if (blueTextElements.length > 0) {
+                                blueTextElements[0].textContent = level.blue;
+                            }
+                        });
+                        
+                        // ใช้ข้อความจากฐานข้อมูลตามปกติ (จะสลับเมื่อหมดเวลารอบเท่านั้น)
+                    } else {
+                        console.error('Error loading VIP levels:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching VIP levels:', error);
+                });
+        }
+
+        let vipTextRotateStep = 0;
+
+        // ฟังก์ชันสลับข้อความทีมแดง/น้ำเงิน 1 ครั้งต่อการเรียก
+        function shuffleVIPTexts() {
+            if (vipLevelsData.length === 0) return;
+
+            const sectionCount = document.querySelectorAll('.content-section').length;
+            const dataLength = vipLevelsData.length;
+            const rotatedRedTexts = [];
+            const rotatedBlueTexts = [];
+
+            for (let i = 0; i < sectionCount; i++) {
+                const redIdx = (i + vipTextRotateStep) % dataLength;
+                const blueIdx = (i - vipTextRotateStep + dataLength * 10) % dataLength;
+                rotatedRedTexts.push(vipLevelsData[redIdx]?.red || '');
+                rotatedBlueTexts.push(vipLevelsData[blueIdx]?.blue || '');
+            }
+
+            applyShuffledTexts(rotatedRedTexts, rotatedBlueTexts);
+            vipTextRotateStep = (vipTextRotateStep + 1) % dataLength;
+        }
+
+        // ฟังก์ชันใช้ข้อความที่สลับแล้ว
+        function applyShuffledTexts(redTexts, blueTexts) {
+            const vipSections = document.querySelectorAll('.content-section');
+            vipSections.forEach((section, index) => {
+                const vipLabel = section.querySelector('.vip-label');
+                if (vipLabel) {
+                    // อัปเดตข้อความฝั่งแดง (news-text ด้านซ้าย)
+                    const redTextElements = section.querySelectorAll('.news-text > div:first-child');
+                    if (redTextElements.length > 0 && redTexts[index]) {
+                        redTextElements[0].textContent = redTexts[index];
+                    }
+                    
+                    // อัปเดตข้อความฝั่งน้ำเงิน (news-text ด้านขวา)
+                    const blueTextElements = section.querySelectorAll('.news-text > div:last-child');
+                    if (blueTextElements.length > 0 && blueTexts[index]) {
+                        blueTextElements[0].textContent = blueTexts[index];
+                    }
+                }
+            });
+        }
+
+        // ฟังก์ชันเริ่มนับถอยหลังสำหรับ auto-refresh
+        function startAutoRefreshCountdown() {
+            var countdown = 60; // 60 วินาที
+            
+            autoRefreshCountdown = setInterval(function() {
+                countdown--;
+                
+                // แสดงเวลานับถอยหลังใน console (สำหรับ debug)
+                console.log('Auto-refresh in: ' + countdown + ' seconds');
+                
+                if (countdown <= 0) {
+                    clearInterval(autoRefreshCountdown);
+                    autoRefreshCountdown = null;
+                }
+            }, 1000);
+        }
+
+        // ฟังก์ชันตรวจสอบสถานะการล็อกอิน
+        function checkLoginStatus() {
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName') || localStorage.getItem('username');
+            
+            console.log('Checking login status - userId:', userId, 'userName:', userName);
+            
+            if (userId) {
+                console.log('✅ User is logged in');
+                // โหลดยอดเงินของผู้ใช้
+                loadUserBalance();
+            } else {
+                console.log('❌ User not logged in');
+                // แสดงข้อความให้ล็อกอิน
+                const balanceElement = document.getElementById('userBalance');
+                if (balanceElement) {
+                    balanceElement.textContent = 'กรุณาเข้าสู่ระบบ';
+                }
+            }
+        }
+
+        // ฟังก์ชันอัปเดตวันที่ปัจจุบัน
+        function updateVIPDates() {
+            const now = new Date();
+            const thaiYear = now.getFullYear() + 543; // แปลงเป็นปี พ.ศ.
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            
+            // คำนวณเวลาที่บวกเข้าไป (ทุกๆ 5 นาที)
+            const baseTime = new Date();
+            baseTime.setHours(9, 15, 0, 0); // เริ่มต้นที่ 09:15:00
+            
+            // คำนวณจำนวนรอบ 5 นาทีที่ผ่านไป
+            const timeDiff = now.getTime() - baseTime.getTime();
+            const minutesPassed = Math.floor(timeDiff / (1000 * 60 * 5)); // ทุกๆ 5 นาที
+            const totalMinutes = minutesPassed * 5;
+            
+            // บวกเวลาที่คำนวณได้
+            const newTime = new Date(baseTime.getTime() + (totalMinutes * 60 * 1000));
+            const hours = String(newTime.getHours()).padStart(2, '0');
+            const minutes = String(newTime.getMinutes()).padStart(2, '0');
+            const seconds = String(newTime.getSeconds()).padStart(2, '0');
+            
+            const currentDateTime = `${thaiYear}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            
+            // อัปเดตวันที่ในทุก VIP section
+            const vipTimeElements = document.querySelectorAll('.vip-time');
+            vipTimeElements.forEach(element => {
+                element.textContent = currentDateTime;
+            });
+        }
+
+        // Auto-logout functionality (10 minutes inactivity)
+        let inactivityTimer;
+        const LOGOUT_TIME = 10 * 60 * 1000; // 10 minutes in milliseconds
+        
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                localStorage.removeItem('userId');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('username');
+                window.location.href = '../login.html';
+            }, LOGOUT_TIME);
+        }
+        
+        function trackUserActivity() {
+            resetInactivityTimer();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // เริ่ม auto-logout timer
+            resetInactivityTimer();
+            
+            // ติดตามการใช้งาน
+            document.addEventListener('mousemove', trackUserActivity);
+            document.addEventListener('keypress', trackUserActivity);
+            document.addEventListener('keydown', trackUserActivity);
+            document.addEventListener('click', trackUserActivity);
+            document.addEventListener('scroll', trackUserActivity);
+            document.addEventListener('touchstart', trackUserActivity);
+            document.addEventListener('touchmove', trackUserActivity);
+            
+            // ตรวจสอบการล็อกอินเมื่อโหลดหน้า
+            checkLoginStatus();
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+            
+            // เริ่มต้นระบบเวลา
+            initializeTimer();
+            
+            // ตรวจสอบสถานะปิดจาก localStorage
+            var savedClosedState = localStorage.getItem('closedStateStartTime');
+            if (savedClosedState) {
+                var now = Math.floor(Date.now() / 1000);
+                var closedTime = parseInt(savedClosedState);
+                var timeSinceClosed = now - closedTime;
+                
+                // ถ้าปิดแล้วเกิน 1 นาที ให้เริ่มรอบใหม่
+                if (timeSinceClosed >= 60) {
+                    // บวกรอบใหม่ก่อน
+                    incrementRound();
+                    
+                    // ลบสถานะปิด
+                    localStorage.removeItem('closedStateStartTime');
+                    localStorage.removeItem('textShuffleState');
+                    
+                    // เริ่มรอบใหม่โดยการรีเซ็ตเวลาเริ่มต้น
+                    var newStartTime = now;
+                    localStorage.setItem('timerStartTime', newStartTime);
+                    
+                    // อัปเดตข้อมูลเฉพาะส่วนโดยไม่รีโหลดหน้า (ป้องกัน modal หาย)
+                    updateTimers();
+                    forceLoadRoundNumber();
+                    return;
+                } else {
+                    // ตั้งเวลา auto-refresh ที่เหลือ
+                    var remainingTime = 60 - timeSinceClosed;
+                    autoRefreshTimer = setTimeout(function() {
+                        // บวกรอบใหม่ก่อน
+                        incrementRound();
+                        
+                        // ลบสถานะปิด
+                        localStorage.removeItem('closedStateStartTime');
+                        localStorage.removeItem('textShuffleState');
+                        
+                        // เริ่มรอบใหม่โดยการรีเซ็ตเวลาเริ่มต้น
+                        var newStartTime = Math.floor(Date.now() / 1000);
+                        localStorage.setItem('timerStartTime', newStartTime);
+                        
+                        // อัปเดตข้อมูลเฉพาะส่วนโดยไม่รีโหลดหน้า (ป้องกัน modal หาย)
+                        updateTimers();
+                        forceLoadRoundNumber();
+                    }, remainingTime * 1000);
+                }
+            }
+            
+            // ตรวจสอบสถานะเวลาปัจจุบันและแสดงผลที่ถูกต้อง
+            setTimeout(function() {
+                var now = Math.floor(Date.now() / 1000);
+                var savedStartTime = localStorage.getItem('timerStartTime');
+                
+                if (savedStartTime) {
+                    savedStartTime = parseInt(savedStartTime);
+                    var totalElapsed = now - savedStartTime;
+                    var elapsed = totalElapsed % CYCLE_DURATION;
+                    
+                    // ตรวจสอบว่าต้องเริ่มรอบใหม่หรือไม่ (ถ้าเวลาผ่านไปเกิน 1 รอบ)
+                    if (totalElapsed >= CYCLE_DURATION) {
+                        // บวกรอบใหม่ก่อน
+                        incrementRound();
+                        
+                        // เริ่มรอบใหม่โดยการรีเซ็ตเวลาเริ่มต้น
+                        var newStartTime = now;
+                        localStorage.setItem('timerStartTime', newStartTime);
+                        localStorage.removeItem('textShuffleState');
+                        // อัปเดตข้อมูลเฉพาะส่วนโดยไม่รีโหลดหน้า (ป้องกัน modal หาย)
+                        updateTimers();
+                        forceLoadRoundNumber();
+                        return;
+                    }
+                    
+                    // ตรวจสอบสถานะปิดจาก localStorage
+                    var savedClosedState = localStorage.getItem('closedStateStartTime');
+                    if (savedClosedState) {
+                        var closedTime = parseInt(savedClosedState);
+                        var timeSinceClosed = now - closedTime;
+                        
+                        // ถ้าปิดแล้วเกิน 1 นาที ให้เริ่มรอบใหม่
+                        if (timeSinceClosed >= 60) {
+                            // บวกรอบใหม่ก่อน
+                            incrementRound();
+                            
+                            // ลบสถานะปิด
+                            localStorage.removeItem('closedStateStartTime');
+                            localStorage.removeItem('textShuffleState');
+                            
+                            // เริ่มรอบใหม่โดยการรีเซ็ตเวลาเริ่มต้น
+                            var newStartTime = now;
+                            localStorage.setItem('timerStartTime', newStartTime);
+                            
+                            // อัปเดตข้อมูลเฉพาะส่วนโดยไม่รีโหลดหน้า (ป้องกัน modal หาย)
+                            updateTimers();
+                            forceLoadRoundNumber();
+                            return;
+                        }
+                    }
+                    
+                    // ตรวจสอบสถานะ Join Timer
+                    var joinTimerElement = document.getElementById('join-timer');
+                    if (joinTimerElement) {
+                        if (elapsed >= JOIN_COUNTDOWN) {
+                            // แสดง "ปิดแล้ว" เมื่อเวลาหมด
+                            joinTimerElement.textContent = 'ปิดแล้ว';
+                            
+                            // ตั้งค่า textShuffleTriggered เป็น true
+                            textShuffleTriggered = true;
+                            
+                            // สลับข้อความถ้ายังไม่ได้สลับ
+                            shuffleVIPTexts();
+                        } else {
+                            // แสดงเวลาที่เหลือ
+                            var joinTimeLeft = JOIN_COUNTDOWN - elapsed;
+                            var joinMinutes = Math.floor(joinTimeLeft / 60);
+                            var joinSeconds = joinTimeLeft % 60;
+                            joinTimerElement.textContent = 
+                                (joinMinutes < 10 ? '0' : '') + joinMinutes + ':' + 
+                                (joinSeconds < 10 ? '0' : '') + joinSeconds;
+                        }
+                    }
+                    
+                    // ตรวจสอบสถานะ Prize Timer
+                    var prizeTimerElement = document.getElementById('prize-timer');
+                    if (prizeTimerElement) {
+                        if (elapsed < PRIZE_COUNTDOWN) {
+                            // นับถอยหลังจาก 5:00
+                            var prizeTimeLeft = PRIZE_COUNTDOWN - elapsed;
+                            var prizeMinutes = Math.floor(prizeTimeLeft / 60);
+                            var prizeSeconds = prizeTimeLeft % 60;
+                            prizeTimerElement.textContent = 
+                                (prizeMinutes < 10 ? '0' : '') + prizeMinutes + ':' + 
+                                (prizeSeconds < 10 ? '0' : '') + prizeSeconds;
+                        } else {
+                            // แสดง 00:00 เมื่อเวลาหมด
+                            prizeTimerElement.textContent = '00:00';
+                        }
+                    }
+                }
+            }, 200);
+            
+            // โหลดข้อมูลรอบ
+            loadRoundNumber();
+            
+            // โหลดข้อมูล VIP levels
+            loadVIPLevels();
+            
+            // อัปเดตวันที่ปัจจุบัน
+            updateVIPDates();
+            
+            
+            // อัปเดตเวลาเริ่มต้นทันที
+            updateTimers();
+            
+            // ตรวจสอบสถานะเวลาหลังจาก refresh
+            setTimeout(function() {
+                updateTimers();
+                // บังคับโหลดรอบจากฐานข้อมูล
+                forceLoadRoundNumber();
+            }, 100);
+            
+            fetch('footer.html')
+                .then(function(response) { return response.text(); })
+                .then(function(data) {
+                    document.getElementById('footer-container').innerHTML = data;
+                    
+                    // Wait for footer to render, then set active state
+                    setTimeout(function() {
+                        var currentNavItem = document.querySelector('.nav-item[href="pkg44.html"]');
+                        if (currentNavItem) {
+                            currentNavItem.classList.add('active');
+                        }
+                    }, 100);
+                })
+                .catch(function(error) {
+                    console.error('Error loading footer:', error);
+                });
+
+            // PK Panel functionality - กดที่พื้นหลังสีแดง/น้ำเงิน
+            var pkLeftPanels = document.querySelectorAll('.pk-left-panel');
+            var pkRightPanels = document.querySelectorAll('.pk-right-panel');
+            
+            pkLeftPanels.forEach(function(panel, index) {
+                panel.addEventListener('click', function() {
+                    // หา VIP level จาก parent section
+                    var vipSection = panel.closest('.content-section');
+                    var vipLabel = vipSection ? vipSection.querySelector('.vip-label') : null;
+                    var vipNumber = vipLabel ? (vipLabel.getAttribute('data-vip-number') || String(index + 1)) : '1';
+                    
+                    // เปลี่ยน modal title
+                    var modalTitle = document.querySelector('.modal-title');
+                    if (modalTitle) {
+                        modalTitle.textContent = 'อันดับ ' + vipNumber;
+                    }
+                    
+                    openModal();
+                });
+            });
+            
+            pkRightPanels.forEach(function(panel, index) {
+                panel.addEventListener('click', function() {
+                    // หา VIP level จาก parent section
+                    var vipSection = panel.closest('.content-section');
+                    var vipLabel = vipSection ? vipSection.querySelector('.vip-label') : null;
+                    var vipNumber = vipLabel ? (vipLabel.getAttribute('data-vip-number') || String(index + 1)) : '1';
+                    
+                    // เปลี่ยน modal title
+                    var modalTitle = document.querySelector('.modal-title');
+                    if (modalTitle) {
+                        modalTitle.textContent = 'อันดับ ' + vipNumber;
+                    }
+                    
+                    openModal();
+                });
+            });
+
+            // PK Button functionality - กดปุ่มแนะนำ
+            var pkButtons = document.querySelectorAll('.pk-button');
+            pkButtons.forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation(); // ป้องกันไม่ให้ trigger parent panel
+                    
+                    // หา VIP level จาก parent section
+                    var vipSection = button.closest('.content-section');
+                    var vipLabel = vipSection ? vipSection.querySelector('.vip-label') : null;
+                    var vipNumber = '1';
+                    if (vipLabel) {
+                        var fallbackIndex = Array.from(document.querySelectorAll('.content-section')).indexOf(vipSection) + 1;
+                        vipNumber = vipLabel.getAttribute('data-vip-number') || String(fallbackIndex > 0 ? fallbackIndex : 1);
+                    }
+                    
+                    // เปลี่ยน modal title
+                    var modalTitle = document.querySelector('.modal-title');
+                    if (modalTitle) {
+                        modalTitle.textContent = 'อันดับ ' + vipNumber;
+                    }
+                    
+                    openModal();
+                });
+            });
+
+            // =============== Language Translation System ===============
+            // Language translations
+            const translations = {
+                en: {
+                    round: 'Round',
+                    redTeam: 'Red Team',
+                    blueTeam: 'Blue Team',
+                    balance: 'Balance',
+                    all: 'All',
+                    cancel: 'Cancel',
+                    joinNow: 'Join Now',
+                    joinTime: 'Join Time:',
+                    prizeTime: 'Prize Time:',
+                    minimum: 'Minimum',
+                    recommendRed: 'Recommend Red',
+                    recommendBlue: 'Recommend Blue',
+                    redOdds: 'Red Team Odds',
+                    blueOdds: 'Blue Team Odds',
+                    rank: 'Rank'
+                },
+                cn: {
+                    round: '回合',
+                    redTeam: '红队',
+                    blueTeam: '蓝队',
+                    balance: '余额',
+                    all: '全部',
+                    cancel: '取消',
+                    joinNow: '立即加入',
+                    joinTime: '加入时间:',
+                    prizeTime: '开奖时间:',
+                    minimum: '最低',
+                    recommendRed: '推荐红色',
+                    recommendBlue: '推荐蓝色',
+                    redOdds: '红队赔率',
+                    blueOdds: '蓝队赔率',
+                    rank: '排名'
+                },
+                th: {
+                    round: 'รอบที่',
+                    redTeam: 'ทีมสีแดง',
+                    blueTeam: 'ทีมสีน้ำเงิน',
+                    balance: 'ยอดคงเหลือ',
+                    all: 'ทั้งหมด',
+                    cancel: 'ยกเลิก',
+                    joinNow: 'เข้าร่วมทันที',
+                    joinTime: 'กำหนดเวลาในการเข้า',
+                    prizeTime: 'กำหนดเวลาออก',
+                    minimum: 'ขั้นต่ำ',
+                    recommendRed: 'แนะนำสีแดง',
+                    recommendBlue: 'แนะนำสีน้ำเงิน',
+                    redOdds: 'อัตราต่อรองทีมแดง',
+                    blueOdds: 'ราคาต่อรองทีมสีน้ำเงิน',
+                    rank: 'อันดับ'
+                },
+                vi: {
+                    round: 'Vòng',
+                    redTeam: 'Đội Đỏ',
+                    blueTeam: 'Đội Xanh',
+                    balance: 'Số dư',
+                    all: 'Tất cả',
+                    cancel: 'Hủy',
+                    joinNow: 'Tham gia ngay',
+                    joinTime: 'Thời gian tham gia:',
+                    prizeTime: 'Thời gian mở thưởng:',
+                    minimum: 'Tối thiểu',
+                    recommendRed: 'Khuyến nghị Đỏ',
+                    recommendBlue: 'Khuyến nghị Xanh',
+                    redOdds: 'Tỷ lệ đội Đỏ',
+                    blueOdds: 'Tỷ lệ đội Xanh',
+                    rank: 'Xếp hạng'
+                }
+            };
+
+            // Get current language from localStorage (set by index.html)
+            let currentLang = localStorage.getItem('preferredLang') || 'th';
+
+            // Get translation
+            function t(key) {
+                return translations[currentLang][key] || key;
+            }
+
+            // Update page language
+            function updatePageLanguage(lang) {
+                currentLang = lang;
+                
+                // Update all elements with data-lang-key
+                const elements = document.querySelectorAll('[data-lang-key]');
+                elements.forEach(element => {
+                    const key = element.getAttribute('data-lang-key');
+                    if (translations[lang][key]) {
+                        // Skip footer elements (will be updated separately)
+                        if (!key.startsWith('footer.')) {
+                            element.textContent = translations[lang][key];
+                        }
+                    }
+                });
+
+                // Update footer labels
+                const footerLabels = document.querySelectorAll('.nav-label[data-lang-key]');
+                footerLabels.forEach(function(label) {
+                    const key = label.getAttribute('data-lang-key');
+                    const keys = key.split('.');
+                    if (keys.length === 2 && keys[0] === 'footer') {
+                        // Get footer translations from index.html style
+                        const footerTranslations = {
+                            en: { home: 'Home', welfare: 'Public Welfare List', chart: 'Anti-Fraud', profile: 'My Profile' },
+                            cn: { home: '首页', welfare: '公共福利列表', chart: '反欺诈', profile: '我的' },
+                            th: { home: 'หน้าแรก', welfare: 'รายการสวัสดิการสาธารณะ', chart: 'ต่อต้านการฉ้อโกง', profile: 'ของฉัน' },
+                            vi: { home: 'Trang chủ', welfare: 'Danh sách phúc lợi công cộng', chart: 'Chống gian lận', profile: 'Của tôi' }
+                        };
+                        if (footerTranslations[lang] && footerTranslations[lang][keys[1]]) {
+                            label.textContent = footerTranslations[lang][keys[1]];
+                        }
+                    }
+                });
+            }
+            
+            // Load saved language on page load
+            updatePageLanguage(currentLang);
+
+            // Update footer language after loading
+            setTimeout(() => {
+                updatePageLanguage(currentLang);
+            }, 200);
+
+            // Override original modal title and odds text to support translation
+            const originalSelectTeam = selectTeam;
+            selectTeam = function(team) {
+                const result = originalSelectTeam(team);
+                
+                // Update odds text with translation
+                var oddsInfo = document.getElementById('oddsInfo');
+                var redBtn = document.getElementById('redTeam');
+                var blueBtn = document.getElementById('blueTeam');
+                
+                if (oddsInfo && redBtn && blueBtn) {
+                    var redActive = redBtn.className.indexOf('active') > -1;
+                    var blueActive = blueBtn.className.indexOf('active') > -1;
+                    var currentPercentage = getCurrentVIPPercentage();
+                    
+                    var oddsText = '';
+                    if (redActive && blueActive) {
+                        oddsText = t('redOdds') + ': <span class="number-black">' + currentPercentage + '</span><br>' + t('blueOdds') + ': <span class="number-black">' + currentPercentage + '</span>';
+                    } else if (redActive) {
+                        oddsText = t('redOdds') + ': <span class="number-black">' + currentPercentage + '</span>';
+                    } else if (blueActive) {
+                        oddsText = t('blueOdds') + ': <span class="number-black">' + currentPercentage + '</span>';
+                    }
+                    oddsInfo.innerHTML = oddsText;
+                }
+                
+                return result;
+            };
+
+            // Override modal title update to support translation
+            document.querySelectorAll('.pk-left-panel, .pk-right-panel, .pk-button').forEach(element => {
+                element.addEventListener('click', function() {
+                    setTimeout(() => {
+                        var modalTitle = document.getElementById('modalTitle');
+                        if (modalTitle) {
+                            var vipNumber = modalTitle.textContent.trim().replace('อันดับ ', '').replace('Rank ', '').replace('排名 ', '').replace('Xếp hạng ', '');
+                            modalTitle.textContent = t('rank') + ' ' + vipNumber;
+                        }
+                    }, 10);
+                });
+            });
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

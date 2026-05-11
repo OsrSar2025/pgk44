@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>เปลี่ยนรหัสผ่านการถอน</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff; min-height: 100vh; }
+        .header { background: #fff; padding: 15px 20px; display: flex; align-items: center; border-bottom: 1px solid #eee; }
+        .back-btn { background: none; border: none; font-size: 18px; color: #333; cursor: pointer; margin-right: 15px; }
+        .header-title { font-size: 18px; font-weight: bold; color: #333; flex: 1; text-align: center; }
+        .form-container { padding: 30px 20px; }
+        .input-group { margin-bottom: 25px; }
+    .input-field { width: 100%; padding: 10px 15px; border: none; border-radius: 25px; font-size: 16px; background: #f9f9f9; transition: all 0.3s; }
+    .input-field:focus { outline: none; background: #fff; box-shadow: 0 0 0 2px rgba(0,0,0,0.07); }
+    .submit-section { padding: 20px; margin-top: 8px; }
+        .submit-btn { width: 100%; background: #000; color: #fff; border: none; height: 45px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; transition: all 0.3s; }
+        .submit-btn:hover { background: #333; }
+        .submit-btn:active { transform: scale(0.98); }
+        /* Custom Alert */
+        .custom-alert { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; opacity: 0; transition: opacity 0.3s; }
+        .custom-alert.show { opacity: 1; animation: fadeIn 0.3s; }
+        .custom-alert-content { background: #222; padding: 18px 32px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+        .custom-alert-message { color: #fff; font-size: 16px; text-align: center; }
+        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -60%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="header-title">เปลี่ยนรหัสผ่านการถอน</div>
+    </div>
+    <div class="form-container">
+        <div class="input-group">
+            <input type="password" id="oldWithdrawPwd" class="input-field" placeholder="กรุณากรอกรหัสผ่านเดิม">
+        </div>
+        <div class="input-group">
+            <input type="password" id="newWithdrawPwd" class="input-field" placeholder="กรุณากรอกรหัสผ่านใหม่">
+        </div>
+        <div class="input-group">
+            <input type="password" id="confirmWithdrawPwd" class="input-field" placeholder="กรุณายืนยันรหัสผ่านใหม่">
+        </div>
+    </div>
+    <div class="submit-section">
+        <button class="submit-btn" onclick="submitWithdrawPwd()">ส่ง</button>
+    </div>
+    <div class="custom-alert" id="customAlert">
+        <div class="custom-alert-content">
+            <div class="custom-alert-message" id="alertMessage"></div>
+        </div>
+    </div>
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in changpwd.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Translation System
+        const translations = {
+            th: {
+                pageTitle: 'เปลี่ยนรหัสผ่านการถอน',
+                oldPassword: 'กรุณากรอกรหัสผ่านเดิม',
+                newPassword: 'กรุณากรอกรหัสผ่านใหม่',
+                confirmPassword: 'กรุณายืนยันรหัสผ่านใหม่',
+                submit: 'ส่ง',
+                pleaseLogin: 'กรุณาเข้าสู่ระบบใหม่',
+                enterOldPassword: 'กรุณากรอกรหัสผ่านเดิม',
+                enterNewPassword: 'กรุณากรอกรหัสผ่านใหม่',
+                minPasswordLength: 'รหัสผ่านใหม่ต้องมีอย่างน้อย 4 หลัก',
+                passwordsNotMatch: 'รหัสผ่านใหม่ไม่ตรงกัน',
+                passwordMustDifferent: 'รหัสผ่านใหม่ต้องแตกต่างจากรหัสผ่านเดิม',
+                changeSuccess: 'เปลี่ยนรหัสผ่านการถอนเรียบร้อยแล้ว',
+                changeFailed: 'เปลี่ยนรหัสผ่านไม่สำเร็จ',
+                connectionError: 'เกิดข้อผิดพลาดในการเชื่อมต่อ'
+            },
+            en: {
+                pageTitle: 'Change Withdrawal Password',
+                oldPassword: 'Please enter old password',
+                newPassword: 'Please enter new password',
+                confirmPassword: 'Please confirm new password',
+                submit: 'Submit',
+                pleaseLogin: 'Please login again',
+                enterOldPassword: 'Please enter old password',
+                enterNewPassword: 'Please enter new password',
+                minPasswordLength: 'New password must be at least 4 digits',
+                passwordsNotMatch: 'New passwords do not match',
+                passwordMustDifferent: 'New password must be different from old password',
+                changeSuccess: 'Withdrawal password changed successfully',
+                changeFailed: 'Password change failed',
+                connectionError: 'Connection error'
+            },
+            cn: {
+                pageTitle: '更改提现密码',
+                oldPassword: '请输入旧密码',
+                newPassword: '请输入新密码',
+                confirmPassword: '请确认新密码',
+                submit: '提交',
+                pleaseLogin: '请重新登录',
+                enterOldPassword: '请输入旧密码',
+                enterNewPassword: '请输入新密码',
+                minPasswordLength: '新密码必须至少4位数字',
+                passwordsNotMatch: '新密码不匹配',
+                passwordMustDifferent: '新密码必须与旧密码不同',
+                changeSuccess: '提现密码更改成功',
+                changeFailed: '密码更改失败',
+                connectionError: '连接错误'
+            },
+            vi: {
+                pageTitle: 'Thay đổi mật khẩu rút tiền',
+                oldPassword: 'Vui lòng nhập mật khẩu cũ',
+                newPassword: 'Vui lòng nhập mật khẩu mới',
+                confirmPassword: 'Vui lòng xác nhận mật khẩu mới',
+                submit: 'Gửi',
+                pleaseLogin: 'Vui lòng đăng nhập lại',
+                enterOldPassword: 'Vui lòng nhập mật khẩu cũ',
+                enterNewPassword: 'Vui lòng nhập mật khẩu mới',
+                minPasswordLength: 'Mật khẩu mới phải có ít nhất 4 chữ số',
+                passwordsNotMatch: 'Mật khẩu mới không khớp',
+                passwordMustDifferent: 'Mật khẩu mới phải khác mật khẩu cũ',
+                changeSuccess: 'Đổi mật khẩu rút tiền thành công',
+                changeFailed: 'Đổi mật khẩu thất bại',
+                connectionError: 'Lỗi kết nối'
+            }
+        };
+
+        // Translation helper function
+        function t(key) {
+            const currentLang = localStorage.getItem('preferredLang') || 'th';
+            return translations[currentLang][key] || translations.th[key] || key;
+        }
+
+        // Update page language
+        function updatePageLanguage() {
+            // Update header title
+            document.querySelector('.header-title').textContent = t('pageTitle');
+            
+            // Update input placeholders
+            document.getElementById('oldWithdrawPwd').placeholder = t('oldPassword');
+            document.getElementById('newWithdrawPwd').placeholder = t('newPassword');
+            document.getElementById('confirmWithdrawPwd').placeholder = t('confirmPassword');
+            
+            // Update submit button
+            document.querySelector('.submit-btn').textContent = t('submit');
+        }
+
+        // ตรวจสอบการเข้าสู่ระบบ
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update page language first
+            updatePageLanguage();
+            
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                window.location.href = '../login.html';
+            }
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+        });
+
+        function goBack() { 
+            window.history.back(); 
+        }
+        
+        function showAlert(message) {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            alertMessage.textContent = message;
+            customAlert.classList.add('show');
+            setTimeout(() => { 
+                customAlert.classList.remove('show'); 
+            }, 2000);
+        }
+        
+        async function submitWithdrawPwd() {
+            const oldPwd = document.getElementById('oldWithdrawPwd').value.trim();
+            const newPwd = document.getElementById('newWithdrawPwd').value.trim();
+            const confirmPwd = document.getElementById('confirmWithdrawPwd').value.trim();
+            const userId = localStorage.getItem('userId');
+            
+            // Validation
+            if (!userId) { 
+                showAlert(t('pleaseLogin')); 
+                return; 
+            }
+            if (!oldPwd) { 
+                showAlert(t('enterOldPassword')); 
+                return; 
+            }
+            if (!newPwd) { 
+                showAlert(t('enterNewPassword')); 
+                return; 
+            }
+            if (newPwd.length < 4) { 
+                showAlert(t('minPasswordLength')); 
+                return; 
+            }
+            if (newPwd !== confirmPwd) { 
+                showAlert(t('passwordsNotMatch')); 
+                return; 
+            }
+            if (oldPwd === newPwd) { 
+                showAlert(t('passwordMustDifferent')); 
+                return; 
+            }
+            
+            // เรียก API เปลี่ยนรหัสผ่านการถอน
+            try {
+                const res = await fetch('../api/update_withdraw_password.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        old_password: oldPwd,
+                        new_password: newPwd
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    showAlert(t('changeSuccess'));
+                    // Clear form
+                    document.getElementById('oldWithdrawPwd').value = '';
+                    document.getElementById('newWithdrawPwd').value = '';
+                    document.getElementById('confirmWithdrawPwd').value = '';
+                    setTimeout(goBack, 1500);
+                } else {
+                    showAlert(data.message || t('changeFailed'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert(t('connectionError'));
+            }
+        }
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

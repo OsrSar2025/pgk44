@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>ความปลอดภัยของบัญชี</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding-bottom: 0;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+            text-align: center;
+        }
+
+        .security-container {
+            padding: 20px;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .security-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 12px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .security-text {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .security-arrow {
+            color: #999;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .logout-section {
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            background: #000000;
+            color: white;
+            border: none;
+            height: 45px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .logout-btn:hover {
+            background: #333333;
+        }
+
+        /* Custom Confirmation Modal */
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confirm-modal.show {
+            display: flex;
+        }
+
+        .confirm-content {
+            background: #2c3e50;
+            border-radius: 12px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .confirm-message {
+            color: #ecf0f1;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .confirm-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .confirm-btn-ok {
+            background: #27ae60;
+            color: white;
+        }
+
+        .confirm-btn-ok:hover {
+            background: #229954;
+            transform: translateY(-1px);
+        }
+
+        .confirm-btn-cancel {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .confirm-btn-cancel:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="header-title">ความปลอดภัยของบัญชี</div>
+    </div>
+
+    <!-- Security Container -->
+    <div class="security-container">
+        <div class="security-item" onclick="openPassword()">
+            <i class="fas fa-lock security-icon"></i>
+            <div class="security-text">รหัสผ่านบัญชี</div>
+            <i class="fas fa-chevron-right security-arrow"></i>
+        </div>
+        
+        <div class="security-item" onclick="openWithdrawalPassword()">
+            <i class="fas fa-lock security-icon"></i>
+            <div class="security-text">รหัสการถอน</div>
+            <i class="fas fa-chevron-right security-arrow"></i>
+        </div>
+        
+        <div class="security-item" onclick="openBankCard()">
+            <i class="fas fa-credit-card security-icon"></i>
+            <div class="security-text">บัตรธนาคาร</div>
+            <i class="fas fa-chevron-right security-arrow"></i>
+        </div>
+    </div>
+
+    <!-- Logout Section -->
+    <div class="logout-section">
+        <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div class="confirm-modal" id="confirmModal">
+        <div class="confirm-content">
+            <div class="confirm-message">คุณต้องการออกจากระบบหรือไม่?</div>
+            <div class="confirm-buttons">
+                <button class="confirm-btn confirm-btn-ok" onclick="confirmLogout()">ตกลง</button>
+                <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirmModal()">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in security.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Translation System
+        const translations = {
+        th: {
+            pageTitle: 'ความปลอดภัยของบัญชี',
+            accountPassword: 'รหัสผ่านบัญชี',
+            withdrawalPassword: 'รหัสการถอน',
+            bankCard: 'บัตรธนาคาร',
+            logout: 'ออกจากระบบ',
+            confirmLogoutMsg: 'คุณต้องการออกจากระบบหรือไม่?',
+            ok: 'ตกลง',
+            cancel: 'ยกเลิก'
+        },
+        en: {
+            pageTitle: 'Account Security',
+            accountPassword: 'Account Password',
+            withdrawalPassword: 'Withdrawal Password',
+            bankCard: 'Bank Card',
+            logout: 'Logout',
+            confirmLogoutMsg: 'Do you want to logout?',
+            ok: 'OK',
+            cancel: 'Cancel'
+        },
+        cn: {
+            pageTitle: '账户安全',
+            accountPassword: '账户密码',
+            withdrawalPassword: '提现密码',
+            bankCard: '银行卡',
+            logout: '退出登录',
+            confirmLogoutMsg: '您要退出登录吗？',
+            ok: '确定',
+            cancel: '取消'
+        },
+        vi: {
+            pageTitle: 'Bảo mật tài khoản',
+            accountPassword: 'Mật khẩu tài khoản',
+            withdrawalPassword: 'Mật khẩu rút tiền',
+            bankCard: 'Thẻ ngân hàng',
+            logout: 'Đăng xuất',
+            confirmLogoutMsg: 'Bạn có muốn đăng xuất không?',
+            ok: 'OK',
+            cancel: 'Hủy'
+        }
+    };
+
+    // Translation helper function
+    function t(key) {
+        const currentLang = localStorage.getItem('preferredLang') || 'th';
+        return translations[currentLang][key] || translations.th[key] || key;
+    }
+
+    // Update page language
+    function updatePageLanguage() {
+        // Update header title
+        document.querySelector('.header-title').textContent = t('pageTitle');
+        
+        // Update security items
+        const securityTexts = document.querySelectorAll('.security-text');
+        if (securityTexts[0]) securityTexts[0].textContent = t('accountPassword');
+        if (securityTexts[1]) securityTexts[1].textContent = t('withdrawalPassword');
+        if (securityTexts[2]) securityTexts[2].textContent = t('bankCard');
+        
+        // Update logout button
+        document.querySelector('.logout-btn').textContent = t('logout');
+        
+        // Update confirmation modal
+        document.querySelector('.confirm-message').textContent = t('confirmLogoutMsg');
+        document.querySelector('.confirm-btn-ok').textContent = t('ok');
+        document.querySelector('.confirm-btn-cancel').textContent = t('cancel');
+    }
+
+    // Auto-logout functionality (10 minutes inactivity)
+    let inactivityTimer;
+    const LOGOUT_TIME = 10 * 60 * 1000;
+    
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(() => {
+            localStorage.clear();
+            window.location.href = '../login.html';
+        }, LOGOUT_TIME);
+    }
+    
+    function trackUserActivity() {
+        resetInactivityTimer();
+    }
+
+    // ตรวจสอบ session userId ก่อนโหลดหน้า
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update page language first
+        updatePageLanguage();
+        
+        // เริ่ม auto-logout timer
+        resetInactivityTimer();
+        
+        // ติดตามการใช้งาน
+        document.addEventListener('mousemove', trackUserActivity);
+        document.addEventListener('keypress', trackUserActivity);
+        document.addEventListener('keydown', trackUserActivity);
+        document.addEventListener('click', trackUserActivity);
+        document.addEventListener('scroll', trackUserActivity);
+        document.addEventListener('touchstart', trackUserActivity);
+        document.addEventListener('touchmove', trackUserActivity);
+        
+        // Initialize auto-update service
+        initializeAutoUpdate();
+        
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            window.location.href = '../login.html';
+        }
+    });
+
+        // Back button functionality
+        function goBack() {
+            window.history.back();
+        }
+
+        // Security item functions
+        function openPassword() {
+            window.location.href = 'pwd.html';
+        }
+
+        function openWithdrawalPassword() {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            fetch('../api/get_withdraw_password.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // ถ้ามีรหัสผ่านการถอนแล้ว ให้ไปหน้าเปลี่ยนรหัส
+                    if (data.has_password) {
+                        window.location.href = 'changpwd.html';
+                    } else {
+                        // ถ้ายังไม่มีรหัสผ่านการถอน ให้ไปหน้าเพิ่มรหัส
+                        window.location.href = 'bindmpwd.html';
+                    }
+                } else {
+                    // ถ้าเกิดข้อผิดพลาด ให้ไปหน้าเพิ่มรหัส (เพราะอาจจะยังไม่มีข้อมูล)
+                    window.location.href = 'bindmpwd.html';
+                }
+            })
+            .catch(() => {
+                // ถ้าเกิดข้อผิดพลาดในการเชื่อมต่อ ให้ไปหน้าเพิ่มรหัส
+                window.location.href = 'bindmpwd.html';
+            });
+        }
+
+        function openBankCard() {
+            window.location.href = 'bank.html';
+        }
+
+        // Logout function
+        function logout() {
+            // Show custom confirmation modal
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        // Close confirmation modal
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+        }
+
+        // Confirm logout
+        function confirmLogout() {
+            // Clear any session data
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Redirect to login page
+            window.location.href = '../login.html';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('confirmModal');
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeConfirmModal();
+                }
+            });
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

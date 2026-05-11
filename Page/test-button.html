@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>Test Button</title>
+    <style>
+        .team-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #eee;
+            color: #666;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .team-btn.red.active {
+            background: #e74c3c !important;
+            color: white !important;
+            border-color: #e74c3c !important;
+        }
+
+        .team-btn.blue.active {
+            background: #4a90e2 !important;
+            color: white !important;
+            border-color: #4a90e2 !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Button Color Change</h1>
+    
+    <button class="team-btn red" id="redTeam" onclick="selectTeam('red')">ทีมสีแดง</button>
+    <button class="team-btn blue" id="blueTeam" onclick="selectTeam('blue')">ทีมสีน้ำเงิน</button>
+    
+    <p id="result">กดปุ่มด้านบนเพื่อทดสอบ</p>
+
+    <script>
+        function selectTeam(team) {
+            console.log('selectTeam called:', team);
+            
+            var redBtn = document.getElementById('redTeam');
+            var blueBtn = document.getElementById('blueTeam');
+            var result = document.getElementById('result');
+            
+            // Remove active
+            redBtn.classList.remove('active');
+            blueBtn.classList.remove('active');
+            
+            // Add active
+            if (team === 'red') {
+                redBtn.classList.add('active');
+                result.textContent = 'เลือกทีมสีแดง - ปุ่มควรเป็นสีแดง';
+                console.log('Red classes:', redBtn.className);
+            } else if (team === 'blue') {
+                blueBtn.classList.add('active');
+                result.textContent = 'เลือกทีมสีน้ำเงิน - ปุ่มควรเป็นสีน้ำเงิน';
+                console.log('Blue classes:', blueBtn.className);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>บันทึกลอตเตอรี่ - PK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Helvetica Neue, Helvetica, PingFang SC, Tahoma, Arial, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding-bottom: 0;
+        }
+
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            background: #efeff4;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+            text-align: center;
+        }
+
+        .container {
+            padding: 0 5px;
+        }
+
+        .lottery-record {
+            border-radius: 10px;
+            margin-bottom: 1px;
+            padding: 4px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .record-id {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 1px;
+            text-align: center;
+        }
+
+        .number-label, .number-value, .color-value {
+            font-size: 12px;
+            padding: 0px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .number-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .number-value {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .color-value.blue {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .color-value.red {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="header-title">บันทึกลอตเตอรี่</div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Record 1 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015287จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+            </div>
+        </div>
+
+        <!-- Record 2 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015286จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+            </div>
+        </div>
+
+        <!-- Record 3 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015285จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+            </div>
+        </div>
+
+        <!-- Record 4 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015284จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+            </div>
+        </div>
+
+        <!-- Record 5 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015283จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+            </div>
+        </div>
+
+        <!-- Record 6 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015282จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+            </div>
+        </div>
+
+        <!-- Record 7 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015281จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+            </div>
+        </div>
+
+        <!-- Record 8 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015284จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+            </div>
+        </div>
+
+        <!-- Record 9 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015283จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+            </div>
+        </div>
+
+        <!-- Record 10 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015282จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+            </div>
+        </div>
+
+        <!-- Record 11 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015281จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+            </div>
+        </div>
+
+        <!-- Record 12 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015280จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+            </div>
+        </div>
+
+        <!-- Record 13 -->
+        <div class="lottery-record">
+            <div class="record-id">25681015279จุด</div>
+            <div class="number-grid">
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+                <div class="number-label">หมายเลข</div>
+
+                <div class="number-value">1</div>
+                <div class="number-value">2</div>
+                <div class="number-value">3</div>
+                <div class="number-value">4</div>
+                <div class="number-value">5</div>
+                <div class="number-value">6</div>
+                <div class="number-value">7</div>
+                <div class="number-value">8</div>
+                <div class="number-value">9</div>
+                <div class="number-value">10</div>
+
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+                <div class="color-value red">สีแดง</div>
+                <div class="color-value blue">สีน้ำเงิน</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in open.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Back button functionality
+        function goBack() {
+            window.history.back();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Any initialization code can go here
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

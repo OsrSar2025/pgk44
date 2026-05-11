@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>Bank Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding-bottom: 0;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+            text-align: center;
+        }
+
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .form-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-field:last-child {
+            border-bottom: 1px solid #eee;
+        }
+
+        .field-label {
+            font-size: 14px;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .field-input {
+            flex: 1;
+            text-align: right;
+            font-size: 14px;
+            color: #999;
+            border: none;
+            background: none;
+            outline: none;
+        }
+
+        .field-input::placeholder {
+            color: #999;
+        }
+
+        .field-input.masked {
+            color: #333;
+        }
+
+        .field-input:read-only {
+            color: #333;
+            cursor: default;
+        }
+
+        .submit-section {
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 45px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Custom Alert Styles */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-alert.show {
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .custom-alert-content {
+            background: #000;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-alert-message {
+            color: #fff;
+            font-size: 14px;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="header-title" id="pageTitle">Bank Card</div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <div class="form-field">
+            <div class="field-label" id="bankNameLabel">Bank Name</div>
+            <input type="text" class="field-input" id="bankName" placeholder="Please specify the receiving bank">
+        </div>
+        
+        <div class="form-field">
+            <div class="field-label" id="accountNumberLabel">Account Number</div>
+            <input type="text" class="field-input" id="accountNumber" placeholder="Please enter account number">
+        </div>
+        
+        <div class="form-field">
+            <div class="field-label" id="recipientNameLabel">Recipient Name</div>
+            <input type="text" class="field-input" id="recipientName" placeholder="Please enter recipient name">
+        </div>
+    </div>
+
+    <!-- Submit Section (ซ่อนเมื่อมีข้อมูลบัญชีในฐานข้อมูลแล้ว) -->
+    <div class="submit-section" id="submitSection">
+        <button class="submit-btn" id="submitBtn">Submit</button>
+    </div>
+
+    <!-- Custom Alert -->
+    <div class="custom-alert" id="customAlert">
+        <div class="custom-alert-content">
+            <div class="custom-alert-message" id="alertMessage"></div>
+        </div>
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in bank.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Language translations
+        const translations = {
+            en: {
+                pageTitle: 'Bank Card',
+                bankNameLabel: 'Bank Name',
+                accountNumberLabel: 'Account Number',
+                recipientNameLabel: 'Recipient Name',
+                bankNamePlaceholder: 'Please specify the receiving bank',
+                accountNumberPlaceholder: 'Please enter account number',
+                recipientNamePlaceholder: 'Please enter recipient name',
+                submitButton: 'Submit',
+                editButton: 'Edit Information',
+                updating: 'Updating...',
+                saving: 'Saving...',
+                successUpdate: 'Information updated successfully!',
+                successSave: 'Information saved successfully!',
+                errorSave: 'Error occurred while saving information',
+                errorProcess: 'Error occurred during processing',
+                errorConnection: 'Error occurred while connecting to server',
+                validateBankName: 'Please enter bank name',
+                validateAccountNumber: 'Please enter account number',
+                validateRecipientName: 'Please enter recipient name',
+                validateLogin: 'Please login again'
+            },
+            cn: {
+                pageTitle: '银行卡',
+                bankNameLabel: '银行名称',
+                accountNumberLabel: '账户号码',
+                recipientNameLabel: '收款人姓名',
+                bankNamePlaceholder: '请指定收款银行',
+                accountNumberPlaceholder: '请输入账户号码',
+                recipientNamePlaceholder: '请输入收款人姓名',
+                submitButton: '提交',
+                editButton: '编辑信息',
+                updating: '更新中...',
+                saving: '保存中...',
+                successUpdate: '信息更新成功！',
+                successSave: '信息保存成功！',
+                errorSave: '保存信息时发生错误',
+                errorProcess: '处理过程中发生错误',
+                errorConnection: '连接服务器时发生错误',
+                validateBankName: '请输入银行名称',
+                validateAccountNumber: '请输入账户号码',
+                validateRecipientName: '请输入收款人姓名',
+                validateLogin: '请重新登录'
+            },
+            th: {
+                pageTitle: 'บัตรธนาคาร',
+                bankNameLabel: 'ธนาคารผู้รับเงิน',
+                accountNumberLabel: 'หมายเลขบัญชีผู้รับเงิน',
+                recipientNameLabel: 'ชื่อผู้รับเงิน',
+                bankNamePlaceholder: 'กรุณาระบุธนาคารที่รับเงิน',
+                accountNumberPlaceholder: 'กรุณากรอกเลขบัญชี',
+                recipientNamePlaceholder: 'กรุณากรอกชื่อผู้รับเงิน',
+                submitButton: 'ส่งข้อมูล',
+                editButton: 'แก้ไขข้อมูล',
+                updating: 'กำลังแก้ไข...',
+                saving: 'กำลังบันทึก...',
+                successUpdate: 'แก้ไขข้อมูลสำเร็จ!',
+                successSave: 'บันทึกข้อมูลสำเร็จ!',
+                errorSave: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+                errorProcess: 'เกิดข้อผิดพลาดในการประมวลผล',
+                errorConnection: 'เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์',
+                validateBankName: 'กรุณากรอกชื่อธนาคารผู้รับเงิน',
+                validateAccountNumber: 'กรุณากรอกเลขบัญชีผู้รับเงิน',
+                validateRecipientName: 'กรุณากรอกชื่อผู้รับเงิน',
+                validateLogin: 'กรุณาเข้าสู่ระบบใหม่'
+            },
+            vi: {
+                pageTitle: 'Thẻ ngân hàng',
+                bankNameLabel: 'Tên ngân hàng',
+                accountNumberLabel: 'Số tài khoản',
+                recipientNameLabel: 'Tên người nhận',
+                bankNamePlaceholder: 'Vui lòng chỉ định ngân hàng nhận tiền',
+                accountNumberPlaceholder: 'Vui lòng nhập số tài khoản',
+                recipientNamePlaceholder: 'Vui lòng nhập tên người nhận',
+                submitButton: 'Gửi',
+                editButton: 'Chỉnh sửa thông tin',
+                updating: 'Đang cập nhật...',
+                saving: 'Đang lưu...',
+                successUpdate: 'Cập nhật thông tin thành công!',
+                successSave: 'Lưu thông tin thành công!',
+                errorSave: 'Lỗi xảy ra khi lưu thông tin',
+                errorProcess: 'Lỗi xảy ra trong quá trình xử lý',
+                errorConnection: 'Lỗi xảy ra khi kết nối với máy chủ',
+                validateBankName: 'Vui lòng nhập tên ngân hàng',
+                validateAccountNumber: 'Vui lòng nhập số tài khoản',
+                validateRecipientName: 'Vui lòng nhập tên người nhận',
+                validateLogin: 'Vui lòng đăng nhập lại'
+            }
+        };
+
+        // Current language (read from main page)
+        let currentLang = localStorage.getItem('preferredLang') || 'th';
+
+        // Global variables
+        let existingBankId = null;
+        let originalAccountNumber = ''; // เก็บเลขบัญชีจริง
+
+        // Get translation
+        function t(key) {
+            const keys = key.split('.');
+            let value = translations[currentLang];
+            for (const k of keys) {
+                value = value[k];
+            }
+            return value || key;
+        }
+
+        // Update page language (read from localStorage, no language switching)
+        function updatePageLanguage() {
+            // Read language from localStorage (set by main page)
+            currentLang = localStorage.getItem('preferredLang') || 'th';
+            
+            const trans = translations[currentLang];
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = trans.pageTitle;
+            
+            // Update form labels
+            document.getElementById('bankNameLabel').textContent = trans.bankNameLabel;
+            document.getElementById('accountNumberLabel').textContent = trans.accountNumberLabel;
+            document.getElementById('recipientNameLabel').textContent = trans.recipientNameLabel;
+            
+            // Update placeholders
+            document.getElementById('bankName').placeholder = trans.bankNamePlaceholder;
+            document.getElementById('accountNumber').placeholder = trans.accountNumberPlaceholder;
+            document.getElementById('recipientName').placeholder = trans.recipientNamePlaceholder;
+            
+            // Update button text (เฉพาะเมื่อยังมีปุ่มแสดง — โหมดเพิ่มข้อมูล)
+            const submitBtn = document.getElementById('submitBtn');
+            const section = document.getElementById('submitSection');
+            if (section && section.style.display !== 'none') {
+                submitBtn.textContent = trans.submitButton;
+                submitBtn.setAttribute('data-mode', 'add');
+            }
+        }
+
+        // Custom Alert Function
+        function showAlert(message) {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertMessage.textContent = message;
+            customAlert.classList.add('show');
+            
+            setTimeout(() => {
+                customAlert.classList.remove('show');
+            }, 2000);
+        }
+
+        // Back button functionality
+        function goBack() {
+            window.history.back();
+        }
+
+        // Function to mask account number (show first 2 and last 2 digits)
+        function maskAccountNumber(accountNumber) {
+            if (!accountNumber || accountNumber.length < 4) {
+                return accountNumber;
+            }
+            
+            // Get first 2 digits and last 2 digits
+            const firstTwo = accountNumber.slice(0, 2);
+            const lastTwo = accountNumber.slice(-2);
+            
+            // Find the last dash position to keep format
+            const lastDashIndex = accountNumber.lastIndexOf('-');
+            
+            if (lastDashIndex !== -1) {
+                // Keep everything before last dash + first 2 + **** + last 2 digits
+                const beforeLastDash = accountNumber.substring(0, lastDashIndex + 1);
+                const afterLastDash = accountNumber.substring(lastDashIndex + 1);
+                
+                // Calculate how many digits to hide (all except first 2 and last 2)
+                const digitsToHide = afterLastDash.length - 4;
+                const masked = '*'.repeat(Math.max(digitsToHide, 4)); // At least 4 asterisks
+                
+                return beforeLastDash + firstTwo + masked + lastTwo;
+            } else {
+                // No dash found, show first 2 + **** + last 2
+                const middleDigits = accountNumber.length - 4;
+                const masked = '*'.repeat(Math.max(middleDigits, 4)); // At least 4 asterisks
+                return firstTwo + masked + lastTwo;
+            }
+        }
+
+        function setBankFieldsReadOnly(readOnly) {
+            ['bankName', 'accountNumber', 'recipientName'].forEach(function (id) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.readOnly = readOnly;
+                }
+            });
+        }
+
+        function setSubmitSectionVisible(visible) {
+            const section = document.getElementById('submitSection');
+            if (section) {
+                section.style.display = visible ? '' : 'none';
+            }
+        }
+
+        // Load existing bank data
+        function loadBankData() {
+            const userId = localStorage.getItem('userId');
+            
+            // Build URL with user_id parameter if exists
+            let url = '../api/get_bank.php';
+            if (userId) {
+                url += `?user_id=${encodeURIComponent(userId)}`;
+            }
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Bank data loaded:', data);
+                    if (data.success && data.data) {
+                        // Store bank ID and original account number
+                        existingBankId = data.data.id;
+                        originalAccountNumber = data.data.account_number || '';
+                        
+                        // Fill form with existing data
+                        document.getElementById('bankName').value = data.data.bank_name || '';
+                        
+                        // แสดงเลขบัญชีเต็ม ไม่ mask
+                        document.getElementById('accountNumber').value = originalAccountNumber;
+                        document.getElementById('accountNumber').setAttribute('data-masked', 'false');
+                        
+                        document.getElementById('recipientName').value = data.data.recipient_name || '';
+                        
+                        // มีข้อมูลแล้ว: ไม่แสดงปุ่มส่งข้อมูล/แก้ไข — แสดงเฉพาะข้อมูล
+                        setSubmitSectionVisible(false);
+                        setBankFieldsReadOnly(true);
+                    } else {
+                        // No existing data, set to add mode
+                        existingBankId = null;
+                        originalAccountNumber = '';
+                        document.getElementById('submitBtn').textContent = t('submitButton');
+                        document.getElementById('submitBtn').setAttribute('data-mode', 'add');
+                        setSubmitSectionVisible(true);
+                        setBankFieldsReadOnly(false);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading bank data:', error);
+                    setSubmitSectionVisible(true);
+                    setBankFieldsReadOnly(false);
+                });
+        }
+        
+        // Handle account number field focus (clear masked value)
+        document.addEventListener('DOMContentLoaded', function() {
+            const accountNumberInput = document.getElementById('accountNumber');
+            
+            accountNumberInput.addEventListener('focus', function() {
+                if (this.readOnly) {
+                    return;
+                }
+                if (this.getAttribute('data-masked') === 'true') {
+                    this.value = originalAccountNumber;
+                    this.setAttribute('data-masked', 'false');
+                }
+            });
+        });
+
+        // Submit button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load language from main page on page load
+            updatePageLanguage();
+            
+            // Load existing bank data on page load
+            loadBankData();
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            
+            submitBtn.addEventListener('click', function() {
+                handleSubmit();
+            });
+        });
+
+        function handleSubmit() {
+            // Get form values
+            const bankName = document.getElementById('bankName').value.trim();
+            let accountNumber = document.getElementById('accountNumber').value.trim();
+            const recipientName = document.getElementById('recipientName').value.trim();
+            
+            // ถ้าเป็น masked value ให้ใช้เลขบัญชีจริง
+            if (accountNumber.includes('*') && originalAccountNumber) {
+                accountNumber = originalAccountNumber;
+            }
+            
+            console.log('Submit data:', {
+                bankName,
+                accountNumber,
+                recipientName,
+                existingBankId,
+                originalAccountNumber
+            });
+            
+            // Validate input
+            if (!bankName) {
+                showAlert(t('validateBankName'));
+                return;
+            }
+            
+            if (!accountNumber) {
+                showAlert(t('validateAccountNumber'));
+                return;
+            }
+            
+            if (!recipientName) {
+                showAlert(t('validateRecipientName'));
+                return;
+            }
+            
+            // Get user ID from localStorage
+            const userId = localStorage.getItem('userId');
+            
+            if (!userId) {
+                showAlert(t('validateLogin'));
+                setTimeout(() => window.location.href = '../login.html', 1500);
+                return;
+            }
+            
+            // Disable button
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            
+            // Check if we're updating or adding
+            const isUpdate = existingBankId !== null;
+            const apiUrl = isUpdate ? '../api/update_bank.php' : '../api/add_bank.php';
+            submitBtn.textContent = isUpdate ? t('updating') : t('saving');
+            
+            // Prepare request body
+            const requestBody = {
+                bank_name: bankName,
+                account_number: accountNumber,
+                recipient_name: recipientName,
+                user_id: userId
+            };
+            
+            if (isUpdate) {
+                requestBody.bank_id = existingBankId;
+            }
+            
+            console.log('Sending to API:', apiUrl, requestBody);
+            
+            // Send data to API
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('API Raw Response:', text);
+                try {
+                    const data = JSON.parse(text);
+                    console.log('API Parsed Response:', data);
+                    
+                    if (data.success) {
+                        showAlert(isUpdate ? t('successUpdate') : t('successSave'));
+                        setTimeout(() => {
+                            const params = new URLSearchParams(window.location.search);
+                            const returnPage = params.get('return') || 'profile.html';
+                            window.location.href = returnPage;
+                        }, 1500);
+                    } else {
+                        showAlert(data.message || t('errorSave'));
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = isUpdate ? t('editButton') : t('submitButton');
+                    }
+                } catch (e) {
+                    console.error('JSON Parse Error:', e);
+                    showAlert(t('errorProcess'));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = isUpdate ? t('editButton') : t('submitButton');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert(t('errorConnection'));
+                submitBtn.disabled = false;
+                submitBtn.textContent = isUpdate ? t('editButton') : t('submitButton');
+            });
+        }
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

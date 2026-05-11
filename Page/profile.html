@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>ของฉัน - PK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding-bottom: 50px;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background: url('../Photo/Profile.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            height: 149px;
+        }
+
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            background-color: #ffffff;
+            background-image: url('../Photo/defualt_user_logo.d952c174.png');
+            background-size: contain; /* ให้รูปพอดีกับวงกลม ไม่ถูกตัด */
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-id {
+            font-size: 14px;
+            opacity: 1;
+            margin-bottom: 0px;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 5px;
+        }
+
+        .profile-link {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .profile-credit {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .profile-link-btn {
+            background: #b2b2b2;
+            color: white;
+            border: none;
+            padding: 4px 4px 4px 4px;
+            border-radius: 20px 0 0 20px;
+            font-size: 12px;
+            font-weight: normal;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            text-decoration: none;
+        }
+
+        .balance-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .balance-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .withdraw-btn {
+            flex: 1;
+            background: white;
+            border: 1px solid #ff9a56;
+            color: #e74c3c;
+            padding: 0 20px;
+            height: 40px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .withdraw-btn:hover {
+            background: #fff5f0;
+        }
+
+        .withdraw-btn:active {
+            transform: translateY(0);
+        }
+
+        .deposit-btn {
+            flex: 1;
+            background: #e74c3c;
+            border: none;
+            color: white;
+            padding: 0 20px;
+            height: 40px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .deposit-btn:hover {
+            background: #c0392b;
+        }
+
+        .deposit-btn:active {
+            transform: translateY(0);
+        }
+
+        .donate-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #e74c3c 0%, #9b59b6 100%);
+            border: none;
+            color: #ffd700;
+            width: 78px;
+            height: 33px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: normal;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .donate-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .donate-btn i {
+            font-size: 16px;
+            color: white;
+        }
+
+        .features-section {
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+
+        .feature-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 0px;
+            margin-top: -5px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            color: #333;
+            font-size: 24px;
+            margin-left: -5px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-left: -15px;
+        }
+
+        .feature-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+            margin-left: 30px;
+            margin-top: -23px;
+        }
+
+        .records-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .record-btn {
+            background: #f5f5f5;
+            border: none;
+            color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .record-btn:hover {
+            background: #e0e0e0;
+        }
+
+        /* Custom Alert Styles */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-alert.show {
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .custom-alert-content {
+            background: #000;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-alert-message {
+            color: #fff;
+            font-size: 14px;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Floating Support Icon (ปุ่ม Support) -->
+    <a href="support.html" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        <i class="fa-solid fa-headset" style="color: #333; font-size: 35px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));"></i>
+    </a>
+
+    <!-- Header Section -->
+    <div class="header">
+        <div class="profile-section">
+            <div class="profile-avatar"></div>
+            <div class="profile-info">
+                <div class="profile-id" id="profileId">ID: ...</div>
+                <div class="profile-name" id="profileName">กำลังโหลด...</div>
+            </div>
+            <a href="https://seller-th.tiktok.com/account/login" class="profile-link-btn" target="_blank">
+                <img src="../Photo/defualt_user_logo.d952c174.png" alt="TikTok" style="width: 20px; height: 20px; border-radius: 100%; border: none; margin-right: 0px;">
+                TikTok
+            </a>
+        </div>
+    </div>
+
+    <!-- Balance Section -->
+    <div class="balance-section" style="position: relative;">
+        <a href="donate.html" class="donate-btn">
+            <i class="fas fa-heart"></i>
+            <span>บริจาค</span>
+        </a>
+        <div class="balance-title">ยอดคงเหลือ</div>
+        <div class="balance-amount" id="balanceAmount">...</div>
+        <div class="action-buttons">
+            <button class="withdraw-btn">ถอนเงินทันที</button>
+            <button class="deposit-btn">ไปเติมเงิน</button>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="feature-title">TikTok Shop</div>
+                </div>
+                <div class="feature-desc">ชีวิตที่ดีกว่าอยู่ใกล้แค่เอื้อม</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="feature-title">ศูนย์รักษาความปลอดภัย</div>
+                </div>
+                <div class="feature-desc">โปรดเก็บข้อมูลทางการเงินอย่างถูกต้อง</div>
+            </div>
+        </div>
+
+        <div class="records-section">
+            <button class="record-btn">บันทึกการฝากและถอนเงิน</button>
+            <button class="record-btn">บันทึกการทำธุรกรรม</button>
+        </div>
+    </div>
+
+
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Custom Alert -->
+    <div class="custom-alert" id="customAlert">
+        <div class="custom-alert-content">
+            <div class="custom-alert-message" id="alertMessage"></div>
+        </div>
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in profile.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Translation System
+        const translations = {
+            th: {
+                creditScore: 'คะแนนเครดิต',
+                inviteLink: 'ลิงก์เชิญ',
+                copy: 'คัดลอก',
+                balance: 'ยอดคงเหลือ',
+                withdrawNow: 'ถอนเงินทันที',
+                deposit: 'ไปเติมเงิน',
+                donate: 'บริจาค',
+                pkShop: 'TikTok Shop',
+                pkShopDesc: 'ชีวิตที่ดีกว่าอยู่ใกล้แค่เอื้อม',
+                securityCenter: 'ศูนย์รักษาความปลอดภัย',
+                securityCenterDesc: 'โปรดเก็บข้อมูลทางการเงินอย่างถูกต้อง',
+                depositWithdrawRecord: 'บันทึกการฝากและถอนเงิน',
+                transactionRecord: 'บันทึกการทำธุรกรรม',
+                lotteryRecord: 'บันทึกลอตเตอรี่',
+                copySuccess: 'คัดลอกลิงก์เชิญแล้ว!',
+                pleaseLogin: 'กรุณาเข้าสู่ระบบ',
+                opening: 'กำลังเปิด'
+            },
+            en: {
+                creditScore: 'Credit Score',
+                inviteLink: 'Invite Link',
+                copy: 'Copy',
+                balance: 'Balance',
+                withdrawNow: 'Withdraw Now',
+                deposit: 'Deposit',
+                donate: 'Donate',
+                pkShop: 'TikTok Shop',
+                pkShopDesc: 'A better life is within reach',
+                securityCenter: 'Security Center',
+                securityCenterDesc: 'Please keep financial information correct',
+                depositWithdrawRecord: 'Deposit & Withdraw Record',
+                transactionRecord: 'Transaction Record',
+                lotteryRecord: 'Lottery Record',
+                copySuccess: 'Invite link copied!',
+                pleaseLogin: 'Please login',
+                opening: 'Opening'
+            },
+            cn: {
+                creditScore: '信用评分',
+                inviteLink: '邀请链接',
+                copy: '复制',
+                balance: '余额',
+                withdrawNow: '立即提现',
+                deposit: '去充值',
+                donate: '捐赠',
+                pkShop: 'TikTok Shop',
+                pkShopDesc: '更好的生活触手可及',
+                securityCenter: '安全中心',
+                securityCenterDesc: '请正确保存财务信息',
+                depositWithdrawRecord: '存取款记录',
+                transactionRecord: '交易记录',
+                lotteryRecord: '彩票记录',
+                copySuccess: '邀请链接已复制！',
+                pleaseLogin: '请登录',
+                opening: '打开中'
+            },
+            vi: {
+                creditScore: 'Điểm tín dụng',
+                inviteLink: 'Liên kết mời',
+                copy: 'Sao chép',
+                balance: 'Số dư',
+                withdrawNow: 'Rút tiền ngay',
+                deposit: 'Nạp tiền',
+                donate: 'Quyên góp',
+                pkShop: 'TikTok Shop',
+                pkShopDesc: 'Cuộc sống tốt đẹp hơn trong tầm tay',
+                securityCenter: 'Trung tâm bảo mật',
+                securityCenterDesc: 'Vui lòng giữ thông tin tài chính chính xác',
+                depositWithdrawRecord: 'Lịch sử nạp & rút',
+                transactionRecord: 'Lịch sử giao dịch',
+                lotteryRecord: 'Lịch sử xổ số',
+                copySuccess: 'Đã sao chép liên kết mời!',
+                pleaseLogin: 'Vui lòng đăng nhập',
+                opening: 'Đang mở'
+            }
+        };
+
+        // Translation helper function
+        function t(key) {
+            const currentLang = localStorage.getItem('preferredLang') || 'th';
+            return translations[currentLang][key] || translations.th[key] || key;
+        }
+
+        // Update page language
+        function updatePageLanguage() {
+            // Update credit score label
+            const creditLabel = document.querySelector('.profile-credit');
+            if (creditLabel) {
+                const creditValue = document.getElementById('userCredit').textContent;
+                creditLabel.innerHTML = `${t('creditScore')}: <span id="userCredit">${creditValue}</span>`;
+            }
+
+            // Update invite link
+            const inviteLinkLabel = document.querySelector('.profile-link');
+            if (inviteLinkLabel) {
+                inviteLinkLabel.innerHTML = `<span style="color: white; font-weight: normal; font-size: 14px;">${t('inviteLink')}:</span> <span style="color: #000; font-weight: normal; font-size: 14px;">${t('copy')}</span>`;
+            }
+
+            // Update balance section
+            document.querySelector('.balance-title').textContent = t('balance');
+            document.querySelector('.withdraw-btn').textContent = t('withdrawNow');
+            document.querySelector('.deposit-btn').textContent = t('deposit');
+            document.querySelector('.donate-btn span').textContent = t('donate');
+
+            // Update feature cards
+            const featureTitles = document.querySelectorAll('.feature-title');
+            const featureDescs = document.querySelectorAll('.feature-desc');
+            
+            if (featureTitles[0]) featureTitles[0].textContent = t('pkShop');
+            if (featureDescs[0]) featureDescs[0].textContent = t('pkShopDesc');
+            if (featureTitles[1]) featureTitles[1].textContent = t('securityCenter');
+            if (featureDescs[1]) featureDescs[1].textContent = t('securityCenterDesc');
+
+            // Update record buttons
+            const recordBtns = document.querySelectorAll('.record-btn');
+            if (recordBtns[0]) recordBtns[0].textContent = t('depositWithdrawRecord');
+            if (recordBtns[1]) recordBtns[1].textContent = t('transactionRecord');
+            if (recordBtns[2]) recordBtns[2].textContent = t('lotteryRecord');
+        }
+
+        // Custom Alert Function
+        function showAlert(message) {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertMessage.textContent = message;
+            customAlert.classList.add('show');
+            
+            setTimeout(() => {
+                customAlert.classList.remove('show');
+            }, 2000);
+        }
+
+        // Load user data from localStorage
+        function loadUserData() {
+            const userId = localStorage.getItem('userId');
+            const username = localStorage.getItem('username');
+            
+            // If no user data, redirect to login
+            if (!userId || !username) {
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Update profile display
+            document.querySelector('.profile-id').textContent = `ID: ${userId}`;
+            document.querySelector('.profile-name').textContent = username;
+            
+            // Update invitation link with user ID
+            const profileLink = document.querySelector('.profile-link');
+            const inviteLink = `${window.location.origin}/?ref=${userId}`;
+            
+            if (profileLink) {
+                profileLink.addEventListener('click', function() {
+                    navigator.clipboard.writeText(inviteLink).then(() => {
+                        showAlert(t('copySuccess'));
+                    });
+                });
+            }
+            
+            // Load user credit
+            loadUserCredit(userId);
+            
+            // ยอดคงเหลือจาก API (ตาราง balance) — startAutoRefreshBalance โหลดทันทีครั้งแรก + ทุก 3 วิ
+            startAutoRefreshBalance();
+            
+            // Update page language after loading data
+            setTimeout(() => {
+                updatePageLanguage();
+            }, 100);
+        }
+        
+        // Load User Credit
+        function loadUserCredit(userId) {
+            fetch('../api/get_user_credit.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user_id: userId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const creditElement = document.getElementById('userCredit');
+                    if (creditElement) {
+                        creditElement.textContent = data.credit || '0';
+                    }
+                } else {
+                    console.error('Error loading credit:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+        // Auto-logout functionality (10 minutes inactivity)
+        let inactivityTimer;
+        const LOGOUT_TIME = 10 * 60 * 1000;
+        
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                localStorage.removeItem('userId');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('username');
+                window.location.href = '../login.html';
+            }, LOGOUT_TIME);
+        }
+        
+        function trackUserActivity() {
+            resetInactivityTimer();
+        }
+
+        // Load Footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // เริ่ม auto-logout timer
+            resetInactivityTimer();
+            
+            // ติดตามการใช้งาน
+            document.addEventListener('mousemove', trackUserActivity);
+            document.addEventListener('keypress', trackUserActivity);
+            document.addEventListener('keydown', trackUserActivity);
+            document.addEventListener('click', trackUserActivity);
+            document.addEventListener('scroll', trackUserActivity);
+            document.addEventListener('touchstart', trackUserActivity);
+            document.addEventListener('touchmove', trackUserActivity);
+            
+            // Load user data first
+            loadUserData();
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+            
+            // Load footer
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                    
+                    // Wait for footer to render, then update language and set active state
+                    setTimeout(() => {
+                        // Force update footer language
+                        const currentLang = localStorage.getItem('preferredLang') || 'th';
+                        const footerTranslations = {
+                            en: { home: 'Home', welfare: 'Public Welfare List', chart: 'Anti-Fraud', profile: 'My Profile' },
+                            cn: { home: '首页', welfare: '公共福利列表', chart: '反欺诈', profile: '我的' },
+                            th: { home: 'หน้าแรก', welfare: 'รายการสวัสดิการสาธารณะ', chart: 'ต่อต้านการฉ้อโกง', profile: 'ของฉัน' },
+                            vi: { home: 'Trang chủ', welfare: 'Danh sách phúc lợi công cộng', chart: 'Chống gian lận', profile: 'Của tôi' }
+                        };
+                        
+                        const footerLabels = document.querySelectorAll('.bottom-nav .nav-label[data-lang-key]');
+                        footerLabels.forEach(label => {
+                            const key = label.getAttribute('data-lang-key');
+                            const keys = key.split('.');
+                            if (keys.length === 2 && keys[0] === 'footer') {
+                                const translation = footerTranslations[currentLang];
+                                if (translation && translation[keys[1]]) {
+                                    label.textContent = translation[keys[1]];
+                                }
+                            }
+                        });
+                        
+                        // Set active state
+                        const currentNavItem = document.querySelector('.nav-item[href="profile.html"]');
+                        if (currentNavItem) {
+                            currentNavItem.classList.add('active');
+                        }
+                    }, 150);
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Button interactions
+            const withdrawBtn = document.querySelector('.withdraw-btn');
+            const depositBtn = document.querySelector('.deposit-btn');
+            const donateBtn = document.querySelector('.donate-btn');
+
+            // ตรวจสอบสถานะก่อนถอนเงิน
+            async function handleWithdrawFlow() {
+                const userId = localStorage.getItem('userId');
+                if (!userId) {
+                    showAlert(t('pleaseLogin'));
+                    setTimeout(() => window.location.href = '../login.html', 1500);
+                    return;
+                }
+                
+                // ตรวจสอบรหัสผ่านการถอนก่อน
+                let hasWithdrawPassword = false;
+                try {
+                    const pwdRes = await fetch('../api/get_withdraw_password.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: userId })
+                    });
+                    const pwdData = await pwdRes.json();
+                    if (pwdData.success && pwdData.has_password) {
+                        hasWithdrawPassword = true;
+                    }
+                } catch (e) {
+                    console.error('Error checking withdraw password:', e);
+                }
+                
+                if (!hasWithdrawPassword) {
+                    // ถ้ายังไม่มีรหัสผ่านการถอน ให้ไปหน้าเพิ่มรหัส
+                    window.location.href = 'bindmpwd.html';
+                    return;
+                }
+                
+                // ถ้ามีรหัสผ่านการถอนแล้ว ให้ไปเช็คข้อมูลบัตรธนาคาร
+                let hasBank = false;
+                try {
+                    const bankRes = await fetch(`../api/get_bank.php?user_id=${userId}`);
+                    const bankData = await bankRes.json();
+                    if (bankData.success && bankData.data) {
+                        hasBank = true;
+                    }
+                } catch (e) {
+                    console.error('Error checking bank data:', e);
+                }
+                
+                if (!hasBank) {
+                    // ถ้ายังไม่มีข้อมูลบัตรธนาคาร ให้ไปหน้าเพิ่มข้อมูลบัตร
+                    window.location.href = 'bank.html';
+                    return;
+                }
+                
+                // ถ้ามีรหัสผ่านการถอนและข้อมูลบัตรธนาคารครบแล้ว ไปหน้า cashout
+                window.location.href = 'cashout.html';
+            }
+
+            withdrawBtn.addEventListener('click', function() {
+                handleWithdrawFlow();
+            });
+
+            depositBtn.addEventListener('click', function() {
+                window.location.href = 'recharge.html';
+            });
+
+            donateBtn.addEventListener('click', function() {
+                // กำลังนำไปยังหน้าบริจาค...
+            });
+
+            // Feature cards
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('.feature-title').textContent;
+                    // Check against all language versions
+                    if (title === t('securityCenter') || title === 'ศูนย์รักษาความปลอดภัย' || title === 'Security Center' || title === '安全中心' || title === 'Trung tâm bảo mật') {
+                        window.location.href = 'security.html';
+                    } else if (title === t('pkShop') || title === 'ร้านค้า PK' || title === 'PK Shop' || title === 'PK 商店' || title === 'Cửa hàng PK') {
+                        window.location.href = 'https://seller-th.tiktok.com/account/login';
+                    } else {
+                        showAlert(`${t('opening')} ${title}...`);
+                    }
+                });
+            });
+
+            // Record buttons
+            const recordBtns = document.querySelectorAll('.record-btn');
+            recordBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const text = this.textContent;
+                    // Check against all language versions
+                    if (text === t('depositWithdrawRecord') || text === 'บันทึกการฝากและถอนเงิน' || text === 'Deposit & Withdraw Record' || text === '存取款记录' || text === 'Lịch sử nạp & rút') {
+                        window.location.href = 'help.html';
+                    } else if (text === t('transactionRecord') || text === 'บันทึกการทำธุรกรรม' || text === 'Transaction Record' || text === '交易记录' || text === 'Lịch sử giao dịch') {
+                        // ส่งสัญญาณให้หน้า order.html refresh ก่อนไปหน้า order.html
+                        try {
+                            localStorage.setItem('refresh_order_page', Date.now().toString());
+                            console.log('Sent refresh signal to order.html page from profile');
+                        } catch (e) {
+                            console.error('Error sending refresh signal:', e);
+                        }
+                        window.location.href = 'order.html';
+                    } else if (text === t('lotteryRecord') || text === 'บันทึกลอตเตอรี่' || text === 'Lottery Record' || text === '彩票记录' || text === 'Lịch sử xổ số') {
+                        window.location.href = 'open.html';
+                    } else {
+                        showAlert(`${t('opening')} ${text}...`);
+                    }
+                });
+            });
+        });
+
+        function getProfileUserId() {
+            const id = localStorage.getItem('userId');
+            return id != null ? String(id).trim() : '';
+        }
+
+        function formatBalanceFromApi(raw) {
+            if (raw === null || raw === undefined || raw === '') {
+                return (0).toLocaleString('th-TH');
+            }
+            if (typeof raw === 'number' && Number.isFinite(raw)) {
+                return raw.toLocaleString('th-TH');
+            }
+            const s = String(raw).replace(/,/g, '').replace(/\s/g, '');
+            const n = parseFloat(s);
+            return (Number.isFinite(n) ? n : 0).toLocaleString('th-TH');
+        }
+
+        // Load user balance (ข้อมูลจากตาราง balance เท่านั้น)
+        function loadUserBalance(retryCount) {
+            retryCount = retryCount || 0;
+            const userId = getProfileUserId();
+            const balanceAmount = document.getElementById('balanceAmount');
+
+            if (!userId) {
+                // Only clear if we are sure there's no user session at all
+                if (balanceAmount && !localStorage.getItem('userId')) {
+                    balanceAmount.textContent = (0).toLocaleString('th-TH');
+                }
+                return;
+            }
+
+            const url = '../api/get_user_balance.php?t=' + Date.now();
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                },
+                cache: 'no-store',
+                credentials: 'same-origin',
+                body: JSON.stringify({ user_id: userId })
+            })
+            .then(async (response) => {
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    throw new Error('Invalid balance response');
+                }
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || 'Balance request failed');
+                }
+                
+                // Only update if balance is valid and numeric
+                if (balanceAmount && data.balance !== undefined && data.balance !== null) {
+                    const newBalanceFormatted = formatBalanceFromApi(data.balance);
+                    // ป้องกันการกะพริบ: อัปเดตเฉพาะเมื่อค่าเปลี่ยนจริงๆ
+                    if (balanceAmount.textContent !== newBalanceFormatted) {
+                        balanceAmount.textContent = newBalanceFormatted;
+                    }
+                }
+                
+                try {
+                    localStorage.setItem('refresh_order_page', Date.now().toString());
+                } catch (e) {
+                    console.error('Error sending refresh signal:', e);
+                }
+            })
+            .catch((error) => {
+                console.error('Error loading balance:', error);
+                
+                // ไม่ต้องทำอะไรกับหน้าจอ ปล่อยให้แสดงยอดเดิมไว้จนกว่าจะโหลดใหม่สำเร็จ
+                if (retryCount < 2) {
+                    setTimeout(function () {
+                        loadUserBalance(retryCount + 1);
+                    }, 800);
+                }
+            });
+        }
+
+        // Auto refresh balance interval
+        let balanceRefreshInterval = null;
+        
+        // Start auto refresh balance
+        function startAutoRefreshBalance() {
+            // โหลดยอดเงินทันทีเมื่อเริ่มต้น
+            loadUserBalance();
+            
+            // อัปเดตยอดเงินทุก 3 วินาที
+            if (balanceRefreshInterval) {
+                clearInterval(balanceRefreshInterval);
+            }
+            
+            balanceRefreshInterval = setInterval(() => {
+                loadUserBalance();
+                console.log('Auto-refreshing user balance...');
+                
+                // ส่งสัญญาณให้หน้า order.html refresh อัตโนมัติทุก 3 วินาที
+                try {
+                    localStorage.setItem('refresh_order_page', Date.now().toString());
+                    console.log('Sent auto refresh signal to order.html page');
+                } catch (e) {
+                    console.error('Error sending refresh signal:', e);
+                }
+            }, 3000); // 3 วินาที
+        }
+        
+        // Stop auto refresh balance
+        function stopAutoRefreshBalance() {
+            if (balanceRefreshInterval) {
+                clearInterval(balanceRefreshInterval);
+                balanceRefreshInterval = null;
+            }
+        }
+        
+        // หยุด auto refresh เมื่อหนีไปจากหน้า
+        window.addEventListener('beforeunload', function() {
+            stopAutoRefreshBalance();
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

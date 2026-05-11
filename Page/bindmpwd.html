@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>ผูกรหัสผ่านการถอน - PK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding-bottom: 0;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+            text-align: center;
+        }
+
+        .form-container {
+            padding: 30px 20px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #333;
+            background: white;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-section {
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #000000;
+            color: white;
+            border: none;
+            height: 45px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background: #333333;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .password-match {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .password-match.error {
+            color: #ff4444;
+        }
+
+        .password-match.success {
+            color: #00aa00;
+        }
+
+        /* Custom Alert */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .custom-alert.show {
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+        .custom-alert-content {
+            background: #222;
+            padding: 18px 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }
+        .custom-alert-message {
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="header-title" id="pageTitle">ผูกรหัสผ่านการถอน</div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <div class="input-group">
+            <input type="password" id="withdrawalPassword" class="input-field" placeholder="กรุณากรอกรหัสผ่านการถอนเงิน">
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="confirmPassword" class="input-field" placeholder="โปรดยืนยันรหัสผ่านการถอน">
+            <div id="passwordMatch" class="password-match"></div>
+        </div>
+    </div>
+
+    <!-- Submit Section -->
+    <div class="submit-section">
+        <button class="submit-btn" id="submitBtn">ตกลง</button>
+    </div>
+
+    <!-- Custom Alert -->
+    <div class="custom-alert" id="customAlert">
+        <div class="custom-alert-content">
+            <div class="custom-alert-message" id="alertMessage"></div>
+        </div>
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in bindmpwd.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Language translations
+        const translations = {
+            en: {
+                pageTitle: 'Set Withdrawal Password',
+                withdrawalPasswordPlaceholder: 'Please enter withdrawal password',
+                confirmPasswordPlaceholder: 'Please confirm withdrawal password',
+                submitButton: 'Confirm',
+                passwordMismatch: 'Passwords do not match',
+                passwordMatch: 'Passwords match',
+                passwordMinLength: 'Password must be at least 4 characters',
+                fillAllFields: 'Please fill in all fields',
+                passwordMismatchAlert: 'Passwords do not match',
+                passwordMinLengthAlert: 'Password must be at least 4 characters',
+                loginRequired: 'Please login again',
+                usernameNotFound: 'Username not found, please login again',
+                saveSuccess: 'Withdrawal password saved successfully!',
+                saveError: 'Error occurred while saving',
+                connectionError: 'Connection error occurred',
+                processingError: 'Error occurred during processing'
+            },
+            cn: {
+                pageTitle: '设置提现密码',
+                withdrawalPasswordPlaceholder: '请输入提现密码',
+                confirmPasswordPlaceholder: '请确认提现密码',
+                submitButton: '确认',
+                passwordMismatch: '密码不匹配',
+                passwordMatch: '密码匹配',
+                passwordMinLength: '密码至少需要4位',
+                fillAllFields: '请填写所有字段',
+                passwordMismatchAlert: '密码不匹配',
+                passwordMinLengthAlert: '密码至少需要4位',
+                loginRequired: '请重新登录',
+                usernameNotFound: '未找到用户名，请重新登录',
+                saveSuccess: '提现密码保存成功！',
+                saveError: '保存时发生错误',
+                connectionError: '连接错误',
+                processingError: '处理过程中发生错误'
+            },
+            th: {
+                pageTitle: 'ผูกรหัสผ่านการถอน',
+                withdrawalPasswordPlaceholder: 'กรุณากรอกรหัสผ่านการถอนเงิน',
+                confirmPasswordPlaceholder: 'โปรดยืนยันรหัสผ่านการถอน',
+                submitButton: 'ตกลง',
+                passwordMismatch: 'รหัสผ่านไม่ตรงกัน',
+                passwordMatch: 'รหัสผ่านตรงกัน',
+                passwordMinLength: 'รหัสผ่านต้องมีอย่างน้อย 4 หลัก',
+                fillAllFields: 'กรุณากรอกรหัสผ่านให้ครบ',
+                passwordMismatchAlert: 'รหัสผ่านไม่ตรงกัน',
+                passwordMinLengthAlert: 'รหัสผ่านต้องมีอย่างน้อย 4 หลัก',
+                loginRequired: 'กรุณาเข้าสู่ระบบใหม่',
+                usernameNotFound: 'ไม่พบชื่อผู้ใช้ กรุณาเข้าสู่ระบบใหม่',
+                saveSuccess: 'บันทึกรหัสถอนเงินสำเร็จ!',
+                saveError: 'เกิดข้อผิดพลาด',
+                connectionError: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+                processingError: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล'
+            },
+            vi: {
+                pageTitle: 'Đặt mật khẩu rút tiền',
+                withdrawalPasswordPlaceholder: 'Vui lòng nhập mật khẩu rút tiền',
+                confirmPasswordPlaceholder: 'Vui lòng xác nhận mật khẩu rút tiền',
+                submitButton: 'Xác nhận',
+                passwordMismatch: 'Mật khẩu không khớp',
+                passwordMatch: 'Mật khẩu khớp',
+                passwordMinLength: 'Mật khẩu phải có ít nhất 4 ký tự',
+                fillAllFields: 'Vui lòng điền đầy đủ thông tin',
+                passwordMismatchAlert: 'Mật khẩu không khớp',
+                passwordMinLengthAlert: 'Mật khẩu phải có ít nhất 4 ký tự',
+                loginRequired: 'Vui lòng đăng nhập lại',
+                usernameNotFound: 'Không tìm thấy tên người dùng, vui lòng đăng nhập lại',
+                saveSuccess: 'Lưu mật khẩu rút tiền thành công!',
+                saveError: 'Lỗi xảy ra khi lưu',
+                connectionError: 'Lỗi kết nối',
+                processingError: 'Lỗi xảy ra trong quá trình xử lý'
+            }
+        };
+
+        // Current language (read from main page)
+        let currentLang = localStorage.getItem('preferredLang') || 'th';
+
+        // Get translation
+        function t(key) {
+            const keys = key.split('.');
+            let value = translations[currentLang];
+            for (const k of keys) {
+                value = value[k];
+            }
+            return value || key;
+        }
+
+        // Update page language (read from localStorage, no language switching)
+        function updatePageLanguage() {
+            // Read language from localStorage (set by main page)
+            currentLang = localStorage.getItem('preferredLang') || 'th';
+            
+            const trans = translations[currentLang];
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = trans.pageTitle;
+            
+            // Update placeholders
+            document.getElementById('withdrawalPassword').placeholder = trans.withdrawalPasswordPlaceholder;
+            document.getElementById('confirmPassword').placeholder = trans.confirmPasswordPlaceholder;
+            
+            // Update button text
+            document.getElementById('submitBtn').textContent = trans.submitButton;
+        }
+
+        // Back button functionality
+        function goBack() {
+            window.history.back();
+        }
+
+        // Password confirmation checker
+        function checkPasswordMatch() {
+            const withdrawalPassword = document.getElementById('withdrawalPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const matchDiv = document.getElementById('passwordMatch');
+
+            if (confirmPassword && withdrawalPassword !== confirmPassword) {
+                matchDiv.textContent = t('passwordMismatch');
+                matchDiv.className = 'password-match error';
+            } else if (confirmPassword && withdrawalPassword === confirmPassword && withdrawalPassword.length >= 4) {
+                matchDiv.textContent = t('passwordMatch');
+                matchDiv.className = 'password-match success';
+            } else if (withdrawalPassword && withdrawalPassword.length < 4) {
+                matchDiv.textContent = t('passwordMinLength');
+                matchDiv.className = 'password-match error';
+            } else {
+                matchDiv.textContent = '';
+            }
+        }
+
+        // ฟังก์ชันบันทึกรหัสถอนเงิน
+        async function saveWithdrawPassword() {
+            // ดึง userId และ username จาก localStorage
+            let userId = localStorage.getItem('userId') || localStorage.getItem('user_id');
+            let username = localStorage.getItem('username') || localStorage.getItem('user_name');
+            
+            const pwd1 = document.getElementById('withdrawalPassword').value.trim();
+            const pwd2 = document.getElementById('confirmPassword').value.trim();
+            
+            console.log('=== DEBUG INFO ===');
+            console.log('userId:', userId);
+            console.log('username:', username);
+            
+            // Validation
+            if (!pwd1 || !pwd2) {
+                showAlert(t('fillAllFields'));
+                return;
+            }
+            if (pwd1 !== pwd2) {
+                showAlert(t('passwordMismatchAlert'));
+                return;
+            }
+            if (pwd1.length < 4) {
+                showAlert(t('passwordMinLengthAlert'));
+                return;
+            }
+            if (!userId) {
+                showAlert(t('loginRequired'));
+                setTimeout(()=>window.location.href='../login.html',1500);
+                return;
+            }
+            if (!username) {
+                showAlert(t('usernameNotFound'));
+                setTimeout(()=>window.location.href='../login.html',1500);
+                return;
+            }
+            
+            try {
+                // ส่งข้อมูลไป API โดยตรง
+                console.log('Sending data:', {user_id: userId, username: username, withdrawal_code: pwd1});
+                
+                const res = await fetch('../api/add_withdraw_password.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        username: username,
+                        withdrawal_code: pwd1
+                    })
+                });
+                
+                const dataText = await res.text();
+                console.log('API Raw Response:', dataText);
+                
+                let data;
+                try {
+                    data = JSON.parse(dataText);
+                } catch (e) {
+                    console.error('JSON Parse Error:', e);
+                    console.error('Response was:', dataText);
+                    showAlert(t('processingError'));
+                    return;
+                }
+                
+                console.log('API Parsed Response:', data);
+                
+                if (data.success) {
+                    showAlert(t('saveSuccess'));
+                    setTimeout(()=>{
+                        const params = new URLSearchParams(window.location.search);
+                        const returnPage = params.get('return') || 'profile.html';
+                        window.location.href = returnPage;
+                    },1500);
+                } else {
+                    showAlert(data.message || t('saveError'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert(t('connectionError'));
+            }
+        }
+
+        // Show alert function
+        function showAlert(message) {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            alertMessage.textContent = message;
+            customAlert.classList.add('show');
+            setTimeout(() => {
+                customAlert.classList.remove('show');
+            }, 2000);
+        }
+
+        // Initialize page language on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load language from main page on page load
+            updatePageLanguage();
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+        });
+
+        // Event listeners
+        document.getElementById('withdrawalPassword').addEventListener('input', function() {
+            if (document.getElementById('confirmPassword').value) {
+                checkPasswordMatch();
+            }
+        });
+
+        document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+
+        document.getElementById('submitBtn').onclick = saveWithdrawPassword;
+
+        // Submit function
+        function submitWithdrawalPassword() {
+            const withdrawalPassword = document.getElementById('withdrawalPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!withdrawalPassword) {
+                alert(t('withdrawalPasswordPlaceholder'));
+                return;
+            }
+
+            if (withdrawalPassword.length < 4) {
+                alert(t('passwordMinLengthAlert'));
+                return;
+            }
+
+            if (!confirmPassword) {
+                alert(t('confirmPasswordPlaceholder'));
+                return;
+            }
+
+            if (withdrawalPassword !== confirmPassword) {
+                alert(t('passwordMismatchAlert'));
+                return;
+            }
+
+            // Simulate API call
+            alert('กำลังผูกรหัสผ่านการถอน...');
+            
+            // Simulate success
+            setTimeout(() => {
+                alert('ผูกรหัสผ่านการถอนเรียบร้อยแล้ว');
+                goBack();
+            }, 1500);
+        }
+
+        // Enter key to submit
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitWithdrawalPassword();
+            }
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

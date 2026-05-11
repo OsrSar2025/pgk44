@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>เติมเงิน - PK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            margin: 0;
+            padding: 10px 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            align-self: stretch;
+            margin-top: 0;
+            padding: 0 20 20 20;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #eee;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .input-field {
+            width: calc(100% - 20px);
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .input-field:focus {
+            border-color: #333;
+        }
+
+        .btn {
+            width: 80%;
+            height: 46px;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .btn:hover {
+            background: #333;
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .warning-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 0 20px;
+            margin-left: 20px;
+        }
+
+        .alert {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .loading i {
+            font-size: 20px;
+            color: #333;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .input-field, .btn {
+                font-size: 16px;
+                padding: 18px;
+            }
+            
+            .warning-text {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .input-field, .btn {
+                font-size: 16px;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .input-field, .btn {
+                font-size: 16px;
+                padding: 12px;
+            }
+            
+            .header h1 {
+                font-size: 16px;
+            }
+            
+            .warning-text {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <h1>เติมเงิน</h1>
+        </div>
+
+        <div class="alert" id="alertMessage"></div>
+
+        <form id="rechargeForm">
+            <input type="number" class="input-field" id="amount" name="amount" 
+                   placeholder="กรุณากรอกจำนวนเงิน" min="2000" max="10000000" step="1000" required>
+
+            <button type="submit" class="btn" id="submitBtn">
+                ส่ง
+            </button>
+        </form>
+
+        <div class="warning-text">
+            <div>คำเตือนที่อบอุ่น</div>
+            <div>เวลาถอนเงิน: 11:00--23:00</div>
+        </div>
+
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner"></i>
+            <p>กำลังส่งคำขอ...</p>
+        </div>
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in recharge.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Translation System
+        const translations = {
+            th: {
+                pageTitle: 'เติมเงิน',
+                enterAmount: 'กรุณากรอกจำนวนเงิน',
+                submit: 'ส่ง',
+                warmWarning: 'คำเตือนที่อบอุ่น',
+                withdrawTime: 'เวลาถอนเงิน: 11:00--23:00',
+                sendingRequest: 'กำลังส่งคำขอ...',
+                pleaseLogin: 'กรุณาเข้าสู่ระบบ',
+                minAmount: 'กรุณากรอกจำนวนเงินอย่างน้อย 2,000 บาท',
+                saveSuccess: 'บันทึกข้อมูลยอดเงินเรียบร้อยแล้ว',
+                saveError: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+                connectionError: 'เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์'
+            },
+            en: {
+                pageTitle: 'Recharge',
+                enterAmount: 'Please enter amount',
+                submit: 'Submit',
+                warmWarning: 'Warm Warning',
+                withdrawTime: 'Withdrawal Time: 11:00--23:00',
+                sendingRequest: 'Sending request...',
+                pleaseLogin: 'Please login',
+                minAmount: 'Please enter at least 2,000 baht',
+                saveSuccess: 'Data saved successfully',
+                saveError: 'Error saving data',
+                connectionError: 'Connection error with server'
+            },
+            cn: {
+                pageTitle: '充值',
+                enterAmount: '请输入金额',
+                submit: '提交',
+                warmWarning: '温馨提示',
+                withdrawTime: '取款时间：11:00--23:00',
+                sendingRequest: '正在发送请求...',
+                pleaseLogin: '请登录',
+                minAmount: '请输入至少 2,000 泰铢',
+                saveSuccess: '数据保存成功',
+                saveError: '保存数据时出错',
+                connectionError: '服务器连接错误'
+            },
+            vi: {
+                pageTitle: 'Nạp tiền',
+                enterAmount: 'Vui lòng nhập số tiền',
+                submit: 'Gửi',
+                warmWarning: 'Cảnh báo',
+                withdrawTime: 'Thời gian rút tiền: 11:00--23:00',
+                sendingRequest: 'Đang gửi yêu cầu...',
+                pleaseLogin: 'Vui lòng đăng nhập',
+                minAmount: 'Vui lòng nhập ít nhất 2,000 baht',
+                saveSuccess: 'Lưu dữ liệu thành công',
+                saveError: 'Lỗi lưu dữ liệu',
+                connectionError: 'Lỗi kết nối với máy chủ'
+            }
+        };
+
+        // Translation helper function
+        function t(key) {
+            const currentLang = localStorage.getItem('preferredLang') || 'th';
+            return translations[currentLang][key] || translations.th[key] || key;
+        }
+
+        // Update page language
+        function updatePageLanguage() {
+            // Update header title
+            document.querySelector('.header h1').textContent = t('pageTitle');
+            
+            // Update input placeholder
+            document.getElementById('amount').placeholder = t('enterAmount');
+            
+            // Update submit button
+            document.getElementById('submitBtn').textContent = t('submit');
+            
+            // Update warning text
+            const warningDivs = document.querySelectorAll('.warning-text div');
+            if (warningDivs[0]) warningDivs[0].textContent = t('warmWarning');
+            if (warningDivs[1]) warningDivs[1].textContent = t('withdrawTime');
+            
+            // Update loading text
+            const loadingText = document.querySelector('#loading p');
+            if (loadingText) loadingText.textContent = t('sendingRequest');
+        }
+
+        // ฟังก์ชันกลับ
+        function goBack() {
+            window.history.back();
+        }
+
+        // แสดงข้อความแจ้งเตือน
+        function showAlert(message, type = 'success') {
+            const alert = document.getElementById('alertMessage');
+            alert.textContent = message;
+            alert.className = `alert ${type}`;
+            alert.style.display = 'block';
+
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        // ส่งคำขอเติมเงิน
+        async function submitRecharge(event) {
+            event.preventDefault();
+
+            const userId = localStorage.getItem('userId');
+            const username = localStorage.getItem('username') || 'Unknown User';
+            const amount = document.getElementById('amount').value;
+
+            if (!userId) {
+                showAlert(t('pleaseLogin'), 'error');
+                return;
+            }
+
+            if (!amount || amount < 2000) {
+                showAlert(t('minAmount'), 'error');
+                return;
+            }
+
+            // แสดง loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('submitBtn').disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('user_id', userId);
+                formData.append('user_name', username);
+                formData.append('amount', amount);
+
+                const response = await fetch('../api/add_history_payment.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(t('saveSuccess'), 'success');
+                    
+                    // ล้างฟอร์ม
+                    document.getElementById('amount').value = '';
+                    
+                    // เปิดหน้า Support ขึ้นแบบ Auto หลังจาก 2 วินาที
+                    setTimeout(() => {
+                        window.location.href = 'support.html';
+                    }, 2000);
+                } else {
+                    showAlert(data.message || t('saveError'), 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert(t('connectionError'), 'error');
+            } finally {
+                // ซ่อน loading
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('rechargeForm').addEventListener('submit', submitRecharge);
+
+        // ตรวจสอบการล็อกอินเมื่อหน้าโหลดเสร็จ
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update page language first
+            updatePageLanguage();
+            
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                showAlert(t('pleaseLogin'), 'error');
+                setTimeout(() => {
+                    window.location.href = '../login.html';
+                }, 2000);
+            }
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>

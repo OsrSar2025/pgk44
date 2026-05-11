@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../Photo/pgk.png" type="image/png">
+    <title>บันทึกการฝากและถอนเงิน - PK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding-bottom: 0;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            flex: 1;
+            text-align: center;
+        }
+
+        .table-container {
+            padding: 0;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.5fr 1fr;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.5fr 1fr;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .category {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .amount {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .time {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status.pending {
+            background: none;
+            color: #ff8c00;
+        }
+
+        .status.completed {
+            background: none;
+            color: #28a745;
+        }
+
+        .status.processing {
+            background: none;
+            color: #000;
+        }
+
+        .status.failed {
+            background: none;
+            color: #dc3545;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="header-title">บันทึกการฝากและถอนเงิน</div>
+    </div>
+
+
+    <!-- Table Container -->
+    <div class="table-container">
+        <!-- Table Header -->
+        <div class="table-header">
+            <div>หมวดหมู่</div>
+            <div>จำนวนเงิน</div>
+            <div>เวลา</div>
+            <div>สถานะ</div>
+        </div>
+
+        <!-- Table Rows -->
+        <div id="recordsList">
+            <!-- ข้อมูลจะถูกโหลดจาก API -->
+        </div>
+
+    </div>
+
+    <!-- Auto Update Service -->
+    <script src="../api/auto_update_worker.js"></script>
+    <script>
+        // Auto Update Service Integration
+        let autoUpdateInterval = null;
+        
+        function initializeAutoUpdate() {
+            // เริ่มต้น auto-update service
+            if (typeof autoUpdateWorker !== 'undefined') {
+                console.log('Auto Update Service initialized in help.html');
+                
+                // อัปเดต stats ทุก 5 วินาที
+                autoUpdateInterval = setInterval(() => {
+                    const stats = autoUpdateWorker.getStats();
+                    if (stats.isRunning) {
+                        console.log(`Auto Update: ${stats.totalChecks} checks, ${stats.totalUpdated} updated, uptime: ${stats.uptime}`);
+                    }
+                }, 5000);
+            }
+        }
+        
+        function cleanupAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+            }
+        }
+        
+        // Back button functionality
+        function goBack() {
+            window.history.back();
+        }
+
+        // ดึงข้อมูลจาก API
+        async function loadHistoryPayment() {
+            const userId = localStorage.getItem('userId');
+            
+            if (!userId) {
+                showEmptyState('กรุณาเข้าสู่ระบบ');
+                return;
+            }
+
+            try {
+                const response = await fetch('../api/get_history_payment.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: userId
+                    })
+                });
+
+                const data = await response.json();
+
+
+                if (data.success) {
+                    displayRecords(data.data);
+                } else {
+                    showEmptyState(data.message || 'ไม่สามารถโหลดข้อมูลได้');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showEmptyState('เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
+            }
+        }
+
+        // แสดงข้อมูลในตาราง
+        function displayRecords(records) {
+            const recordsList = document.getElementById('recordsList');
+            
+            if (!records || records.length === 0) {
+                showEmptyState('ไม่มีข้อมูลการฝากและถอนเงิน');
+                return;
+            }
+
+            let html = '';
+            records.forEach(record => {
+                const category = getCategoryText(record.type);
+                
+                let amount = '-';
+                if (record.amount !== null && record.amount !== undefined && record.amount !== '' && record.amount !== '0.00') {
+                    const numAmount = parseFloat(record.amount);
+                    if (!isNaN(numAmount) && numAmount > 0) {
+                        amount = numAmount.toLocaleString('th-TH');
+                    }
+                }
+                
+                const time = formatDateTime(record.date);
+                const status = getStatusText(record.status);
+                const statusClass = getStatusClass(record.status);
+
+                html += `
+                    <div class="table-row" data-type="${record.type}">
+                        <div class="category">${category}</div>
+                        <div class="amount">${amount}</div>
+                        <div class="time">${time}</div>
+                        <div class="status ${statusClass}">${status}</div>
+                    </div>
+                `;
+            });
+
+            recordsList.innerHTML = html;
+        }
+
+        // แสดงสถานะว่าง
+        function showEmptyState(message) {
+            const recordsList = document.getElementById('recordsList');
+            recordsList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // แปลงประเภทเป็นข้อความภาษาไทย
+        function getCategoryText(type) {
+            switch(type) {
+                case 'เติมเงิน':
+                    return 'ฝากเงิน';
+                case 'ถอนเงิน':
+                    return 'ถอนเงิน';
+                default:
+                    return type || 'ไม่ระบุ';
+            }
+        }
+
+        // แปลงสถานะเป็นข้อความภาษาไทย
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending':
+                    return 'รอตรวจสอบ';
+                case 'processing':
+                    return 'อยู่ระหว่างการตรวจ';
+                case 'completed':
+                    return 'เสร็จสิ้น';
+                case 'failed':
+                    return 'ล้มเหลว';
+                default:
+                    return status || 'ไม่ระบุ';
+            }
+        }
+
+        // แปลงสถานะเป็น CSS class
+        function getStatusClass(status) {
+            switch(status) {
+                case 'pending':
+                    return 'pending';
+                case 'processing':
+                    return 'processing';
+                case 'completed':
+                    return 'completed';
+                case 'failed':
+                    return 'failed';
+                default:
+                    return 'pending';
+            }
+        }
+
+        // แปลงรูปแบบวันที่และเวลา
+        function formatDateTime(dateString) {
+            if (!dateString) return '-';
+            
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleString('th-TH', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                }).replace(/,/g, '');
+            } catch (error) {
+                return dateString;
+            }
+        }
+
+        // Auto-logout functionality (10 minutes inactivity)
+        let inactivityTimer;
+        const LOGOUT_TIME = 10 * 60 * 1000;
+        
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                localStorage.clear();
+                window.location.href = '../login.html';
+            }, LOGOUT_TIME);
+        }
+        
+        function trackUserActivity() {
+            resetInactivityTimer();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // เริ่ม auto-logout timer
+            resetInactivityTimer();
+            
+            // ติดตามการใช้งาน
+            document.addEventListener('mousemove', trackUserActivity);
+            document.addEventListener('keypress', trackUserActivity);
+            document.addEventListener('keydown', trackUserActivity);
+            document.addEventListener('click', trackUserActivity);
+            document.addEventListener('scroll', trackUserActivity);
+            document.addEventListener('touchstart', trackUserActivity);
+            document.addEventListener('touchmove', trackUserActivity);
+            
+            loadHistoryPayment();
+            
+            // Initialize auto-update service
+            initializeAutoUpdate();
+        });
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="../api/auto_logout.js"></script>
+</body>
+</html>
