@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Photo/pgk.png" type="image/png">
+    <title>Test Order Page</title>
+</head>
+<body>
+    <h1>Test Order Page</h1>
+    
+    <div>
+        <h2>LocalStorage Debug:</h2>
+        <div id="localStorageDebug"></div>
+    </div>
+    
+    <div>
+        <h2>API Test:</h2>
+        <button onclick="testAPI()">Test API</button>
+        <div id="apiResult"></div>
+    </div>
+    
+    <div>
+        <h2>Database Test:</h2>
+        <button onclick="testDatabase()">Test Database</button>
+        <div id="dbResult"></div>
+    </div>
+
+    <script>
+        // Debug localStorage
+        function debugLocalStorage() {
+            const debugDiv = document.getElementById('localStorageDebug');
+            let html = '<ul>';
+            
+            if (localStorage.length === 0) {
+                html += '<li>No items in localStorage</li>';
+            } else {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    html += `<li><strong>${key}:</strong> ${value}</li>`;
+                }
+            }
+            
+            html += '</ul>';
+            debugDiv.innerHTML = html;
+        }
+        
+        // Test API
+        function testAPI() {
+            const userId = localStorage.getItem('userId');
+            const resultDiv = document.getElementById('apiResult');
+            
+            if (!userId) {
+                resultDiv.innerHTML = '<p style="color: red;">No userId in localStorage</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Testing API...</p>';
+            
+            fetch('api/get_bet_history.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => {
+                resultDiv.innerHTML += `<p>Response status: ${response.status}</p>`;
+                return response.json();
+            })
+            .then(data => {
+                resultDiv.innerHTML += `<p>API Response: <pre>${JSON.stringify(data, null, 2)}</pre></p>`;
+            })
+            .catch(error => {
+                resultDiv.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+            });
+        }
+        
+        // Test Database
+        function testDatabase() {
+            const resultDiv = document.getElementById('dbResult');
+            resultDiv.innerHTML = '<p>Testing database...</p>';
+            
+            fetch('api/test_bet_history.php')
+            .then(response => response.text())
+            .then(data => {
+                resultDiv.innerHTML = `<pre>${data}</pre>`;
+            })
+            .catch(error => {
+                resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            debugLocalStorage();
+        });
+    </script>
+</body>
+</html>

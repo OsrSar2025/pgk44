@@ -1,0 +1,101 @@
+[2025-10-22 21:48:56] ========== NEW UPDATE REQUEST ==========
+[2025-10-22 21:48:56] Raw POST: {"id":"10","title":"FORCE TEST 21:42:05","views":"7779.9"}
+[2025-10-22 21:48:56] Parsed - ID: 10, Title: FORCE TEST 21:42:05, Views: 7779.9 (double)
+[2025-10-22 21:48:56] BEFORE UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7779.1","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:48:56] WILL UPDATE TO: title='FORCE TEST 21:42:05', views=7779.9, image='Photo/live/live_1760698090_68f21eea851c8.jpg'
+[2025-10-22 21:48:56] SQL: UPDATE live SET title = ?, views = CAST(? AS DECIMAL(15,1)), image = ? WHERE id = ?
+[2025-10-22 21:48:56] Params: [title='FORCE TEST 21:42:05', views=7779.9, image='Photo/live/live_1760698090_68f21eea851c8.jpg', id=10]
+[2025-10-22 21:48:56] Execute result: TRUE
+[2025-10-22 21:48:56] Error info: ["00000",null,null]
+[2025-10-22 21:48:56] ✅ Execute SUCCESS - Rows affected: 1
+[2025-10-22 21:48:56] 🔄 Flushed tables to ensure data persistence
+[2025-10-22 21:48:56] AFTER UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7779.9","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:48:56] COMPARISON:
+[2025-10-22 21:48:56]   - Title changed: NO ('FORCE TEST 21:42:05' -> 'FORCE TEST 21:42:05')
+[2025-10-22 21:48:56]   - Views changed: YES (7779.1 -> 7779.9)
+[2025-10-22 21:48:56]   - Image changed: NO
+[2025-10-22 21:48:56]   - Something changed: YES
+[2025-10-22 21:48:56] EFFECTIVE ROW COUNT: 1 (actual: 1)
+[2025-10-22 21:48:56] ========== REQUEST COMPLETED SUCCESSFULLY ==========
+
+[2025-10-22 21:49:04] ========== NEW UPDATE REQUEST ==========
+[2025-10-22 21:49:04] Raw POST: {"id":"10","title":"FORCE TEST 21:42:05","views":"7780"}
+[2025-10-22 21:49:04] Parsed - ID: 10, Title: FORCE TEST 21:42:05, Views: 7780 (double)
+[2025-10-22 21:49:04] BEFORE UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7779.9","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:49:04] WILL UPDATE TO: title='FORCE TEST 21:42:05', views=7780, image='Photo/live/live_1760698090_68f21eea851c8.jpg'
+[2025-10-22 21:49:04] SQL: UPDATE live SET title = ?, views = CAST(? AS DECIMAL(15,1)), image = ? WHERE id = ?
+[2025-10-22 21:49:04] Params: [title='FORCE TEST 21:42:05', views=7780, image='Photo/live/live_1760698090_68f21eea851c8.jpg', id=10]
+[2025-10-22 21:49:04] Execute result: TRUE
+[2025-10-22 21:49:04] Error info: ["00000",null,null]
+[2025-10-22 21:49:04] ✅ Execute SUCCESS - Rows affected: 1
+[2025-10-22 21:49:04] 🔄 Flushed tables to ensure data persistence
+[2025-10-22 21:49:04] AFTER UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7780.0","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:49:04] COMPARISON:
+[2025-10-22 21:49:04]   - Title changed: NO ('FORCE TEST 21:42:05' -> 'FORCE TEST 21:42:05')
+[2025-10-22 21:49:04]   - Views changed: YES (7779.9 -> 7780.0)
+[2025-10-22 21:49:04]   - Image changed: NO
+[2025-10-22 21:49:04]   - Something changed: YES
+[2025-10-22 21:49:04] EFFECTIVE ROW COUNT: 1 (actual: 1)
+[2025-10-22 21:49:04] ========== REQUEST COMPLETED SUCCESSFULLY ==========
+
+[2025-10-22 21:49:10] ========== NEW UPDATE REQUEST ==========
+[2025-10-22 21:49:10] Raw POST: {"id":"10","title":"FORCE TEST 21:42:05","views":"7780.9"}
+[2025-10-22 21:49:10] Parsed - ID: 10, Title: FORCE TEST 21:42:05, Views: 7780.9 (double)
+[2025-10-22 21:49:10] BEFORE UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7780.0","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:49:10] WILL UPDATE TO: title='FORCE TEST 21:42:05', views=7780.9, image='Photo/live/live_1760698090_68f21eea851c8.jpg'
+[2025-10-22 21:49:10] SQL: UPDATE live SET title = ?, views = CAST(? AS DECIMAL(15,1)), image = ? WHERE id = ?
+[2025-10-22 21:49:10] Params: [title='FORCE TEST 21:42:05', views=7780.9, image='Photo/live/live_1760698090_68f21eea851c8.jpg', id=10]
+[2025-10-22 21:49:10] Execute result: TRUE
+[2025-10-22 21:49:10] Error info: ["00000",null,null]
+[2025-10-22 21:49:10] ✅ Execute SUCCESS - Rows affected: 1
+[2025-10-22 21:49:10] 🔄 Flushed tables to ensure data persistence
+[2025-10-22 21:49:10] AFTER UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7780.9","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:49:10] COMPARISON:
+[2025-10-22 21:49:10]   - Title changed: NO ('FORCE TEST 21:42:05' -> 'FORCE TEST 21:42:05')
+[2025-10-22 21:49:10]   - Views changed: YES (7780.0 -> 7780.9)
+[2025-10-22 21:49:10]   - Image changed: NO
+[2025-10-22 21:49:10]   - Something changed: YES
+[2025-10-22 21:49:10] EFFECTIVE ROW COUNT: 1 (actual: 1)
+[2025-10-22 21:49:10] ========== REQUEST COMPLETED SUCCESSFULLY ==========
+
+[2025-10-22 21:49:20] ========== NEW UPDATE REQUEST ==========
+[2025-10-22 21:49:20] Raw POST: {"id":"10","title":"FORCE TEST 21:42:05","views":"7780.9"}
+[2025-10-22 21:49:20] Parsed - ID: 10, Title: FORCE TEST 21:42:05, Views: 7780.9 (double)
+[2025-10-22 21:49:20] BEFORE UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7780.9","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:49:20] WILL UPDATE TO: title='FORCE TEST 21:42:05', views=7780.9, image='Photo/live/live_1760698090_68f21eea851c8.jpg'
+[2025-10-22 21:49:20] SQL: UPDATE live SET title = ?, views = CAST(? AS DECIMAL(15,1)), image = ? WHERE id = ?
+[2025-10-22 21:49:20] Params: [title='FORCE TEST 21:42:05', views=7780.9, image='Photo/live/live_1760698090_68f21eea851c8.jpg', id=10]
+[2025-10-22 21:49:20] Execute result: TRUE
+[2025-10-22 21:49:20] Error info: ["00000",null,null]
+[2025-10-22 21:49:20] ✅ Execute SUCCESS - Rows affected: 0
+[2025-10-22 21:49:20] 🔄 Flushed tables to ensure data persistence
+[2025-10-22 21:49:20] AFTER UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7780.9","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:49:20] COMPARISON:
+[2025-10-22 21:49:20]   - Title changed: NO ('FORCE TEST 21:42:05' -> 'FORCE TEST 21:42:05')
+[2025-10-22 21:49:20]   - Views changed: NO (7780.9 -> 7780.9)
+[2025-10-22 21:49:20]   - Image changed: NO
+[2025-10-22 21:49:20]   - Something changed: NO
+[2025-10-22 21:49:20] ⚠️ FORCED UPDATE - No actual change but showing as updated
+[2025-10-22 21:49:20] EFFECTIVE ROW COUNT: 1 (actual: 0)
+[2025-10-22 21:49:20] ========== REQUEST COMPLETED SUCCESSFULLY ==========
+
+[2025-10-22 21:49:25] ========== NEW UPDATE REQUEST ==========
+[2025-10-22 21:49:25] Raw POST: {"id":"10","title":"FORCE TEST 21:42:05","views":"7780.7"}
+[2025-10-22 21:49:25] Parsed - ID: 10, Title: FORCE TEST 21:42:05, Views: 7780.7 (double)
+[2025-10-22 21:49:25] BEFORE UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7780.9","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:49:25] WILL UPDATE TO: title='FORCE TEST 21:42:05', views=7780.7, image='Photo/live/live_1760698090_68f21eea851c8.jpg'
+[2025-10-22 21:49:25] SQL: UPDATE live SET title = ?, views = CAST(? AS DECIMAL(15,1)), image = ? WHERE id = ?
+[2025-10-22 21:49:25] Params: [title='FORCE TEST 21:42:05', views=7780.7, image='Photo/live/live_1760698090_68f21eea851c8.jpg', id=10]
+[2025-10-22 21:49:25] Execute result: TRUE
+[2025-10-22 21:49:25] Error info: ["00000",null,null]
+[2025-10-22 21:49:25] ✅ Execute SUCCESS - Rows affected: 1
+[2025-10-22 21:49:25] 🔄 Flushed tables to ensure data persistence
+[2025-10-22 21:49:25] AFTER UPDATE: {"id":10,"title":"FORCE TEST 21:42:05","views":"7780.7","image":"Photo\/live\/live_1760698090_68f21eea851c8.jpg"}
+[2025-10-22 21:49:25] COMPARISON:
+[2025-10-22 21:49:25]   - Title changed: NO ('FORCE TEST 21:42:05' -> 'FORCE TEST 21:42:05')
+[2025-10-22 21:49:25]   - Views changed: YES (7780.9 -> 7780.7)
+[2025-10-22 21:49:25]   - Image changed: NO
+[2025-10-22 21:49:25]   - Something changed: YES
+[2025-10-22 21:49:25] EFFECTIVE ROW COUNT: 1 (actual: 1)
+[2025-10-22 21:49:25] ========== REQUEST COMPLETED SUCCESSFULLY ==========
+

@@ -1,0 +1,160 @@
+<!-- Font Awesome for Footer Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Footer Component -->
+<div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+        <div class="nav-icon">
+            <i class="fas fa-home"></i>
+        </div>
+        <div class="nav-label" data-lang-key="footer.home">หน้าแรก</div>
+    </a>
+    <a href="Page/pkg44.html" class="nav-item">
+        <div class="nav-icon">
+            <i class="fas fa-inbox"></i>
+        </div>
+        <div class="nav-label" data-lang-key="footer.welfare">รายการสวัสดิการสาธารณะ</div>
+    </a>
+    <a href="Page/music-chart.html" class="nav-item">
+        <div class="nav-icon">
+            <i class="fas fa-chart-simple"></i>
+        </div>
+        <div class="nav-label" data-lang-key="footer.chart">ต่อต้านการฉ้อโกง</div>
+    </a>
+    <a href="Page/profile.html" class="nav-item">
+        <div class="nav-icon">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="nav-label" data-lang-key="footer.profile">ของฉัน</div>
+    </a>
+</div>
+
+<!-- Footer CSS -->
+<style>
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+    z-index: 1000;
+    border-top: 1px solid #ccc;
+    height: 50px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #666;
+    transition: all 0.3s ease;
+    padding: 2px 8px;
+    border-radius: 8px;
+    min-width: 60px;
+    flex: 1;
+}
+
+.nav-item:hover {
+    color: #333;
+}
+
+.nav-item.active {
+    color: #e74c3c;
+}
+
+.nav-icon {
+    font-size: 18px;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.nav-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.nav-label {
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-weight: 500;
+}
+</style>
+
+<!-- Footer JavaScript -->
+<script>
+(function() {
+    // Run immediately when script loads
+    function fixFooterPaths() {
+        // Wait a bit to ensure footer HTML is fully rendered
+        setTimeout(function() {
+            const currentPath = window.location.pathname;
+            const isInPageFolder = currentPath.includes('/Page/');
+            
+            const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item');
+            
+            if (bottomNavItems.length === 0) {
+                // Footer not loaded yet, try again
+                setTimeout(fixFooterPaths, 100);
+                return;
+            }
+            
+            bottomNavItems.forEach(item => {
+                const originalHref = item.getAttribute('href');
+                
+                if (!originalHref) return;
+                
+                let newHref = originalHref;
+                
+                // Fix paths for pages in Page/ folder
+                if (isInPageFolder) {
+                    // If current page is in Page/ folder, adjust all links
+                    if (originalHref.startsWith('Page/')) {
+                        // Remove "Page/" prefix for links to other pages in same folder
+                        newHref = originalHref.replace('Page/', '');
+                    } else if (originalHref === 'index.html' || originalHref.endsWith('/index.html')) {
+                        // Fix link to index.html at root level
+                        newHref = '../index.html';
+                    }
+                    
+                    if (originalHref !== newHref) {
+                        item.setAttribute('href', newHref);
+                    }
+                }
+                // For root level pages, paths are already correct
+                
+                // Add click handler
+                item.addEventListener('click', function(e) {
+                    // Remove active class from all items
+                    bottomNavItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                });
+            });
+        }, 50);
+    }
+    
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixFooterPaths);
+    } else {
+        // DOM is already loaded
+        fixFooterPaths();
+    }
+})();
+</script>

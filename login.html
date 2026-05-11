@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Photo/pgk.png" type="image/png">
+    <title>เข้าสู่ระบบ/การลงทะเบียน - PK</title>
+    <!-- Open Graph / แชทแสดงรูปเมื่อส่งลิงก์ -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://online.goblesuccess.com/login.html">
+    <meta property="og:title" content="เข้าสู่ระบบ/การลงทะเบียน - PK">
+    <meta property="og:description" content="ยินดีต้อนรับ เข้าสู่ระบบหรือลงทะเบียน">
+    <meta property="og:image" content="https://online.goblesuccess.com/pkg44/icon/pk.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:locale" content="th_TH">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://online.goblesuccess.com/pkg44/icon/pk.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1db8d2;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .login-container {
+            background: transparent;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            padding: 50px 40px;
+        }
+
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            margin-bottom: 0;
+        }
+
+        #customSelect {
+            background: transparent;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        #languageDropdown {
+            position: absolute;
+            top: 35px;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            min-width: 150px;
+            overflow: hidden;
+        }
+
+        #languageDropdown div {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: #333;
+            transition: background 0.2s;
+        }
+
+        #languageDropdown div:hover {
+            background: #e3f2fd;
+        }
+
+        .language-selector select {
+            border: none;
+            background: transparent;
+            color: #000;
+            padding: 0;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .language-selector select option {
+            background: white;
+            color: #333;
+            padding: 10px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            color: #222;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .login-header p {
+            color: #333;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .login-header p span {
+            color: #d32f2f;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-group label {
+            flex-shrink: 0;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            min-width: 140px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            background: #fff;
+            border-radius: 25px;
+            font-size: 15px;
+            color: #333;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            background: #e8f0f8;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+            font-size: 18px;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 5px;
+            margin-bottom: 8px;
+        }
+
+        .forgot-password a {
+            color: #136ec2;
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: normal;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 15px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #333;
+            font-weight: normal;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 40px 30px;
+            }
+
+            .login-header h1 {
+                font-size: 24px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .form-group label {
+                min-width: auto;
+            }
+        }
+
+        /* Custom Alert Styles */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-alert.show {
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .custom-alert-content {
+            background: #000;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-alert-content.error {
+            background: #dc3545;
+        }
+
+        .custom-alert-message {
+            color: #fff;
+            font-size: 14px;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="language-selector">
+            <select id="languageSelect" onchange="changeLanguage()" style="display: none;">
+                <option value="en">EN English</option>
+                <option value="cn">CN China</option>
+                <option value="th" selected>TH แบบไทย</option>
+                <option value="vi">VI Ting Viet</option>
+            </select>
+            <div id="customSelect" onclick="toggleLanguageDropdown()">
+                <span id="selectedLang">TH</span>
+                <i class="fas fa-chevron-down" style="margin-left: 5px; font-size: 12px;"></i>
+            </div>
+            <div id="languageDropdown" style="display: none;">
+                <div onclick="selectLanguage('en', 'EN')">EN English</div>
+                <div onclick="selectLanguage('cn', 'CN')">CN China</div>
+                <div onclick="selectLanguage('th', 'TH')">TH แบบไทย</div>
+                <div onclick="selectLanguage('vi', 'VI')">VI Ting Viet</div>
+            </div>
+        </div>
+
+        <div class="login-header">
+            <h1 id="loginTitle">ยินดีต้อนรับสู่เข้าสู่ระบบ</h1>
+            <p id="loginSubtitle">ยังไม่มีบัญชี? <span onclick="goToRegister()">ลงทะเบียน</span></p>
+        </div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username"
+                    placeholder="ชื่อผู้ใช้"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password"
+                        placeholder="กรุณากรอกรหัสผ่าน"
+                        required
+                    >
+                    <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                </div>
+            </div>
+
+            <div class="forgot-password">
+                <a href="Page/support.html" id="forgotLink">ติดต่อฝ่ายบริการลูกค้า</a>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">เข้าสู่ระบบ</button>
+        </form>
+
+        <div class="register-link">
+            <a href="Page/support.html" id="noAccountText">ลืมรหัสผ่าน</a>
+        </div>
+    </div>
+
+    <!-- Custom Alert -->
+    <div class="custom-alert" id="customAlert">
+        <div class="custom-alert-content">
+            <div class="custom-alert-message" id="alertMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        // Custom Alert Function
+        function showAlert(message, type = 'info') {
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            const alertContent = document.querySelector('.custom-alert-content');
+            
+            alertMessage.textContent = message;
+            
+            // เพิ่ม/ลบ class error ตาม type
+            if (type === 'error' && alertContent) {
+                alertContent.classList.add('error');
+            } else if (alertContent) {
+                alertContent.classList.remove('error');
+            }
+            
+            customAlert.classList.add('show');
+            
+            // แสดงนานกว่า 2 วินาทีสำหรับ error (5 วินาที)
+            const duration = type === 'error' ? 5000 : 2000;
+            
+            setTimeout(() => {
+                customAlert.classList.remove('show');
+            }, duration);
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePassword');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Validate input
+            if (!username || !password) {
+                showAlert('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
+                return;
+            }
+
+            // Check for admin login (hardcoded)
+            if (username === 'admin' && password === 'admin123') {
+                showAlert('เข้าสู่ระบบสำเร็จ!');
+                setTimeout(() => {
+                    window.location.href = 'admin/admin.html';
+                }, 2000);
+                return;
+            }
+            
+            // Disable button to prevent double submission
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'กำลังเข้าสู่ระบบ...';
+            
+            // Login via API for regular users
+            fetch('api/login_user.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Store user info in localStorage
+                    localStorage.setItem('userId', data.user.id);
+                    localStorage.setItem('username', data.user.username);
+                    localStorage.setItem('userName', data.user.username); // Store both for compatibility
+                    console.log('Login success:', {
+                        userId: localStorage.getItem('userId'),
+                        username: localStorage.getItem('username'),
+                        apiUserId: data.user.id,
+                        apiUsername: data.user.username
+                    });
+                    
+                    // Add 1 credit to user
+                    addLoginCredit(data.user.id);
+                    
+                    showAlert('เข้าสู่ระบบสำเร็จ!');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    // ตรวจสอบว่าถูกบล็อกหรือไม่
+                    let alertMessage = data.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+                    if (data.banned) {
+                        // แสดงข้อความแจ้งเตือนสีแดงสำหรับบัญชีถูกบล็อก
+                        showAlert(alertMessage, 'error');
+                    } else {
+                        showAlert(alertMessage);
+                    }
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'เข้าสู่ระบบ';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'เข้าสู่ระบบ';
+            });
+        }
+
+        // Add 1 credit when user logs in
+        function addLoginCredit(userId) {
+            fetch('api/add_login_credit.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Credit added successfully:', data);
+                } else {
+                    console.error('Error adding credit:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error adding credit:', error);
+            });
+        }
+
+        function goToRegister() {
+            window.location.href = 'register.html';
+        }
+
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function selectLanguage(value, shortCode) {
+            document.getElementById('selectedLang').textContent = shortCode;
+            document.getElementById('languageSelect').value = value;
+            document.getElementById('languageDropdown').style.display = 'none';
+            changeLanguage();
+        }
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            
+            if (lang === 'en') {
+                document.getElementById('loginTitle').textContent = 'Welcome to Login';
+                document.getElementById('loginSubtitle').innerHTML = 'Don\'t have an account? <span onclick="goToRegister()">Register</span>';
+                document.getElementById('username').placeholder = 'Username';
+                document.getElementById('password').placeholder = 'Please enter password';
+                document.getElementById('forgotLink').textContent = 'Contact Customer Service';
+                document.getElementById('loginBtn').textContent = 'Login';
+                document.getElementById('noAccountText').textContent = 'Forgot Password';
+            } else if (lang === 'cn') {
+                document.getElementById('loginTitle').textContent = '欢迎登录';
+                document.getElementById('loginSubtitle').innerHTML = '还没有账户？ <span onclick="goToRegister()">注册</span>';
+                document.getElementById('username').placeholder = '用户名';
+                document.getElementById('password').placeholder = '请输入密码';
+                document.getElementById('forgotLink').textContent = '联系客服';
+                document.getElementById('loginBtn').textContent = '登录';
+                document.getElementById('noAccountText').textContent = '忘记密码';
+            } else if (lang === 'vi') {
+                document.getElementById('loginTitle').textContent = 'Chào mừng đến đăng nhập';
+                document.getElementById('loginSubtitle').innerHTML = 'Chưa có tài khoản? <span onclick="goToRegister()">Đăng ký</span>';
+                document.getElementById('username').placeholder = 'Tên người dùng';
+                document.getElementById('password').placeholder = 'Vui lòng nhập mật khẩu';
+                document.getElementById('forgotLink').textContent = 'Liên hệ dịch vụ khách hàng';
+                document.getElementById('loginBtn').textContent = 'Đăng nhập';
+                document.getElementById('noAccountText').textContent = 'Quên mật khẩu';
+            } else {
+                document.getElementById('loginTitle').textContent = 'ยินดีต้อนรับสู่เข้าสู่ระบบ';
+                document.getElementById('loginSubtitle').innerHTML = 'ยังไม่มีบัญชี? <span onclick="goToRegister()">ลงทะเบียน</span>';
+                document.getElementById('username').placeholder = 'ชื่อผู้ใช้';
+                document.getElementById('password').placeholder = 'กรุณากรอกรหัสผ่าน';
+                document.getElementById('forgotLink').textContent = 'ติดต่อฝ่ายบริการลูกค้า';
+                document.getElementById('loginBtn').textContent = 'เข้าสู่ระบบ';
+                document.getElementById('noAccountText').textContent = 'ลืมรหัสผ่าน';
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const selector = document.querySelector('.language-selector');
+            if (selector && !selector.contains(event.target)) {
+                document.getElementById('languageDropdown').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

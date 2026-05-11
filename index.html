@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Photo/pgk.png" type="image/png">
+    <title>PK - แพลตฟอร์ม</title>
+    <!-- Open Graph / แชทแสดงรูปเมื่อส่งลิงก์ -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://online.goblesuccess.com/">
+    <meta property="og:title" content="PK - แพลตฟอร์ม">
+    <meta property="og:description" content="เข้าสู่ระบบ/การลงทะเบียน - PK แพลตฟอร์ม">
+    <meta property="og:image" content="https://online.goblesuccess.com/pkg44/icon/pk.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:locale" content="th_TH">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://online.goblesuccess.com/pkg44/icon/pk.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=volume_up">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding-bottom: 55px;
+            background-color: #f8f9fa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .header {
+            background-color: #000;
+            background-image: url('Photo/homeBg.6be568e2.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header-logo {
+            display: block;
+            margin: 0 auto 10px;
+            max-width: 140px;
+            max-height: 85px;
+            position: relative;
+            z-index: 1;
+            opacity: 0.18;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        .language-button {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 40px;
+        }
+
+        .language-button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 8px 0;
+            min-width: 150px;
+            display: none;
+            z-index: 1000;
+            margin-top: 5px;
+        }
+
+        .language-dropdown.show {
+            display: block;
+        }
+
+        .language-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .language-option:hover {
+            background: #f8f9fa;
+        }
+
+        .language-option.active {
+            background: #e3f2fd;
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        .welfare-container {
+            padding: 20px;
+            background: white;
+            margin: 10px 5px;
+            border-radius: 15px;
+        }
+
+        .time-settings-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        .time-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .time-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .time-value.closed {
+            color: #e74c3c;
+        }
+
+        .round-label {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        .vip-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+            position: relative;
+        }
+
+        .vip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .vip-label {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .vip-label.red {
+            background: #ffebee;
+            color: #e74c3c;
+        }
+
+        .vip-minimum {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .vip-time {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .vip-description {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .pk-battle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .pk-left, .pk-right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pk-button {
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .pk-button.red {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+        }
+
+        .pk-button.blue {
+            background: linear-gradient(45deg, #4a90e2, #357abd);
+        }
+
+        .pk-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .pk-center {
+            background: #e74c3c;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            border: 3px solid white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .support-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 20px;
+            opacity: 0.7;
+        }
+
+        .alert-banner {
+            background: #fff9f2;
+            color: rgb(179, 111, 110);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .alert-banner .speaker-icon {
+            width: 15px;
+            height: 15px;
+            background: #e74c3c !important;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white !important;
+            font-weight: bold;
+            font-size: 10px;
+            transform: none !important;
+            border: none !important;
+            outline: none !important;
+        }
+
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 15px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 20;
+        }
+
+        .nav-tabs {
+            background: white;
+            display: flex;
+            border-bottom: 1px solid #eee;
+            width: 100%;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 8px 4px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+        }
+
+        .nav-tab.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+        }
+
+        .content {
+            background: #f1f6fe;
+            margin: 10px 5px 0 5px;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .ranking-list {
+            list-style: none;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .rank-number {
+            font-size: 14px;
+            font-weight: normal;
+            color: #333;
+            min-width: 40px;
+            margin-right: 0px;
+        }
+
+        .rank-number.top-one {
+            color: #FF6B6B;
+            font-weight: normal;
+        }
+
+        .rank-number.top-two {
+            color: #FF9933;
+            font-weight: normal;
+        }
+
+        .rank-number.top-three {
+            color: #FFC107;
+            font-weight: normal;
+        }
+
+        .song-thumbnail {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 20px;
+            margin-left: -20px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .song-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .song-thumbnail.blue {
+            background: linear-gradient(45deg, #4a90e2, #357abd);
+        }
+
+        .song-thumbnail.green {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+
+        .song-thumbnail.purple {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        }
+
+        .song-thumbnail.red {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        .song-thumbnail.dark {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+        }
+
+        .song-thumbnail.rainbow {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+        }
+
+        .thumbnail {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 15px;
+            margin-left: -20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .content-info {
+            flex: 1;
+            margin-left: -12px;
+        }
+
+        .content-title {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 5px;
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .content-value {
+            font-size: 14px;
+            font-weight: normal;
+            color: #333;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .headphone-icon {
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.6rem;
+        }
+
+        /* Copy button styles */
+        .copy-button {
+            font-weight: normal !important;
+            font-size: 14px !important;
+            color: #333 !important;
+            text-decoration: none !important;
+        }
+        
+        .copy-button * {
+            font-weight: normal !important;
+        }
+        
+        button.copy-button {
+            font-weight: normal !important;
+        }
+        
+        button[onclick="copyInviteLink()"] {
+            font-weight: normal !important;
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .nav-tab {
+                padding: 6px 2px;
+                font-size: 0.8rem;
+                min-height: 45px;
+            }
+            
+            .ranking-item {
+                padding: 12px 0;
+            }
+            
+            .thumbnail {
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="language-selector">
+            <button class="language-button" id="languageButton">TH</button>
+            <div class="language-dropdown" id="languageDropdown">
+                <button class="language-option" data-lang="en">EN English</button>
+                <button class="language-option" data-lang="cn">CN China</button>
+                <button class="language-option active" data-lang="th">TH แบบไทย</button>
+                <button class="language-option" data-lang="vi">VI Ting Viet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Banner -->
+    <div class="alert-banner">
+        <div class="speaker-icon"><span class="material-symbols-outlined">volume_up</span></div>
+        <div id="notificationMessage">กำลังโหลดข้อมูล...</div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <div class="nav-tab active">รายการสวัสดิการสาธารณะ</div>
+        <div class="nav-tab">ชาร์ตเพลง</div>
+        <div class="nav-tab">รายการภาพยนตร์</div>
+        <div class="nav-tab">อันดับทางการเงิน</div>
+        <div class="nav-tab">รายการถ่ายทอดสด</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content" id="content-area">
+        <!-- Live Stream Content -->
+        <div id="live-stream" class="tab-content">
+            <ul class="ranking-list" id="liveList">
+                <!-- Data will be loaded from API -->
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">กำลังโหลดข้อมูล...</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Music Chart Content -->
+        <div id="music-chart" class="tab-content">
+            <ul class="ranking-list" id="musicChartList">
+                <!-- Data will be loaded from API -->
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">กำลังโหลดข้อมูล...</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Welfare Content -->
+        <div id="welfare" class="tab-content active">
+            <ul class="ranking-list" id="welfareList">
+                <!-- Data will be loaded from API -->
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">กำลังโหลดข้อมูล...</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Movie List Content -->
+        <div id="movie-list" class="tab-content">
+            <ul class="ranking-list" id="movieList">
+                <!-- Data will be loaded from API -->
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">กำลังโหลดข้อมูล...</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Financial Ranking Content -->
+        <div id="financial-ranking" class="tab-content">
+            <ul class="ranking-list" id="financeList">
+                <!-- Data will be loaded from API -->
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">กำลังโหลดข้อมูล...</div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="profile" class="tab-content">
+            <div style="padding: 20px;">
+                <h3 style="margin-bottom: 20px;">โปรไฟล์</h3>
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                    <h4 style="margin-bottom: 10px;">ลิงก์เชิญ:</h4>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="text" id="inviteLink" value="https://example.com/invite" readonly 
+                               style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit;">
+                        <button class="copy-button" onclick="copyInviteLink()" style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; font-weight: normal !important; font-size: 14px !important; color: #333 !important; text-decoration: none !important;">
+                            คัดลอก
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Support Icon (ไอคอน Support) -->
+    <a href="Page/support.html" style="position: fixed; bottom: 80px; right: 20px; z-index: 9999; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        <i class="fa-solid fa-headset" style="color: #333; font-size: 35px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));"></i>
+    </a>
+
+    <!-- Bottom Navigation -->
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <script>
+        // Language translations
+        const translations = {
+            en: {
+                logo: 'PK',
+                subtitle: 'Global Short Video Platform',
+                notification: 'Please contact customer service for the latest bank card information.',
+                tabs: {
+                    welfare: 'Public Welfare List',
+                    music: 'Music Chart',
+                    movie: 'Movie List',
+                    finance: 'Financial Ranking',
+                    live: 'Live Stream'
+                },
+                footer: {
+                    home: 'Home',
+                    welfare: 'Public Welfare List',
+                    chart: 'Anti-Fraud',
+                    profile: 'My Profile'
+                },
+                loading: 'Loading...',
+                noData: 'No data available',
+                error: 'An error occurred while loading data',
+                tenThousand: ' thousand',
+                copy: 'Copy',
+                inviteLink: 'Invite Link:',
+                copySuccess: 'Link copied successfully!',
+                copyFailed: 'Failed to copy, please try again'
+            },
+            cn: {
+                logo: 'PK',
+                subtitle: '全球短视频平台',
+                notification: '平台银行充值卡会随时变更，请向在线客服查询银行卡号',
+                tabs: {
+                    welfare: '公共福利列表',
+                    music: '音乐排行榜',
+                    movie: '电影列表',
+                    finance: '财务排名',
+                    live: '直播列表'
+                },
+                footer: {
+                    home: '首页',
+                    welfare: '公共福利列表',
+                    chart: '反欺诈',
+                    profile: '我的'
+                },
+                loading: '加载中...',
+                noData: '没有数据',
+                error: '加载数据时出错',
+                tenThousand: ' 万',
+                copy: '复制',
+                inviteLink: '邀请链接:',
+                copySuccess: '链接复制成功！',
+                copyFailed: '复制失败，请重试'
+            },
+            th: {
+                logo: 'PK',
+                subtitle: 'ความรักถ้าสิ่งที่วใปข้างหน้า',
+                notification: 'บัตรเติมเงินธนาคารบนแพลตฟอร์มนี้จะเปลี่ยนแปลงตลอดเวลา กรุณาสอบถามหมายเลขบัตรธนาคารจากฝ่ายบริการลูกค้าออนไลน์',
+                tabs: {
+                    welfare: 'รายการสวัสดิการสาธารณะ',
+                    music: 'ชาร์ตเพลง',
+                    movie: 'รายการภาพยนตร์',
+                    finance: 'อันดับทางการเงิน',
+                    live: 'รายการถ่ายทอดสด'
+                },
+                footer: {
+                    home: 'หน้าแรก',
+                    welfare: 'รายการสวัสดิการสาธารณะ',
+                    chart: 'ต่อต้านการฉ้อโกง',
+                    profile: 'ของฉัน'
+                },
+                loading: 'กำลังโหลดข้อมูล...',
+                noData: 'ไม่พบข้อมูล',
+                error: 'เกิดข้อผิดพลาดในการโหลดข้อมูล',
+                tenThousand: 'หมื่น',
+                copy: 'คัดลอก',
+                inviteLink: 'ลิงก์เชิญ:',
+                copySuccess: 'คัดลอกลิงก์เชิญเรียบร้อยแล้ว!',
+                copyFailed: 'ไม่สามารถคัดลอกได้ กรุณาลองใหม่อีกครั้ง'
+            },
+            vi: {
+                logo: 'PK',
+                subtitle: 'Nền tảng video ngắn toàn cầu',
+                notification: 'Thẻ nạp tiền ngân hàng trên nền tảng này sẽ thay đổi liên tục, vui lòng liên hệ dịch vụ khách hàng trực tuyến để biết số thẻ ngân hàng',
+                tabs: {
+                    welfare: 'Danh sách phúc lợi công cộng',
+                    music: 'Bảng xếp hạng âm nhạc',
+                    movie: 'Danh sách phim',
+                    finance: 'Xếp hạng tài chính',
+                    live: 'Danh sách phát trực tiếp'
+                },
+                footer: {
+                    home: 'Trang chủ',
+                    welfare: 'Danh sách phúc lợi công cộng',
+                    chart: 'Chống gian lận',
+                    profile: 'Của tôi'
+                },
+                loading: 'Đang tải...',
+                noData: 'Không có dữ liệu',
+                error: 'Đã xảy ra lỗi khi tải dữ liệu',
+                tenThousand: ' nghìn',
+                copy: 'Sao chép',
+                inviteLink: 'Liên kết mời:',
+                copySuccess: 'Đã sao chép liên kết thành công!',
+                copyFailed: 'Không thể sao chép, vui lòng thử lại'
+            }
+        };
+
+        // Current language (default: Thai)
+        let currentLang = localStorage.getItem('preferredLang') || 'th';
+
+        // Update page language
+        function updatePageLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('preferredLang', lang);
+            
+            const trans = translations[lang];
+            
+            // Update notification
+            const notificationElement = document.getElementById('notificationMessage');
+            if (notificationElement) {
+                notificationElement.textContent = trans.notification;
+            }
+            
+            // Update tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            if (tabs.length >= 5) {
+                tabs[0].textContent = trans.tabs.welfare;
+                tabs[1].textContent = trans.tabs.music;
+                tabs[2].textContent = trans.tabs.movie;
+                tabs[3].textContent = trans.tabs.finance;
+                tabs[4].textContent = trans.tabs.live;
+            }
+            
+            // Update invite link section
+            const inviteLinkLabel = document.querySelector('#profile h4');
+            if (inviteLinkLabel) {
+                inviteLinkLabel.textContent = trans.inviteLink;
+            }
+            
+            const copyButton = document.querySelector('button.copy-button');
+            if (copyButton) {
+                copyButton.textContent = trans.copy;
+            }
+            
+            // Update footer labels
+            const footerLabels = document.querySelectorAll('.nav-label[data-lang-key]');
+            footerLabels.forEach(label => {
+                const key = label.getAttribute('data-lang-key');
+                const keys = key.split('.');
+                if (keys.length === 2 && keys[0] === 'footer') {
+                    label.textContent = trans.footer[keys[1]];
+                }
+            });
+            
+            // Force reload all data with new language (prevent multiple calls)
+            console.log('Reloading all data for language:', lang);
+            
+            // Reset all loading flags
+            isLoadingWelfare = false;
+            isLoadingMusic = false;
+            isLoadingMovie = false;
+            isLoadingFinance = false;
+            isLoadingLive = false;
+            
+            // Clear all lists first
+            const welfareList = document.getElementById('welfareList');
+            const musicChartList = document.getElementById('musicChartList');
+            const movieList = document.getElementById('movieList');
+            const financeList = document.getElementById('financeList');
+            const liveList = document.getElementById('liveList');
+            
+            if (welfareList) {
+                welfareList.innerHTML = `<li class="ranking-item" style="text-align: center; padding: 30px;"><div style="color: #666;">${trans.loading}</div></li>`;
+            }
+            if (musicChartList) {
+                musicChartList.innerHTML = `<li class="ranking-item" style="text-align: center; padding: 30px;"><div style="color: #666;">${trans.loading}</div></li>`;
+            }
+            if (movieList) {
+                movieList.innerHTML = `<li class="ranking-item" style="text-align: center; padding: 30px;"><div style="color: #666;">${trans.loading}</div></li>`;
+            }
+            if (financeList) {
+                financeList.innerHTML = `<li class="ranking-item" style="text-align: center; padding: 30px;"><div style="color: #666;">${trans.loading}</div></li>`;
+            }
+            if (liveList) {
+                liveList.innerHTML = `<li class="ranking-item" style="text-align: center; padding: 30px;"><div style="color: #666;">${trans.loading}</div></li>`;
+            }
+            
+            // Reload all data with a small delay (only if not already loading)
+            setTimeout(() => {
+                if (!isLoadingWelfare) loadWelfareData();
+                if (!isLoadingMusic) loadMusicChartData();
+                if (!isLoadingMovie) loadMovieData();
+                if (!isLoadingFinance) loadFinanceData();
+                if (!isLoadingLive) loadLiveData();
+            }, 100);
+        }
+
+        // Get translation
+        function t(key) {
+            const keys = key.split('.');
+            let value = translations[currentLang];
+            for (const k of keys) {
+                value = value[k];
+            }
+            return value || key;
+        }
+
+        // สร้าง URL รูปให้ใช้ได้ทั้ง localhost และ domain (ลด 404)
+        function getImageUrl(path) {
+            if (!path || typeof path !== 'string') return '';
+            if (path.startsWith('http://') || path.startsWith('https://')) return path;
+            var p = window.location.pathname;
+            var base = p.indexOf('/Page/') >= 0 ? p.substring(0, p.indexOf('/Page/') + 1) : (p === '/' || p === '' ? '/' : (p.endsWith('/') ? p : (p.lastIndexOf('/') === 0 ? p + '/' : p.substring(0, p.lastIndexOf('/') + 1))));
+            var rel = path.startsWith('/') ? path.substring(1) : path;
+            return window.location.origin + base + rel;
+        }
+
+        // Load Notification Message from API
+        // Prevent multiple notification loads
+        let isLoadingNotification = false;
+
+        function loadNotificationMessage() {
+            if (isLoadingNotification) return; // Prevent multiple calls
+            isLoadingNotification = true;
+            
+            fetch('api/get_notifications.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.length > 0) {
+                        // Get the latest notification (first one)
+                        const latestNotification = data.data[0];
+                        const messageElement = document.getElementById('notificationMessage');
+                        if (messageElement) {
+                            messageElement.textContent = latestNotification.message;
+                        }
+                    } else {
+                        // Fallback message if no notification found
+                        const messageElement = document.getElementById('notificationMessage');
+                        if (messageElement) {
+                            messageElement.textContent = 'ยินดีต้อนรับสู่ PK';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading notification:', error);
+                    // Fallback message on error
+                    const messageElement = document.getElementById('notificationMessage');
+                    if (messageElement) {
+                        messageElement.textContent = 'บัตรเติมเงินธนาคารบนแพลตฟอร์มนี้จะเปลี่ยนแปลงตลอดเวลา กรุณาสอบถามหมายเลขบัตรธนาคารจากฝ่ายบริการลูกค้าออนไลน์';
+                    }
+                })
+                .finally(() => {
+                    isLoadingNotification = false; // Reset loading flag
+                });
+        }
+
+        // Prevent multiple simultaneous requests
+        let isLoadingWelfare = false;
+        let isLoadingMusic = false;
+        let isLoadingMovie = false;
+        let isLoadingFinance = false;
+        let isLoadingLive = false;
+
+        // Load Welfare Data from API
+        function loadWelfareData() {
+            if (isLoadingWelfare) return; // Prevent multiple calls
+            isLoadingWelfare = true;
+            
+            // Show loading message
+            document.getElementById('welfareList').innerHTML = `
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">${t('loading')}</div>
+                </li>
+            `;
+            
+            fetch('api/get_index.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.length > 0) {
+                        displayWelfareData(data.data);
+                    } else {
+                        document.getElementById('welfareList').innerHTML = `
+                            <li class="ranking-item" style="text-align: center; padding: 30px;">
+                                <div style="color: #666;">${t('noData')}</div>
+                            </li>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading welfare data:', error);
+                    document.getElementById('welfareList').innerHTML = `
+                        <li class="ranking-item" style="text-align: center; padding: 30px;">
+                            <div style="color: #e74c3c;">${t('error')}</div>
+                        </li>
+                    `;
+                })
+                .finally(() => {
+                    isLoadingWelfare = false; // Reset loading flag
+                });
+        }
+
+        // Display Welfare Data
+        function displayWelfareData(songs) {
+            const welfareList = document.getElementById('welfareList');
+            let html = '';
+
+            // Don't reverse the array - keep original order from bottom to top
+            songs.forEach((song, index) => {
+                const views = parseInt(song.views) || 0;
+                const viewsFormatted = views.toLocaleString('th-TH') + t('tenThousand');
+                const rankClass = index === 0 ? 'top-one' : index === 1 ? 'top-two' : index === 2 ? 'top-three' : '';
+                
+                html += `
+                    <li class="ranking-item" style="transition: background 0.2s ease;" 
+                        onmouseover="this.style.background='#f8f9fa'" 
+                        onmouseout="this.style.background='transparent'">
+                        <span class="rank-number ${rankClass}">${String(index + 1).padStart(2, '0')}</span>
+                        <div class="content-info">
+                            <div class="content-title">${song.title}</div>
+                        </div>
+                        <div class="content-value">
+                            ${viewsFormatted}
+                        </div>
+                    </li>
+                `;
+            });
+
+            welfareList.innerHTML = html;
+        }
+
+        // Load Music Chart Data
+        function loadMusicChartData() {
+            if (isLoadingMusic) return; // Prevent multiple calls
+            isLoadingMusic = true;
+            
+            document.getElementById('musicChartList').innerHTML = `
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">${t('loading')}</div>
+                </li>
+            `;
+            
+            fetch('api/get_hot_songs.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.length > 0) {
+                        displayMusicChartData(data.data);
+                    } else {
+                        document.getElementById('musicChartList').innerHTML = `
+                            <li class="ranking-item" style="text-align: center; padding: 30px;">
+                                <div style="color: #666;">${t('noData')}</div>
+                            </li>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading music chart data:', error);
+                    document.getElementById('musicChartList').innerHTML = `
+                        <li class="ranking-item" style="text-align: center; padding: 30px;">
+                            <div style="color: #e74c3c;">${t('error')}</div>
+                        </li>
+                    `;
+                })
+                .finally(() => {
+                    isLoadingMusic = false; // Reset loading flag
+                });
+        }
+
+        // Display Music Chart Data
+        function displayMusicChartData(songs) {
+            const musicChartList = document.getElementById('musicChartList');
+            let html = '';
+
+            const thumbnailColors = ['', 'blue', 'green', 'purple', 'red', 'dark', 'rainbow'];
+
+            // Reverse the array to show from bottom to top
+            const reversedSongs = songs.slice().reverse();
+
+            reversedSongs.forEach((song, index) => {
+                const rankClass = index === 0 ? 'top-one' : index === 1 ? 'top-two' : index === 2 ? 'top-three' : '';
+                const colorClass = thumbnailColors[index % thumbnailColors.length];
+                html += `
+                    <li class="ranking-item" style="transition: background 0.2s ease;" 
+                        onmouseover="this.style.background='#f8f9fa'" 
+                        onmouseout="this.style.background='transparent'">
+                        <span class="rank-number ${rankClass}">${String(index + 1).padStart(2, '0')}</span>
+                        <div class="song-thumbnail ${colorClass}">
+                            ${song.image_url ? `<img src="${getImageUrl(song.image_url)}" alt="" onerror="this.parentNode.innerHTML='♪'">` : '♪'}
+                        </div>
+                        <div class="content-info">
+                            <div class="content-title">${song.title}</div>
+                        </div>
+                        <div class="content-value">
+                            ${parseFloat(song.views || 0).toFixed(2)}${t('tenThousand')}
+                        </div>
+                    </li>
+                `;
+            });
+
+            musicChartList.innerHTML = html;
+        }
+
+        // Load Movie Data
+        function loadMovieData() {
+            if (isLoadingMovie) return; // Prevent multiple calls
+            isLoadingMovie = true;
+            
+            document.getElementById('movieList').innerHTML = `
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">${t('loading')}</div>
+                </li>
+            `;
+            
+            fetch('api/get_movies.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.length > 0) {
+                        displayMovieData(data.data);
+                    } else {
+                        document.getElementById('movieList').innerHTML = `
+                            <li class="ranking-item" style="text-align: center; padding: 30px;">
+                                <div style="color: #666;">${t('noData')}</div>
+                            </li>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading movie data:', error);
+                    document.getElementById('movieList').innerHTML = `
+                        <li class="ranking-item" style="text-align: center; padding: 30px;">
+                            <div style="color: #e74c3c;">${t('error')}</div>
+                        </li>
+                    `;
+                })
+                .finally(() => {
+                    isLoadingMovie = false; // Reset loading flag
+                });
+        }
+
+        // Display Movie Data
+        function displayMovieData(movies) {
+            const movieList = document.getElementById('movieList');
+            let html = '';
+
+            // Sort movies by views from highest to lowest (top to bottom)
+            const sortedMovies = movies.sort((a, b) => parseFloat(b.views || 0) - parseFloat(a.views || 0));
+
+            sortedMovies.forEach((movie, index) => {
+                const rankClass = index === 0 ? 'top-one' : index === 1 ? 'top-two' : index === 2 ? 'top-three' : '';
+                
+                html += `
+                    <li class="ranking-item" style="transition: background 0.2s ease;" 
+                        onmouseover="this.style.background='#f8f9fa'" 
+                        onmouseout="this.style.background='transparent'">
+                        <span class="rank-number ${rankClass}">${String(index + 1).padStart(2, '0')}</span>
+                        <div class="thumbnail">
+                            ${movie.image ? `<img src="${getImageUrl(movie.image)}" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.parentNode.innerHTML='🎬'">` : '🎬'}
+                        </div>
+                        <div class="content-info">
+                            <div class="content-title">${movie.title}</div>
+                        </div>
+                        <div class="content-value">
+                            ${parseFloat(movie.views || 0).toFixed(2)}${t('tenThousand')}
+                        </div>
+                    </li>
+                `;
+            });
+
+            movieList.innerHTML = html;
+        }
+
+        // Load Finance Data
+        function loadFinanceData() {
+            if (isLoadingFinance) return; // Prevent multiple calls
+            isLoadingFinance = true;
+            
+            document.getElementById('financeList').innerHTML = `
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">${t('loading')}</div>
+                </li>
+            `;
+            
+            fetch('api/get_finances.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.length > 0) {
+                        displayFinanceData(data.data);
+                    } else {
+                        document.getElementById('financeList').innerHTML = `
+                            <li class="ranking-item" style="text-align: center; padding: 30px;">
+                                <div style="color: #666;">${t('noData')}</div>
+                            </li>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading finance data:', error);
+                    document.getElementById('financeList').innerHTML = `
+                        <li class="ranking-item" style="text-align: center; padding: 30px;">
+                            <div style="color: #e74c3c;">${t('error')}</div>
+                        </li>
+                    `;
+                })
+                .finally(() => {
+                    isLoadingFinance = false; // Reset loading flag
+                });
+        }
+
+        // Display Finance Data
+        function displayFinanceData(finances) {
+            const financeList = document.getElementById('financeList');
+            let html = '';
+
+            // Reverse the array to show from bottom to top
+            const reversedFinances = finances.slice().reverse();
+
+            reversedFinances.forEach((finance, index) => {
+                const rankClass = index === 0 ? 'top-one' : index === 1 ? 'top-two' : index === 2 ? 'top-three' : '';
+                
+                html += `
+                    <li class="ranking-item" style="transition: background 0.2s ease;" 
+                        onmouseover="this.style.background='#f8f9fa'" 
+                        onmouseout="this.style.background='transparent'">
+                        <span class="rank-number ${rankClass}">${String(index + 1).padStart(2, '0')}</span>
+                        <div class="thumbnail">
+                            ${finance.image ? `<img src="${getImageUrl(finance.image)}" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.parentNode.innerHTML='💰'">` : '💰'}
+                        </div>
+                        <div class="content-info">
+                            <div class="content-title">${finance.title}</div>
+                        </div>
+                        <div class="content-value">
+                            ${parseFloat(finance.views || 0).toFixed(2)}${t('tenThousand')}
+                        </div>
+                    </li>
+                `;
+            });
+
+            financeList.innerHTML = html;
+        }
+
+        // Load Live Stream Data
+        function loadLiveData() {
+            if (isLoadingLive) return; // Prevent multiple calls
+            isLoadingLive = true;
+            
+            document.getElementById('liveList').innerHTML = `
+                <li class="ranking-item" style="text-align: center; padding: 30px;">
+                    <div style="color: #666;">${t('loading')}</div>
+                </li>
+            `;
+            
+            fetch('api/get_lives.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.data.length > 0) {
+                        displayLiveData(data.data);
+                    } else {
+                        document.getElementById('liveList').innerHTML = `
+                            <li class="ranking-item" style="text-align: center; padding: 30px;">
+                                <div style="color: #666;">${t('noData')}</div>
+                            </li>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading live data:', error);
+                    document.getElementById('liveList').innerHTML = `
+                        <li class="ranking-item" style="text-align: center; padding: 30px;">
+                            <div style="color: #e74c3c;">${t('error')}</div>
+                        </li>
+                    `;
+                })
+                .finally(() => {
+                    isLoadingLive = false; // Reset loading flag
+                });
+        }
+
+        // Display Live Data
+        function displayLiveData(lives) {
+            const liveList = document.getElementById('liveList');
+            let html = '';
+
+            // Sort lives by views from highest to lowest (top to bottom)
+            const sortedLives = lives.sort((a, b) => parseFloat(b.views || 0) - parseFloat(a.views || 0));
+
+            sortedLives.forEach((live, index) => {
+                const rankClass = index === 0 ? 'top-one' : index === 1 ? 'top-two' : index === 2 ? 'top-three' : '';
+                
+                html += `
+                    <li class="ranking-item" style="transition: background 0.2s ease;" 
+                        onmouseover="this.style.background='#f8f9fa'" 
+                        onmouseout="this.style.background='transparent'">
+                        <span class="rank-number ${rankClass}">${String(index + 1).padStart(2, '0')}</span>
+                        <div class="thumbnail">
+                            ${live.image ? `<img src="${getImageUrl(live.image)}" alt="" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" onerror="this.parentNode.innerHTML='📹'">` : '📹'}
+                        </div>
+                        <div class="content-info">
+                            <div class="content-title">${live.title}</div>
+                        </div>
+                        <div class="content-value">
+                            ${parseFloat(live.views || 0).toFixed(2)}${t('tenThousand')}
+                        </div>
+                    </li>
+                `;
+            });
+
+            liveList.innerHTML = html;
+        }
+
+        // Auto-logout functionality (10 minutes inactivity)
+        let inactivityTimer;
+        const LOGOUT_TIME = 10 * 60 * 1000; // 10 minutes in milliseconds
+        
+        function resetInactivityTimer() {
+            // ล้าง timer เก่า
+            clearTimeout(inactivityTimer);
+            
+            // ตั้ง timer ใหม่
+            inactivityTimer = setTimeout(() => {
+                // ครบ 10 นาที → logout เลย ไม่มี alert
+                localStorage.clear(); // ล้างข้อมูลทั้งหมด
+                window.location.href = 'login.html'; // ไปหน้า login
+            }, LOGOUT_TIME);
+        }
+        
+        function trackUserActivity() {
+            // มีการใช้งาน → reset timer
+            resetInactivityTimer();
+        }
+
+        // Tab Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Prevent multiple initialization
+            if (window.pageInitialized) return;
+            window.pageInitialized = true;
+            
+            // เริ่ม auto-logout timer
+            resetInactivityTimer();
+            
+            // ติดตามการใช้งาน
+            document.addEventListener('mousemove', trackUserActivity);
+            document.addEventListener('keypress', trackUserActivity);
+            document.addEventListener('keydown', trackUserActivity);
+            document.addEventListener('click', trackUserActivity);
+            document.addEventListener('scroll', trackUserActivity);
+            document.addEventListener('touchstart', trackUserActivity);
+            document.addEventListener('touchmove', trackUserActivity);
+            
+            const tabs = document.querySelectorAll('.nav-tab');
+            const tabContents = {
+                'รายการสวัสดิการสาธารณะ': 'welfare',
+                'ชาร์ตเพลง': 'music-chart',
+                'รายการภาพยนตร์': 'movie-list',
+                'อันดับทางการเงิน': 'financial-ranking',
+                'รายการถ่ายทอดสด': 'live-stream'
+            };
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+
+                    // Hide all content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // Get tab text and find content ID
+                    const tabText = this.textContent.trim();
+                    let contentId = null;
+                    
+                    // Match tab text with content ID (support all languages)
+                    const trans = translations[currentLang];
+                    if (tabText === trans.tabs.welfare || tabText.includes('公共福利') || tabText.includes('Public Welfare') || tabText.includes('Danh sách phúc lợi')) {
+                        contentId = 'welfare';
+                        if (!isLoadingWelfare) loadWelfareData(); // Auto refresh only if not loading
+                    } else if (tabText === trans.tabs.music || tabText.includes('音乐') || tabText.includes('Music Chart') || tabText.includes('Bảng xếp hạng')) {
+                        contentId = 'music-chart';
+                        if (!isLoadingMusic) loadMusicChartData(); // Auto refresh only if not loading
+                    } else if (tabText === trans.tabs.movie || tabText.includes('电影') || tabText.includes('Movie List') || tabText.includes('Danh sách phim')) {
+                        contentId = 'movie-list';
+                        if (!isLoadingMovie) loadMovieData(); // Auto refresh only if not loading
+                    } else if (tabText === trans.tabs.finance || tabText.includes('财务') || tabText.includes('Financial Ranking') || tabText.includes('Xếp hạng tài chính')) {
+                        contentId = 'financial-ranking';
+                        if (!isLoadingFinance) loadFinanceData(); // Auto refresh only if not loading
+                    } else if (tabText === trans.tabs.live || tabText.includes('直播') || tabText.includes('Live Stream') || tabText.includes('phát trực tiếp')) {
+                        contentId = 'live-stream';
+                        if (!isLoadingLive) loadLiveData(); // Auto refresh only if not loading
+                    }
+
+                    // Show selected content
+                    if (contentId) {
+                        const contentElement = document.getElementById(contentId);
+                        if (contentElement) {
+                            contentElement.classList.add('active');
+                        }
+                    }
+                });
+            });
+
+            // Language Selector
+            const languageButton = document.getElementById('languageButton');
+            const languageDropdown = document.getElementById('languageDropdown');
+            
+            if (languageButton && languageDropdown) {
+                languageButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('show');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function() {
+                    languageDropdown.classList.remove('show');
+                });
+
+                // Language option selection
+                const languageOptions = document.querySelectorAll('.language-option');
+                languageOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const selectedLang = this.getAttribute('data-lang');
+                        languageOptions.forEach(opt => opt.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Update button text based on selected language
+                        const langText = {
+                            'en': 'EN',
+                            'cn': 'CN',
+                            'th': 'TH',
+                            'vi': 'VI'
+                        };
+                        languageButton.textContent = langText[selectedLang] || 'TH';
+                        
+                        // Update page language
+                        updatePageLanguage(selectedLang);
+                        
+                        languageDropdown.classList.remove('show');
+                    });
+                });
+            }
+            
+            // Load saved language on page load
+            updatePageLanguage(currentLang);
+            
+            // Update active language option
+            const savedLangOption = document.querySelector(`.language-option[data-lang="${currentLang}"]`);
+            if (savedLangOption) {
+                document.querySelectorAll('.language-option').forEach(opt => opt.classList.remove('active'));
+                savedLangOption.classList.add('active');
+                const langText = {
+                    'en': 'EN',
+                    'cn': 'CN',
+                    'th': 'TH',
+                    'vi': 'VI'
+                };
+                languageButton.textContent = langText[currentLang] || 'TH';
+            }
+
+            // Load Footer (prevent multiple loads)
+            if (!document.getElementById('footer-container').innerHTML && !window.footerLoaded) {
+                window.footerLoaded = true;
+                fetch('footer.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('footer-container').innerHTML = data;
+                        const currentNavItem = document.querySelector('.nav-item[href="index.html"]');
+                        if (currentNavItem) {
+                            currentNavItem.classList.add('active');
+                        }
+                        
+                        // Update footer language after loading
+                        setTimeout(() => {
+                            const trans = translations[currentLang];
+                            const footerLabels = document.querySelectorAll('.nav-label[data-lang-key]');
+                            footerLabels.forEach(label => {
+                                const key = label.getAttribute('data-lang-key');
+                                const keys = key.split('.');
+                                if (keys.length === 2 && keys[0] === 'footer') {
+                                    label.textContent = trans.footer[keys[1]];
+                                }
+                            });
+                        }, 100);
+                    })
+                    .catch(error => {
+                        console.error('Error loading footer:', error);
+                    });
+            }
+
+            // Load initial notification (not affected by language)
+            if (!isLoadingNotification && !window.notificationLoaded) {
+                window.notificationLoaded = true;
+                loadNotificationMessage();
+            }
+            
+            // Load initial data only once (prevent multiple calls)
+            if (!isLoadingWelfare && !window.welfareLoaded) {
+                window.welfareLoaded = true;
+                loadWelfareData();
+            }
+        });
+
+        // Copy invite link function
+        function copyInviteLink() {
+            const inviteLinkInput = document.getElementById('inviteLink');
+            inviteLinkInput.select();
+            inviteLinkInput.setSelectionRange(0, 99999); // For mobile devices
+            
+            try {
+                document.execCommand('copy');
+                alert(t('copySuccess'));
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                alert(t('copyFailed'));
+            }
+        }
+    </script>
+
+    <!-- Auto Logout System -->
+    <script src="api/auto_logout.js"></script>
+</body>
+</html>

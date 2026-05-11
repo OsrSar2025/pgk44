@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Photo/pgk.png" type="image/png">
+    <title>Debug Order Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Debug Order Page</h1>
+    
+    <div class="debug-section">
+        <h2>1. LocalStorage Check</h2>
+        <div id="localStorageInfo"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>2. API Test</h2>
+        <button onclick="testAPI()">Test get_bet_history.php</button>
+        <div id="apiResult"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>3. Database Test</h2>
+        <button onclick="testDatabase()">Test Database Connection</button>
+        <div id="dbResult"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>4. Console Logs</h2>
+        <div id="consoleLogs"></div>
+    </div>
+
+    <script>
+        // Override console.log to capture logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logs = [];
+        
+        console.log = function(...args) {
+            logs.push('LOG: ' + args.join(' '));
+            originalLog.apply(console, args);
+            updateConsoleLogs();
+        };
+        
+        console.error = function(...args) {
+            logs.push('ERROR: ' + args.join(' '));
+            originalError.apply(console, args);
+            updateConsoleLogs();
+        };
+        
+        function updateConsoleLogs() {
+            document.getElementById('consoleLogs').innerHTML = '<pre>' + logs.join('\n') + '</pre>';
+        }
+        
+        // Check localStorage
+        function checkLocalStorage() {
+            const debugDiv = document.getElementById('localStorageInfo');
+            let html = '<h3>LocalStorage Contents:</h3><ul>';
+            
+            if (localStorage.length === 0) {
+                html += '<li class="error">No items in localStorage</li>';
+            } else {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    html += `<li><strong>${key}:</strong> ${value}</li>`;
+                }
+            }
+            
+            html += '</ul>';
+            
+            // Check specifically for userId
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                html += `<p class="success">✅ userId found: ${userId}</p>`;
+            } else {
+                html += '<p class="error">❌ userId not found in localStorage</p>';
+            }
+            
+            debugDiv.innerHTML = html;
+        }
+        
+        // Test API
+        function testAPI() {
+            const userId = localStorage.getItem('userId');
+            const resultDiv = document.getElementById('apiResult');
+            
+            if (!userId) {
+                resultDiv.innerHTML = '<p class="error">❌ No userId in localStorage. Please login first.</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Testing API...</p>';
+            console.log('Testing API with userId:', userId);
+            
+            fetch('../api/get_bet_history.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => {
+                console.log('API Response Status:', response.status);
+                resultDiv.innerHTML += `<p>Response Status: ${response.status}</p>`;
+                return response.text();
+            })
+            .then(text => {
+                console.log('API Response Text:', text);
+                resultDiv.innerHTML += `<p>Response Text: <pre>${text}</pre></p>`;
+                
+                try {
+                    const data = JSON.parse(text);
+                    console.log('Parsed JSON:', data);
+                    resultDiv.innerHTML += `<p class="success">✅ JSON Parsed Successfully</p>`;
+                    resultDiv.innerHTML += `<p>Data: <pre>${JSON.stringify(data, null, 2)}</pre></p>`;
+                } catch (e) {
+                    console.error('JSON Parse Error:', e);
+                    resultDiv.innerHTML += `<p class="error">❌ JSON Parse Error: ${e.message}</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('API Error:', error);
+                resultDiv.innerHTML += `<p class="error">❌ API Error: ${error.message}</p>`;
+            });
+        }
+        
+        // Test Database
+        function testDatabase() {
+            const resultDiv = document.getElementById('dbResult');
+            resultDiv.innerHTML = '<p>Testing database...</p>';
+            console.log('Testing database connection');
+            
+            fetch('../api/test_bet_history.php')
+            .then(response => {
+                console.log('DB Test Response Status:', response.status);
+                return response.text();
+            })
+            .then(data => {
+                console.log('DB Test Response:', data);
+                resultDiv.innerHTML = `<pre>${data}</pre>`;
+            })
+            .catch(error => {
+                console.error('DB Test Error:', error);
+                resultDiv.innerHTML = `<p class="error">❌ Database Error: ${error.message}</p>`;
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Debug page loaded');
+            checkLocalStorage();
+        });
+    </script>
+</body>
+</html>
