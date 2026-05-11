@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="Photo/pgk.png" type="image/png">
+    <title>ตรวจสอบรหัสผ่าน</title>
+</head>
+<body>
+    <h2>ตรวจสอบรหัสผ่านบัญชี</h2>
+    <p>User ID: <span id="userId"></span></p>
+    <p>Username: <span id="username"></span></p>
+    <p>รหัสผ่านในฐานข้อมูล: <span id="password" style="color: red; font-weight: bold;"></span></p>
+    <p>ความยาว: <span id="length"></span> ตัวอักษร</p>
+
+    <script>
+        async function checkPassword() {
+            const userId = localStorage.getItem('userId') || '24548';
+            
+            const res = await fetch(`api/check_password.php?user_id=${userId}`);
+            const data = await res.json();
+            
+            console.log('User data:', data);
+            
+            document.getElementById('userId').textContent = data.id;
+            document.getElementById('username').textContent = data.username;
+            document.getElementById('password').textContent = data.password;
+            document.getElementById('length').textContent = data.pwd_length;
+        }
+        
+        checkPassword();
+    </script>
+</body>
+</html>
+
